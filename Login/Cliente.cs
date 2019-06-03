@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero
+namespace FrbaCrucero.Login
 {
-    public partial class Form1 : Form
+    public partial class Cliente : VentanaBase
     {
-        public Form1()
+        public Cliente()
         {
             InitializeComponent();
         }
