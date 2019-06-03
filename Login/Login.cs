@@ -26,9 +26,9 @@ namespace FrbaCrucero.Login
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if (ventanaCamposEstanCompletos(this, controladorError) && this.txbUser.Text != "guest")
+            if (ventanaCamposEstanCompletos(this, errorController))
             {
-                LogueoDTO logueo = Database.loginAutenticar(txbUser.Text, txbPass.Text);
+                LogueoDTO logueo = Database.loginAutenticar(txtUsuario.Text, txtContraseña.Text);
                 if (logueo.exito)
                     ventanaLogueoExitoso(logueo);
                 else
@@ -48,7 +48,7 @@ namespace FrbaCrucero.Login
 
         private void ventanaLogueoFallido(LogueoDTO logueo)
         {
-            txbPass.Clear();
+            txtContraseña.Clear();
             lblErrorLogueo.Text = logueo.mensaje;
             lblErrorLogueo.Show();
         }
