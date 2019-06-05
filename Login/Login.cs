@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Clases;
 
 namespace FrbaCrucero.Login
 {
@@ -28,15 +29,19 @@ namespace FrbaCrucero.Login
         {
             if (ventanaCamposEstanCompletos(this, errorController))
             {
-                LogueoDTO logueo = Database.loginAutenticar(txtUsuario.Text, txtContraseña.Text);
+                LoginDTO logueo = Database.loginAutenticar(txtUsuario.Text, txtContraseña.Text);
                 if (logueo.exito)
+                {
                     ventanaLogueoExitoso(logueo);
+                }
                 else
+                {
                     ventanaLogueoFallido(logueo);
+                }
             }
         }
 
-        private void ventanaLogueoExitoso(LogueoDTO logueo)
+        private void ventanaLogueoExitoso(LoginDTO logueo)
         {
             this.Hide();
             string nombreUsuario = logueo.mensaje;
@@ -46,11 +51,11 @@ namespace FrbaCrucero.Login
             VentanaSeleccionRolHotel ventanaSeleccionRol = new VentanaSeleccionRolHotel(sesion);
         }
 
-        private void ventanaLogueoFallido(LogueoDTO logueo)
+        private void ventanaLogueoFallido(LoginDTO logueo)
         {
             txtContraseña.Clear();
-            lblErrorLogueo.Text = logueo.mensaje;
-            lblErrorLogueo.Show();
+            lblValidation.Text = logueo.mensaje;
+            lblValidation.Show();
         }
     }
 }
