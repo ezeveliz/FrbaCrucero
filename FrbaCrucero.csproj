@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -69,19 +70,21 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Clases\Database.cs" />
+    <Compile Include="Clases\Rol.cs" />
     <Compile Include="Clases\Sesion.cs" />
     <Compile Include="Clases\LoginDTO.cs" />
+    <Compile Include="Clases\Usuario.cs" />
     <Compile Include="CompraReservaPasaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="VentanaBase\VentanaBase.cs">
+    <Compile Include="Frame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VentanaBase\VentanaBase.Designer.cs">
-      <DependentUpon>VentanaBase.cs</DependentUpon>
+    <Compile Include="Frame.Designer.cs">
+      <DependentUpon>Frame.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneracionViaje\Form1.cs">
       <SubType>Form</SubType>
@@ -95,22 +98,22 @@
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login\Cliente.cs">
+    <Compile Include="Inicio\Cliente.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login\Cliente.Designer.cs">
+    <Compile Include="Inicio\Cliente.Designer.cs">
       <DependentUpon>Cliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login\Login.cs">
+    <Compile Include="Inicio\Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login\Login.Designer.cs">
+    <Compile Include="Inicio\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login\Inicio.cs">
+    <Compile Include="Inicio\Inicio.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login\Inicio.Designer.cs">
+    <Compile Include="Inicio\Inicio.Designer.cs">
       <DependentUpon>Inicio.cs</DependentUpon>
     </Compile>
     <Compile Include="PagoReserva\Form1.cs">
@@ -124,10 +127,10 @@
     <EmbeddedResource Include="AbmCrucero\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login\Inicio.resx">
+    <EmbeddedResource Include="Inicio\Inicio.resx">
       <DependentUpon>Inicio.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login\Login.resx">
+    <EmbeddedResource Include="Inicio\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -140,8 +143,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="VentanaBase\VentanaBase.resx">
-      <DependentUpon>VentanaBase.cs</DependentUpon>
+    <EmbeddedResource Include="Frame.resx">
+      <DependentUpon>Frame.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

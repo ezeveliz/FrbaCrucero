@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.Login
+namespace FrbaCrucero.Inicio
 {
-    public partial class Inicio : VentanaBase
+    public partial class Inicio : Frame
     {
         public Inicio()
         {

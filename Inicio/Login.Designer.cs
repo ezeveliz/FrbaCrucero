@@ -1,4 +1,4 @@
-﻿namespace FrbaCrucero.Login
+﻿namespace FrbaCrucero.Inicio
 {
     partial class Login
     {

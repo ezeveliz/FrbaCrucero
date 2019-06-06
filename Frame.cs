@@ -12,9 +12,9 @@ using System.Media;
 
 namespace FrbaCrucero
 {
-    public partial class VentanaBase : Form
+    public partial class Frame : Form
     {
-        public VentanaBase()
+        public Frame()
         {
             InitializeComponent();
         }
@@ -48,13 +48,31 @@ namespace FrbaCrucero
                     if (listBox.Items.Count == 0)
                     {
                         camposTodosCompletos = false;
-                        errorProvider.SetError(listBox, "Debe seleccionar al menos una opcion");
+                        errorProvider.SetError(listBox, "Debe seleccionar al menos una opción");
                     }
                 }
             }
             if (!camposTodosCompletos)
                 SystemSounds.Beep.Play();
             return camposTodosCompletos;
+        }
+
+        public static void ventanaInformarErrorDatabase(Exception ex)
+        {
+            SystemSounds.Hand.Play();
+            MessageBox.Show("Error en la base de datos:\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static void ventanaInformarExito(string mensaje)
+        {
+            SystemSounds.Exclamation.Play();
+            MessageBox.Show("Exito: " + mensaje, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public static void ventanaInformarError(string mensaje)
+        {
+            SystemSounds.Hand.Play();
+            MessageBox.Show("Error: " + mensaje, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
     }

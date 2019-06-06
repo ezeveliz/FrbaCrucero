@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Clases;
 
-namespace FrbaCrucero.Login
+namespace FrbaCrucero.Inicio
 {
-    public partial class Login : VentanaBase
+    public partial class Login : Frame
     {
         public Login()
         {
@@ -29,25 +29,25 @@ namespace FrbaCrucero.Login
         {
             if (ventanaCamposEstanCompletos(this, errorController))
             {
-                LoginDTO logueo = Database.loginAutenticar(txtUsuario.Text, txtContraseña.Text);
-                if (logueo.exito)
+                LoginDTO login = Database.authenticate(txtUsuario.Text, txtContraseña.Text);
+                if (login.exito)
                 {
-                    ventanaLogueoExitoso(logueo);
+                    ventanaLogueoExitoso(login);
                 }
                 else
                 {
-                    ventanaLogueoFallido(logueo);
+                    ventanaLogueoFallido(login);
                 }
             }
         }
 
-        private void ventanaLogueoExitoso(LoginDTO logueo)
+        private void ventanaLogueoExitoso(LoginDTO login)
         {
             this.Hide();
-            string nombreUsuario = logueo.mensaje;
-            Usuario usuario = new Usuario(nombreUsuario);
-            usuario.id = Database.usuarioObtenerID(usuario);
-            Sesion sesion = new Sesion(usuario, Database.usuarioObtenerHotelesEnLista(usuario), Database.usuarioObtenerRolesEnLista(usuario));
+            string username = login.mensaje;
+            Usuario user = new Usuario(username);
+            user.id = Database.usuarioObtenerID(usuario);
+            Sesion sesion = new Sesion(user, Database.usuarioObtenerRolesEnLista(user));
             VentanaSeleccionRolHotel ventanaSeleccionRol = new VentanaSeleccionRolHotel(sesion);
         }
 
