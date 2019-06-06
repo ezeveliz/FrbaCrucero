@@ -92,6 +92,12 @@
     <Compile Include="GeneracionViaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Inicio\SeleccionDeRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inicio\SeleccionDeRol.Designer.cs">
+      <DependentUpon>SeleccionDeRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,11 +116,11 @@
     <Compile Include="Inicio\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
-    <Compile Include="Inicio\Inicio.cs">
+    <Compile Include="Inicio\Bienvenida.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Inicio\Inicio.Designer.cs">
-      <DependentUpon>Inicio.cs</DependentUpon>
+    <Compile Include="Inicio\Bienvenida.Designer.cs">
+      <DependentUpon>Bienvenida.cs</DependentUpon>
     </Compile>
     <Compile Include="PagoReserva\Form1.cs">
       <SubType>Form</SubType>
@@ -127,8 +133,8 @@
     <EmbeddedResource Include="AbmCrucero\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Inicio\Inicio.resx">
-      <DependentUpon>Inicio.cs</DependentUpon>
+    <EmbeddedResource Include="Inicio\Bienvenida.resx">
+      <DependentUpon>Bienvenida.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

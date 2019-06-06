@@ -6,45 +6,36 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Clases
 {
-    class LoginDTO
+    public class LoginDTO
     {
+        private bool exito;
+        private string mensaje;
 
-        //-------------------------------------- Atributos -------------------------------------
+        public bool Exito { get { return exito; } set { exito = value; } }
+        public string Mensaje { get { return mensaje; } set { mensaje = value; } }
 
-        public string mensaje { get; set; }
-        public bool exito { get; set; }
-
-        //-------------------------------------- Constructores -------------------------------------
-
-        public LoginDTO()
-        {
-
-        }
-
-        //-------------------------------------- Metodos -------------------------------------
-
-        public LoginDTO informarExito(string nombreUsuario)
+        public LoginDTO success(string nombreUsuario)
         {
             exito = true;
             mensaje = nombreUsuario;
             return this;
         }
 
-        public LoginDTO informarUsuarioInexistente()
+        public LoginDTO inexistentUser()
         {
             exito = false;
             mensaje = "El usuario no existe.";
             return this;
         }
 
-        public LoginDTO informarContraseniaIncorrecta()
+        public LoginDTO wrongPassword()
         {
             exito = false;
-            mensaje = "La contraseña es invalida.";
+            mensaje = "La contraseña es inválida.";
             return this;
         }
 
-        public LoginDTO informarBloqueo()
+        public LoginDTO userBloqued()
         {
             exito = false;
             mensaje = "Usuario deshabilitado.";

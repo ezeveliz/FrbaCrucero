@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.Inicio
 {
-    public partial class Inicio : Frame
+    public partial class Bienvenida : Frame
     {
-        public Inicio()
+        public Bienvenida()
         {
             InitializeComponent();
         }

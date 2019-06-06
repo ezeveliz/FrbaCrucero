@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Clases
 {
-    class Sesion
+    public class Sesion
     {
-        public Rol rol { get; set; }
-        public Usuario usuario { get; set; }
-        public List<string> roles { get; set; }
+        private Usuario usuario;
+        private List<string> roles;
+
+        public Usuario Usuario { get; set; }
+        public List<string> Roles { get; set; }
 
         public Sesion(Usuario user, List<string> roles)
         {
-            this.usuario = user;
-            this.roles = roles;
+            Usuario = user;
+            Roles = roles;
         }
 
         public bool usuarioTieneUnSoloRol()

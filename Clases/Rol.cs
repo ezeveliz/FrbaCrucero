@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Clases
 {
-    class Rol
+    public class Rol
     {
     }
 }

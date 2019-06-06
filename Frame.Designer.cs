@@ -34,18 +34,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.SuspendLayout();
             // 
-            // controladorError
+            // errorController
             // 
             this.errorController.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorController.ContainerControl = this;
             // 
-            // VentanaBase
+            // Frame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "VentanaBase";
+            this.Name = "Frame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();

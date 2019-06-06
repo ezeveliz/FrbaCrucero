@@ -21,8 +21,7 @@ namespace FrbaCrucero.Inicio
         public void Login_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Hide();
-            Inicio ventana = new Inicio();
-            ventana.ShowDialog();
+            new Bienvenida().ShowDialog();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -30,31 +29,24 @@ namespace FrbaCrucero.Inicio
             if (ventanaCamposEstanCompletos(this, errorController))
             {
                 LoginDTO login = Database.authenticate(txtUsuario.Text, txtContraseña.Text);
-                if (login.exito)
-                {
-                    ventanaLogueoExitoso(login);
-                }
-                else
-                {
-                    ventanaLogueoFallido(login);
-                }
+                if (login.Exito) { successfulLogin(login); } else { failedLogin(login); }
             }
         }
 
-        private void ventanaLogueoExitoso(LoginDTO login)
+        private void successfulLogin(LoginDTO login)
         {
             this.Hide();
-            string username = login.mensaje;
+            string username = login.Mensaje;
             Usuario user = new Usuario(username);
-            user.id = Database.usuarioObtenerID(usuario);
+            user.Id = Database.usuarioObtenerID(user);
             Sesion sesion = new Sesion(user, Database.usuarioObtenerRolesEnLista(user));
-            VentanaSeleccionRolHotel ventanaSeleccionRol = new VentanaSeleccionRolHotel(sesion);
+            new SeleccionDeRol(sesion);
         }
 
-        private void ventanaLogueoFallido(LoginDTO logueo)
+        private void failedLogin(LoginDTO logueo)
         {
             txtContraseña.Clear();
-            lblValidation.Text = logueo.mensaje;
+            lblValidation.Text = logueo.Mensaje;
             lblValidation.Show();
         }
     }
