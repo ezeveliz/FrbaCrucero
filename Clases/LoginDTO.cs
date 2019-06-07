@@ -35,7 +35,7 @@ namespace FrbaCrucero.Clases
             return this;
         }
 
-        public LoginDTO userBloqued()
+        public LoginDTO userBlocked()
         {
             exito = false;
             mensaje = "Usuario deshabilitado.";

@@ -109,24 +109,19 @@ namespace FrbaCrucero.Clases
             SqlCommand query = createQuery("SELECT Usuario_Nombre, Usuario_Contrasenia, Usuario_IntentosFallidos FROM RIP.Usuarios WHERE Usuario_Nombre = @username");
             query.Parameters.AddWithValue("@username", user);
             DataRow row = getQueryRow(query);
-            return (row != null ? loginVerificarCuenta(row, pass) : loginUsuarioInexistente());
+            return (row != null ? verifyAccount(row, pass) : loginUsuarioInexistente());
         }
 
-        public static LoginDTO loginVerificarCuenta(DataRow fila, string pass)
+        public static LoginDTO verifyAccount(DataRow fila, string pass)
         {
             string username = (string)fila["Usuario_Nombre"];
             byte[] encryptedPass = (byte[])fila["Usuario_Contrasenia"];
             int attempts = (int)fila["Usuario_IntentosFallidos"];
             Usuario user = new Usuario(username);
-            if (attempts >= 3 || usuarioBloqueado(user))
+            if (attempts >= 3 || !usuarioHabilitado(user))
                 return loginCuentaBloqueada();
             else
                 return loginVerificarContrasenia(username, pass, encryptedPass, attempts);
-        }
-
-        private static bool usuarioBloqueado(Usuario user)
-        {
-            return !usuarioHabilitado(user);
         }
 
         public static bool usuarioHabilitado(Usuario user)
@@ -138,7 +133,7 @@ namespace FrbaCrucero.Clases
 
         private static LoginDTO loginCuentaBloqueada()
         {
-            return new LoginDTO().userBloqued();
+            return new LoginDTO().userBlocked();
         }
 
         private static LoginDTO loginVerificarContrasenia(string username, string pass, byte[] encryptedPass, int attempts)
@@ -153,10 +148,9 @@ namespace FrbaCrucero.Clases
 
         private static byte[] loginEncriptarContraseña(string pass)
         {
-            using (SHA256 hash = SHA256Managed.Create())
+            using (SHA256 mySHA256 = SHA256Managed.Create())
             {
-                Encoding encoder = Encoding.UTF8;
-                return hash.ComputeHash(encoder.GetBytes(pass));
+                return mySHA256.ComputeHash(Encoding.UTF8.GetBytes(pass));
             }
         }
 
@@ -182,7 +176,7 @@ namespace FrbaCrucero.Clases
             if (failedAttempts >= 3)
             {
                 usuarioBloquear(new Usuario(user));
-                return login.userBloqued();
+                return login.userBlocked();
             }
 
             else
