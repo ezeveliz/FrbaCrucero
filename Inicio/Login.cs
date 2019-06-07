@@ -38,8 +38,9 @@ namespace FrbaCrucero.Inicio
             this.Hide();
             string username = login.Mensaje;
             Usuario user = new Usuario(username);
-            user.Id = Database.usuarioObtenerID(user);
-            Sesion sesion = new Sesion(user, Database.usuarioObtenerRolesEnLista(user));
+            user.findID();
+            user.findRoles();
+            Sesion sesion = new Sesion(user);
             new SeleccionDeRol(sesion);
         }
 

@@ -31,8 +31,8 @@ namespace FrbaCrucero.Clases
         }
 
         public void findRoles()
-        { 
-            Roles = 
+        {
+            Roles = Database.usuarioObtenerRolesEnLista(this);
         }
     }
 }

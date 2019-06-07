@@ -75,27 +75,31 @@ namespace FrbaCrucero.Clases
             return executeReadQuery(consulta).Tables[0];
         }
 
-        public static List<string> consultaObtenerLista(SqlCommand consulta)
+        public static List<string> consultaObtenerLista(SqlCommand query)
         {
-            DataTable tabla = getQueryTable(consulta);
-            List<string> columna = new List<string>();
-            if (tabla.Rows.Count > 0)
-                foreach (DataRow fila in tabla.Rows)
-                    columna.Add(fila[0].ToString());
-            return columna;
+            DataTable table = getQueryTable(query);
+            List<string> row = new List<string>();
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows)
+                {
+                    row.Add(fila[0].ToString());
+                }
+            }
+            return row;
         }
 
-        public static string consultaObtenerValor(SqlCommand consulta)
+        public static string consultaObtenerValor(SqlCommand query)
         {
-            List<string> column = consultaObtenerLista(consulta);
+            List<string> column = consultaObtenerLista(query);
             return (column.Count() > 0 ? column[0] : "");
         }
 
-        public static DataRow getQueryRow(SqlCommand consulta)
+        public static DataRow getQueryRow(SqlCommand query)
         {
-            DataTable tabla = getQueryTable(consulta);
-            if (tabla.Rows.Count > 0)
-                return tabla.Rows[0];
+            DataTable table = getQueryTable(query);
+            if (table.Rows.Count > 0)
+                return table.Rows[0];
             else
                 return null;
         }
@@ -115,7 +119,7 @@ namespace FrbaCrucero.Clases
             int attempts = (int)fila["Usuario_IntentosFallidos"];
             Usuario user = new Usuario(username);
             if (attempts >= 3 || usuarioBloqueado(user))
-                return loginCuentaBloqueada(user, attempts);
+                return loginCuentaBloqueada();
             else
                 return loginVerificarContrasenia(username, pass, encryptedPass, attempts);
         }
@@ -125,30 +129,26 @@ namespace FrbaCrucero.Clases
             return !usuarioHabilitado(user);
         }
 
-        public static bool usuarioHabilitado(Usuario usuario)
+        public static bool usuarioHabilitado(Usuario user)
         {
             SqlCommand query = createQuery("SELECT Usuario_Estado FROM RIP.Usuarios WHERE Usuario_Nombre = @Nombre");
-            query.Parameters.AddWithValue("@Nombre", usuario.Nombre);
+            query.Parameters.AddWithValue("@Nombre", user.Nombre);
             return bool.Parse(consultaObtenerValor(query));
         }
 
-        private static LoginDTO loginCuentaBloqueada(Usuario user, int attempts)
+        private static LoginDTO loginCuentaBloqueada()
         {
             return new LoginDTO().userBloqued();
         }
 
         private static LoginDTO loginVerificarContrasenia(string username, string pass, byte[] encryptedPass, int attempts)
         {
-            if (loginContraseniaEsCorrecta(pass, encryptedPass))
-                return loginExitoso(username);
-            else
-                return loginFallido(username, attempts);
+            return (loginContraseniaEsCorrecta(pass, encryptedPass) ? loginExitoso(username) : loginFallido(username, attempts));
         }
 
         private static bool loginContraseniaEsCorrecta(string pass, byte[] encryptedPass)
         {
-            byte[] contraseniaEncriptada = loginEncriptarContraseña(pass);
-            return contraseniaEncriptada.SequenceEqual(encryptedPass);
+            return loginEncriptarContraseña(pass).SequenceEqual(encryptedPass);
         }
 
         private static byte[] loginEncriptarContraseña(string pass)
@@ -174,19 +174,19 @@ namespace FrbaCrucero.Clases
             executeCUDQuery(query);
         }
 
-        public static LoginDTO loginFallido(string usuario, int intentosFallidos)
+        public static LoginDTO loginFallido(string user, int failedAttempts)
         {
-            intentosFallidos++;
-            loginActualizarIntentos(usuario, intentosFallidos);
-            LoginDTO logueo = new LoginDTO();
-            if (intentosFallidos >= 3)
+            failedAttempts++;
+            loginActualizarIntentos(user, failedAttempts);
+            LoginDTO login = new LoginDTO();
+            if (failedAttempts >= 3)
             {
-                usuarioBloquear(new Usuario(usuario));
-                return logueo.userBloqued();
+                usuarioBloquear(new Usuario(user));
+                return login.userBloqued();
             }
 
             else
-                return logueo.wrongPassword();
+                return login.wrongPassword();
         }
 
         public static void usuarioBloquear(Usuario usuario)
@@ -208,11 +208,11 @@ namespace FrbaCrucero.Clases
             return int.Parse(consultaObtenerValor(query));
         }
 
-        public static List<string> usuarioObtenerRolesEnLista(Usuario user)
+        public static List<Rol> usuarioObtenerRolesEnLista(Usuario user)
         {
             SqlCommand query = createQuery("SELECT Rol_Nombre FROM RIP.Roles JOIN RIP.Usuarios_Roles ON Rol_ID = UsuarioRol_RolID JOIN RIP.Usuarios ON UsuarioRol_UsuarioID = Usuario_ID WHERE Usuario_Nombre = @Nombre");
             query.Parameters.AddWithValue("@Nombre", user.Nombre);
-            return consultaObtenerLista(query);
+            return consultaObtenerLista(query).Select(rol => new Rol(rol)).ToList();
         }
     }
 }

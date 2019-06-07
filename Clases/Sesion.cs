@@ -9,25 +9,22 @@ namespace FrbaCrucero.Clases
     public class Sesion
     {
         private Usuario usuario;
-        private List<string> roles;
 
-        public Usuario Usuario { get; set; }
-        public List<string> Roles { get; set; }
+        public Usuario Usuario { get { return usuario; } set { usuario = value; } }
 
-        public Sesion(Usuario user, List<string> roles)
+        public Sesion(Usuario user)
         {
             Usuario = user;
-            Roles = roles;
         }
 
         public bool usuarioTieneUnSoloRol()
         {
-            return roles.Count == 1;
+            return usuario.Roles.Count == 1;
         }
 
         public bool usuarioTieneVariosRoles()
         {
-            return roles.Count > 1;
+            return usuario.Roles.Count > 1;
         }
     }
 }
