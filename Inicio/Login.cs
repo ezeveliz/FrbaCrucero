@@ -28,27 +28,42 @@ namespace FrbaCrucero.Inicio
         {
             if (ventanaCamposEstanCompletos(this, errorController))
             {
-                LoginDTO login = Database.authenticate(txtUsuario.Text, txtContraseña.Text);
-                if (login.Exito) { successfulLogin(login); } else { failedLogin(login); }
+                    int resultado = Database.autentificacion(txtUsuario.Text, txtContraseña.Text);
+
+                    switch (resultado) // Mirar el soreProcedur Login_procedure en el archivo SQL
+                    {
+                        case (-1):
+                            txtUsuario.Clear();
+                            failedLogin("No existe el usuario");
+                            break;
+                        case (0):
+                            failedLogin("Usuario inhabilitado");
+                            break;
+                        case (4):
+                            successfulLogin(txtUsuario.Text);
+                            break;
+                        default:
+                            failedLogin("Quedan" + resultado.ToString() + " intentos");
+                            break;
+                    }
+                
+
             }
         }
 
-        private void successfulLogin(LoginDTO login)
+        private void successfulLogin(string userName)
         {
             this.Hide();
-            string username = login.Mensaje;
-            Usuario user = new Usuario(username);
-            user.findID();
-            user.findRoles();
-            Sesion sesion = new Sesion(user);
-            new SeleccionDeRol(sesion);
+            Usuario usuario = new Usuario(userName);//Genera el usuario que tiene es usurname 
+            new MenuPrincipal(usuario).Show();
         }
 
-        private void failedLogin(LoginDTO logueo)
+        private void failedLogin(string mensaje)
         {
             txtContraseña.Clear();
-            lblValidation.Text = logueo.Mensaje;
+            lblValidation.Text = mensaje;
             lblValidation.Show();
         }
+
     }
 }

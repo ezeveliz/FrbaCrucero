@@ -69,10 +69,10 @@
     <Compile Include="AbmRol\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Clases\Funcionalidades.cs" />
     <Compile Include="Clases\Database.cs" />
     <Compile Include="Clases\Rol.cs" />
     <Compile Include="Clases\Sesion.cs" />
-    <Compile Include="Clases\LoginDTO.cs" />
     <Compile Include="Clases\Usuario.cs" />
     <Compile Include="CompraReservaPasaje\Form1.cs">
       <SubType>Form</SubType>
@@ -92,6 +92,12 @@
     <Compile Include="GeneracionViaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Inicio\MenuPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inicio\MenuPrincipal.Designer.cs">
+      <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Inicio\SeleccionDeRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,12 +109,6 @@
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Inicio\Cliente.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Inicio\Cliente.Designer.cs">
-      <DependentUpon>Cliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Inicio\Login.cs">
       <SubType>Form</SubType>
@@ -139,6 +139,9 @@
     <EmbeddedResource Include="Inicio\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Inicio\MenuPrincipal.resx">
+      <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -163,7 +166,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Recursos\cruise-ship-128.png" />

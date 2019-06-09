@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Clases;
 
 namespace FrbaCrucero.Inicio
 {
@@ -20,8 +21,7 @@ namespace FrbaCrucero.Inicio
         private void btnCliente_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Cliente ventana = new Cliente();
-            ventana.ShowDialog();
+            new MenuPrincipal(new Usuario()).ShowDialog();
         }
 
         private void btnUsuario_Click(object sender, EventArgs e)

@@ -16,7 +16,7 @@ namespace FrbaCrucero.Clases
         {
             Usuario = user;
         }
-
+        /*
         public bool usuarioTieneUnSoloRol()
         {
             return usuario.Roles.Count == 1;
@@ -25,6 +25,6 @@ namespace FrbaCrucero.Clases
         public bool usuarioTieneVariosRoles()
         {
             return usuario.Roles.Count > 1;
-        }
+        }*/
     }
 }
