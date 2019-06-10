@@ -14,8 +14,9 @@ using FrbaCrucero;
 namespace FrbaCrucero.Clases
 {
     public class Database
-    {
-        private static String connectionString = ConfigurationManager.ConnectionStrings["conexionString"].ConnectionString;
+    {   
+        // Genero el string de conexion deacuero a lo configurado en App.config
+        private static String connectionString = ConfigurationManager.ConnectionStrings["FrbaCrucero.Properties.Settings.Conexion"].ConnectionString;
         private static SqlConnection connection = new SqlConnection(connectionString);
 
         public static void open()
@@ -89,6 +90,21 @@ namespace FrbaCrucero.Clases
             return row;
         }
 
+        //Hace una consulta y retorna el valor de la tabla como Lista de funcionalidades
+        public static List<Funcionalidad> ConsultaListaFuncionalidades(SqlCommand query) 
+        {
+            DataTable table = getQueryTable(query);
+            List<Funcionalidad> row = new List<Funcionalidad>();
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows) // Por cada fila de la Tabla agrega un objeto Funcionalidad a la lista
+                {  
+                    row.Add(new Funcionalidad(fila[1].ToString(), Convert.ToInt32(fila[0])) );
+                }
+            }
+            return row;
+        }
+
         public static string consultaObtenerValor(SqlCommand query)
         {
             List<string> column = consultaObtenerLista(query);
@@ -104,109 +120,56 @@ namespace FrbaCrucero.Clases
                 return null;
         }
 
-        public static LoginDTO authenticate(string user, string pass)
+        public static int autentificacion(string user, string pass)
         {
-            SqlCommand query = createQuery("SELECT Usuario_Nombre, Usuario_Contrasenia, Usuario_IntentosFallidos FROM RIP.Usuarios WHERE Usuario_Nombre = @username");
+            open();
+            SqlCommand loginProcedure = createQuery("CONCORDIA.Login_procedure");//Creo a query del Store Procedure 
+            loginProcedure.CommandType = CommandType.StoredProcedure;
+            loginProcedure.Parameters.AddWithValue("@username", user);// Seteo los parametros del Store Procedure
+            loginProcedure.Parameters.AddWithValue("@password", pass);
+
+            SqlParameter retval = new SqlParameter("@cantidad", SqlDbType.Int);// Seteo el parametro que retorna el Store Procedure 
+            retval.Direction = ParameterDirection.ReturnValue;
+
+            loginProcedure.Parameters.Add(retval);
+
+            SqlDataReader resultado = loginProcedure.ExecuteReader();
+
+            close();
+
+            return (int)loginProcedure.Parameters["@cantidad"].Value; // Saco el parametro que retorna
+
+        }
+
+        public static DataRow buscarUsuario(string user)
+        {
+            open();
+            SqlCommand query = createQuery("Select usua_id, usua_nombre, usua_apellido, rol_id From CONCORDIA.usuario where usua_username = @username");
             query.Parameters.AddWithValue("@username", user);
             DataRow row = getQueryRow(query);
-            return (row != null ? verifyAccount(row, pass) : loginUsuarioInexistente());
+            close();
+            
+            return row;
         }
 
-        public static LoginDTO verifyAccount(DataRow fila, string pass)
+        
+        public static List<Funcionalidad> funcionalidadesPorUsuario(int usua_id) //Busca las funcionalidades de un usuario 
         {
-            string username = (string)fila["Usuario_Nombre"];
-            byte[] encryptedPass = (byte[])fila["Usuario_Contrasenia"];
-            int attempts = (int)fila["Usuario_IntentosFallidos"];
-            Usuario user = new Usuario(username);
-            if (attempts >= 3 || !usuarioHabilitado(user))
-                return loginCuentaBloqueada();
-            else
-                return loginVerificarContrasenia(username, pass, encryptedPass, attempts);
+            SqlCommand getFuncionesProcedure = createQuery("CONCORDIA.GetFuncionalidadesUsuario");
+            getFuncionesProcedure.CommandType = CommandType.StoredProcedure;//Setea la query para Stored Procedure 
+            getFuncionesProcedure.Parameters.AddWithValue("@usua_id", usua_id);//Setea el parametro 
+
+            return ConsultaListaFuncionalidades(getFuncionesProcedure);
         }
 
-        public static bool usuarioHabilitado(Usuario user)
+
+        public static List<Funcionalidad> funcionalidadesCliente ()//Busca las funcionalidades de los clientes 
         {
-            SqlCommand query = createQuery("SELECT Usuario_Estado FROM RIP.Usuarios WHERE Usuario_Nombre = @Nombre");
-            query.Parameters.AddWithValue("@Nombre", user.Nombre);
-            return bool.Parse(consultaObtenerValor(query));
+            SqlCommand getFuncionesProcedure = createQuery("CONCORDIA.GetFuncionalidadesCliente");
+            getFuncionesProcedure.CommandType = CommandType.StoredProcedure;
+
+            return ConsultaListaFuncionalidades(getFuncionesProcedure);
         }
 
-        private static LoginDTO loginCuentaBloqueada()
-        {
-            return new LoginDTO().userBlocked();
-        }
-
-        private static LoginDTO loginVerificarContrasenia(string username, string pass, byte[] encryptedPass, int attempts)
-        {
-            return (loginContraseniaEsCorrecta(pass, encryptedPass) ? loginExitoso(username) : loginFallido(username, attempts));
-        }
-
-        private static bool loginContraseniaEsCorrecta(string pass, byte[] encryptedPass)
-        {
-            return loginEncriptarContraseña(pass).SequenceEqual(encryptedPass);
-        }
-
-        private static byte[] loginEncriptarContraseña(string pass)
-        {
-            using (SHA256 mySHA256 = SHA256Managed.Create())
-            {
-                return mySHA256.ComputeHash(Encoding.UTF8.GetBytes(pass));
-            }
-        }
-
-        public static LoginDTO loginExitoso(string username)
-        {
-            loginActualizarIntentos(username, 0);
-            return new LoginDTO().success(username);
-        }
-
-        public static void loginActualizarIntentos(string username, int attempts)
-        {
-            SqlCommand query = createQuery("UPDATE RIP.Usuarios SET Usuario_IntentosFallidos = @cantidad WHERE Usuario_Nombre = @username");
-            query.Parameters.AddWithValue("@username", username);
-            query.Parameters.AddWithValue("@cantidad", attempts);
-            executeCUDQuery(query);
-        }
-
-        public static LoginDTO loginFallido(string user, int failedAttempts)
-        {
-            failedAttempts++;
-            loginActualizarIntentos(user, failedAttempts);
-            LoginDTO login = new LoginDTO();
-            if (failedAttempts >= 3)
-            {
-                usuarioBloquear(new Usuario(user));
-                return login.userBlocked();
-            }
-
-            else
-                return login.wrongPassword();
-        }
-
-        public static void usuarioBloquear(Usuario usuario)
-        {
-            SqlCommand query = createQuery("UPDATE RIP.Usuarios SET Usuario_Estado = 0 WHERE Usuario_ID = @ID");
-            query.Parameters.AddWithValue("@ID", usuarioObtenerID(usuario));
-            executeCUDQuery(query);
-        }
-
-        public static LoginDTO loginUsuarioInexistente()
-        {
-            return new LoginDTO().inexistentUser();
-        }
-
-        public static int usuarioObtenerID(Usuario user)
-        {
-            SqlCommand query = createQuery("SELECT Usuario_ID FROM RIP.Usuarios WHERE Usuario_Nombre = @Nombre");
-            query.Parameters.AddWithValue("@Nombre", user.Nombre);
-            return int.Parse(consultaObtenerValor(query));
-        }
-
-        public static List<Rol> usuarioObtenerRolesEnLista(Usuario user)
-        {
-            SqlCommand query = createQuery("SELECT Rol_Nombre FROM RIP.Roles JOIN RIP.Usuarios_Roles ON Rol_ID = UsuarioRol_RolID JOIN RIP.Usuarios ON UsuarioRol_UsuarioID = Usuario_ID WHERE Usuario_Nombre = @Nombre");
-            query.Parameters.AddWithValue("@Nombre", user.Nombre);
-            return consultaObtenerLista(query).Select(rol => new Rol(rol)).ToList();
-        }
     }
 }
