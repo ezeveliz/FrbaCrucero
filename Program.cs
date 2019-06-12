@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Inicio;
+using FrbaCrucero.AbmCrucero;
 
 namespace FrbaCrucero
 {
@@ -17,7 +18,7 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Bienvenida());
+            Application.Run(new ListadoCruceros());
         }
     }
 }
