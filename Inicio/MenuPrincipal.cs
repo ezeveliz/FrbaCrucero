@@ -13,11 +13,7 @@ namespace FrbaCrucero.Inicio
 {
     public partial class MenuPrincipal : Form
     {
-        public MenuPrincipal()
-        {
-            InitializeComponent();
-       
-        }
+        
         public void MenuPrincipal_Load(object sender, EventArgs e)
         {
         

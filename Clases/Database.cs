@@ -14,7 +14,7 @@ using FrbaCrucero;
 namespace FrbaCrucero.Clases
 {
     public class Database
-    {   
+    {
         // Genero el string de conexion deacuero a lo configurado en App.config
         private static String connectionString = ConfigurationManager.ConnectionStrings["FrbaCrucero.Properties.Settings.Conexion"].ConnectionString;
         private static SqlConnection connection = new SqlConnection(connectionString);
@@ -91,15 +91,15 @@ namespace FrbaCrucero.Clases
         }
 
         //Hace una consulta y retorna el valor de la tabla como Lista de funcionalidades
-        public static List<Funcionalidad> ConsultaListaFuncionalidades(SqlCommand query) 
+        public static List<Funcionalidad> ConsultaListaFuncionalidades(SqlCommand query)
         {
             DataTable table = getQueryTable(query);
             List<Funcionalidad> row = new List<Funcionalidad>();
             if (table.Rows.Count > 0)
             {
                 foreach (DataRow fila in table.Rows) // Por cada fila de la Tabla agrega un objeto Funcionalidad a la lista
-                {  
-                    row.Add(new Funcionalidad(fila[1].ToString(), Convert.ToInt32(fila[0])) );
+                {
+                    row.Add(new Funcionalidad(fila[1].ToString(), Convert.ToInt32(fila[0])));
                 }
             }
             return row;
@@ -141,6 +141,48 @@ namespace FrbaCrucero.Clases
 
         }
 
+        // Crea un crucero y devuelve -1 si ya existe o el id del crucero creado
+        public static int CrearCrucero(string identificador, string modelo, int fabricante_id, string fecha_alta)
+        {
+            open();
+
+            SqlCommand procidureCrucero = Database.createQuery("CONCORDIA.InsertCrucero");
+            procidureCrucero.CommandType = CommandType.StoredProcedure;
+            procidureCrucero.Parameters.AddWithValue("@identificador", identificador);
+            procidureCrucero.Parameters.AddWithValue("@modelo", modelo);
+            procidureCrucero.Parameters.AddWithValue("@fabricante_id", fabricante_id);
+            procidureCrucero.Parameters.AddWithValue("@fecha_alta", fecha_alta);
+
+            SqlParameter retval = new SqlParameter("@RESULTADO", SqlDbType.Int);// Seteo el parametro que retorna el Store Procedure 
+            retval.Direction = ParameterDirection.ReturnValue;
+
+            procidureCrucero.Parameters.Add(retval);
+
+            SqlDataReader resultado = procidureCrucero.ExecuteReader();
+
+            close();
+
+            return (int)procidureCrucero.Parameters["@RESULTADO"].Value; ;
+
+        }
+
+        public static void CrearCabina(int nro, int piso, int cruc_id, int tipo_id)
+        {
+            open();
+
+            SqlCommand procidureCabina = Database.createQuery("CONCORDIA.InsertarCabina");
+            procidureCabina.CommandType = CommandType.StoredProcedure;
+            procidureCabina.Parameters.AddWithValue("@piso", piso);
+            procidureCabina.Parameters.AddWithValue("@nro", nro);
+            procidureCabina.Parameters.AddWithValue("@cruc_id", cruc_id);
+            procidureCabina.Parameters.AddWithValue("@tipo_id", tipo_id);
+
+            SqlDataReader resultado = procidureCabina.ExecuteReader();
+
+            close();
+
+        }
+
         public static DataRow buscarUsuario(string user)
         {
             open();
@@ -148,11 +190,11 @@ namespace FrbaCrucero.Clases
             query.Parameters.AddWithValue("@username", user);
             DataRow row = getQueryRow(query);
             close();
-            
+
             return row;
         }
 
-        
+
         public static List<Funcionalidad> funcionalidadesPorUsuario(int usua_id) //Busca las funcionalidades de un usuario 
         {
             SqlCommand getFuncionesProcedure = createQuery("CONCORDIA.GetFuncionalidadesUsuario");
@@ -163,7 +205,7 @@ namespace FrbaCrucero.Clases
         }
 
 
-        public static List<Funcionalidad> funcionalidadesCliente ()//Busca las funcionalidades de los clientes 
+        public static List<Funcionalidad> funcionalidadesCliente()//Busca las funcionalidades de los clientes 
         {
             SqlCommand getFuncionesProcedure = createQuery("CONCORDIA.GetFuncionalidadesCliente");
             getFuncionesProcedure.CommandType = CommandType.StoredProcedure;
