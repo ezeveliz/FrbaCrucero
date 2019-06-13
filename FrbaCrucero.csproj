@@ -75,23 +75,47 @@
     <Compile Include="AbmCrucero\ModificacionCrucero.Designer.cs">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmPuerto\Form1.cs">
+    <Compile Include="AbmPuerto\AbmPuerto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmPuerto\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmPuerto\AbmPuerto.Designer.cs">
+      <DependentUpon>AbmPuerto.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\Form1.cs">
+    <Compile Include="AbmRecorrido\AbmRecorrido.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRecorrido\AbmRecorrido.Designer.cs">
+      <DependentUpon>AbmRecorrido.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Form1.cs">
+    <Compile Include="AbmRecorrido\AltaRecorrido.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRecorrido\AltaRecorrido.Designer.cs">
+      <DependentUpon>AltaRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\BajaRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\BajaRecorrido.Designer.cs">
+      <DependentUpon>BajaRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\ModificacionRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\ModificacionRecorrido.Designer.cs">
+      <DependentUpon>ModificacionRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\AbmRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AbmRol.Designer.cs">
+      <DependentUpon>AbmRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmUsuario\AbmUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmUsuario\AbmUsuario.Designer.cs">
+      <DependentUpon>AbmUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="Clases\Crucero.cs" />
     <Compile Include="Clases\Logger.cs" />
@@ -99,13 +123,12 @@
     <Compile Include="Clases\Funcionalidades.cs" />
     <Compile Include="Clases\Database.cs" />
     <Compile Include="Clases\Rol.cs" />
-    <Compile Include="Clases\Sesion.cs" />
     <Compile Include="Clases\Usuario.cs" />
-    <Compile Include="CompraReservaPasaje\Form1.cs">
+    <Compile Include="CompraPasajes\CompraPasajes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="CompraPasajes\CompraPasajes.Designer.cs">
+      <DependentUpon>CompraPasajes.cs</DependentUpon>
     </Compile>
     <Compile Include="Frame.cs">
       <SubType>Form</SubType>
@@ -124,12 +147,6 @@
     </Compile>
     <Compile Include="Inicio\MenuPrincipal.Designer.cs">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Inicio\SeleccionDeRol.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Inicio\SeleccionDeRol.Designer.cs">
-      <DependentUpon>SeleccionDeRol.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -171,6 +188,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\ModificacionCrucero.resx">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\AbmRecorrido.resx">
+      <DependentUpon>AbmRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\AltaRecorrido.resx">
+      <DependentUpon>AltaRecorrido.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\Bienvenida.resx">
       <DependentUpon>Bienvenida.cs</DependentUpon>

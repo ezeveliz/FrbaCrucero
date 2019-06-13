@@ -18,7 +18,7 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ListadoCruceros());
+            Application.Run(new Bienvenida());
         }
     }
 }

@@ -19,44 +19,6 @@ namespace FrbaCrucero
             InitializeComponent();
         }
 
-        public static bool ventanaCamposEstanCompletos(Control ventana, ErrorProvider errorProvider)
-        {
-            bool camposTodosCompletos = true;
-            foreach (Control objeto in ventana.Controls)
-            {
-                if (objeto is TextBox)
-                {
-                    TextBox textBox = (TextBox)objeto;
-                    if (string.IsNullOrEmpty(textBox.Text.Trim()))
-                    {
-                        camposTodosCompletos = false;
-                        errorProvider.SetError(textBox, "El campo no puede estar vacio");
-                    }
-                    if (!textBox.ShortcutsEnabled)
-                    {
-                        Regex expresionParaEmail = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                        if (!expresionParaEmail.IsMatch(textBox.Text))
-                        {
-                            camposTodosCompletos = false;
-                            errorProvider.SetError(textBox, "El formato de E-mail es invalido");
-                        }
-                    }
-                }
-                if (objeto is ListBox)
-                {
-                    ListBox listBox = (ListBox)objeto;
-                    if (listBox.Items.Count == 0)
-                    {
-                        camposTodosCompletos = false;
-                        errorProvider.SetError(listBox, "Debe seleccionar al menos una opción");
-                    }
-                }
-            }
-            if (!camposTodosCompletos)
-                SystemSounds.Beep.Play();
-            return camposTodosCompletos;
-        }
-
         public static void ventanaInformarErrorDatabase(Exception ex)
         {
             SystemSounds.Hand.Play();

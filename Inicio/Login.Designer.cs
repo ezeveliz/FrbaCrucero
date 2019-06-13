@@ -41,7 +41,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(74, 132);
+            this.btnLogin.Location = new System.Drawing.Point(75, 140);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 1;
@@ -58,7 +58,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(10, 11);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 115);
+            this.groupBox1.Size = new System.Drawing.Size(211, 115);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ingrese sus credenciales";
@@ -68,7 +68,7 @@
             this.lblValidation.AutoSize = true;
             this.lblValidation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblValidation.ForeColor = System.Drawing.Color.Red;
-            this.lblValidation.Location = new System.Drawing.Point(30, 88);
+            this.lblValidation.Location = new System.Drawing.Point(6, 88);
             this.lblValidation.Name = "lblValidation";
             this.lblValidation.Size = new System.Drawing.Size(147, 13);
             this.lblValidation.TabIndex = 4;
@@ -112,7 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(222, 163);
+            this.ClientSize = new System.Drawing.Size(233, 175);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.groupBox1);
             this.Name = "Login";

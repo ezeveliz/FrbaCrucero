@@ -14,7 +14,7 @@ using FrbaCrucero.Clases;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    public partial class AltaCrucero 
+    public partial class AltaCrucero : Frame
     {
         Logger logErrores = new Logger();
 

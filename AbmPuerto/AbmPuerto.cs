@@ -8,21 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.AbmCrucero
+namespace FrbaCrucero.AbmPuerto
 {
-    public partial class BajaCrucero : Frame
+    public partial class AbmPuerto : Form
     {
-        public BajaCrucero()
+        public AbmPuerto()
         {
             InitializeComponent();
         }
-
-        private void BajaCrucero_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        
-
     }
 }

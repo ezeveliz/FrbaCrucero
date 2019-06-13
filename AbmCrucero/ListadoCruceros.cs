@@ -8,15 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Clases;
-
 using System.Data.SqlTypes;
 using System.Data.SqlClient;
-using FrbaCrucero.Clases;
-
 
 namespace FrbaCrucero.AbmCrucero
 {
-    public partial class ListadoCruceros : Form
+    public partial class ListadoCruceros : Frame
     {
         string consulta = "select cruc_id, cruc_identificador, cruc_modelo, fabr_id, cruc_inhabilitado,cruc_fecha_alta from CONCORDIA.crucero";
         Logger logErrores = new Logger();

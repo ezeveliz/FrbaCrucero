@@ -8,13 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.AbmRol
+namespace FrbaCrucero.AbmRecorrido
 {
-    public partial class Form1 : Form
+    public partial class ModificacionRecorrido : Frame
     {
-        public Form1()
+        private AbmRecorrido padre;
+
+        public ModificacionRecorrido(AbmRecorrido _padre)
         {
             InitializeComponent();
+            padre = _padre;
         }
     }
 }

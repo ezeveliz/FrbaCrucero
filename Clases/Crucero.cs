@@ -25,7 +25,7 @@ namespace FrbaCrucero.Clases
         public int Id { get { return id; } set { id = value; } }
         public string Identificador { get { return identificador; } set { identificador = value; } }
         public string Modelo { get { return modelo; } set { modelo = value; } }
-        public int Fabr_id { get { return fabr_id; } set { fabr_id = value; } };
+        public int Fabr_id { get { return fabr_id; } set { fabr_id = value; } }
         public bool Inahbilitado { get { return inhabilitado; } set { inhabilitado = value; } }
         public string FechaAlta { get { return fechaAlta; } set { fechaAlta = value; } }
 
@@ -36,7 +36,7 @@ namespace FrbaCrucero.Clases
             this.modelo = _modelo;
             this.fabr_id = _fabr_id;
             this.inhabilitado = _inahbilitado;
-            this.fechaAlta = _fechaAlta
+            this.fechaAlta = _fechaAlta;
 
         }
     }

@@ -14,7 +14,7 @@ using System.Data.SqlClient;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    public partial class ModificacionCrucero : Form
+    public partial class ModificacionCrucero : Frame
     {
         public ModificacionCrucero(Crucero crucero)
         {

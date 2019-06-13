@@ -1,6 +1,6 @@
-﻿namespace FrbaCrucero.Inicio
+﻿namespace FrbaCrucero.AbmUsuario
 {
-    partial class SeleccionDeRol
+    partial class AbmUsuario
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "SeleccionDeRol";
+            this.Text = "AbmUsuario";
         }
 
         #endregion

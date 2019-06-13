@@ -8,13 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.CompraPasaje
+namespace FrbaCrucero.AbmRecorrido
 {
-    public partial class Form1 : Form
+    public partial class AltaRecorrido : Frame
     {
-        public Form1()
+        private AbmRecorrido padre;
+        public AltaRecorrido(AbmRecorrido _padre)
         {
             InitializeComponent();
+            padre = _padre;
         }
     }
 }

@@ -12,7 +12,7 @@ using FrbaCrucero.Inicio;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    public partial class AbmC : Form
+    public partial class AbmC : Frame
     {
         /* private Usuario usuario; */
 

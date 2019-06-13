@@ -21,14 +21,13 @@ namespace FrbaCrucero.Inicio
         private void btnCliente_Click(object sender, EventArgs e)
         {
             this.Hide();
-            new MenuPrincipal(new Usuario()).ShowDialog();
+            new MenuPrincipal(new Usuario(), this).ShowDialog();
         }
 
         private void btnUsuario_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Login ventana = new Login();
-            ventana.ShowDialog();
+            new Login(this).ShowDialog();
         }
 
         public void Inicio_FormClosed(object sender, FormClosedEventArgs e)

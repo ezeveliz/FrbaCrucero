@@ -11,20 +11,17 @@ using FrbaCrucero.Clases;
 
 namespace FrbaCrucero.Inicio
 {
-    public partial class MenuPrincipal : Form
+    public partial class MenuPrincipal : Frame
     {
-        
-        public void MenuPrincipal_Load(object sender, EventArgs e)
-        {
-        
-        }
-
         private Usuario Usuario;
         private Dictionary<int, Func<Form>> funcDisponibles;
+        private Bienvenida bienvenidaView;
 
-        public MenuPrincipal(Usuario user)
+        public MenuPrincipal(Usuario user, Bienvenida _bienvenidaView)
         {
             InitializeComponent();
+            this.inicializarDiccFuncionalidades();
+            this.bienvenidaView = _bienvenidaView;
             this.Usuario = user;
             var funcionalidades = new List<KeyValuePair< int, string>>(); //Genera una lista de funcionalidades vacias
             user.Funcionalidades.ForEach(funcinalidad => funcionalidades.Add(new KeyValuePair<int, string>(funcinalidad.Id, funcinalidad.Nombre))); // Por cada funcionalidad de usuario la setea en una lista para agregarla al listbox 
@@ -38,28 +35,39 @@ namespace FrbaCrucero.Inicio
             {
                 this.seleccionar.Enabled = false;
             }
+        }
 
-
+        public void MenuPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Hide();
+            this.Dispose();
+            bienvenidaView.Show();
         }
 
         // vuelve al inicio 
         private void volver_Click(object sender, EventArgs e)
         {
-            this.Hide(); 
-            new Bienvenida().Show();
+            this.Hide();
+            this.Dispose();
+            bienvenidaView.Show();
         }
 
         private void inicializarDiccFuncionalidades() //Para agregar las funcioens a los formularios correspondientes y sus respectivos ids
         {
             this.funcDisponibles = new Dictionary<int, Func<Form>>();
-            /*this.funcDisponibles.Add(1, () => new abm()); */
-           
+            this.funcDisponibles.Add(1, () => new AbmRol.AbmRol());
+            this.funcDisponibles.Add(2, () => new AbmUsuario.AbmUsuario());
+            this.funcDisponibles.Add(3, () => new AbmPuerto.AbmPuerto());
+            this.funcDisponibles.Add(4, () => new AbmRecorrido.AbmRecorrido(this));
+            this.funcDisponibles.Add(5, () => new AbmCrucero.AbmC());
+            this.funcDisponibles.Add(6, () => new CompraPasajes.CompraPasajes());
         }
 
         private void seleccionar_Click(object sender, EventArgs e)
         {
             int funcionalidadSeleccionada = ((KeyValuePair<int, string>)this.listFuncionalidades.SelectedItem).Key; //Agarra la key de la funcionalidad elegida 
-            this.funcDisponibles[funcionalidadSeleccionada]();//Ejecuta la funcion del diccionario
+            this.Hide();
+            this.funcDisponibles[funcionalidadSeleccionada]().ShowDialog();//Ejecuta la funcion del diccionario
         }
 
 
