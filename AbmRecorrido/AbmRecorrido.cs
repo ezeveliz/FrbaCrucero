@@ -23,9 +23,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void Atras_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            this.Dispose();
-            menu.Show();
+            this.AbmRecorrido_FormClosed(sender, new FormClosedEventArgs(CloseReason.UserClosing));
         }
 
         private void btnModificacion_Click(object sender, EventArgs e)
@@ -42,6 +40,13 @@ namespace FrbaCrucero.AbmRecorrido
         {
             this.Hide();
             new AltaRecorrido(this).ShowDialog();
+        }
+
+        private void AbmRecorrido_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Hide();
+            this.Dispose();
+            menu.Show();
         }
     }
 }

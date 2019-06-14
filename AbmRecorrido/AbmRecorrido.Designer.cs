@@ -106,6 +106,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AbmRecorrido_FormClosed);
 
         }
 

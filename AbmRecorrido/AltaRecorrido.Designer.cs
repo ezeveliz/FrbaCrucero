@@ -30,21 +30,20 @@
         {
             this.Titulo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
-            this.lblErrorInicio = new System.Windows.Forms.Label();
+            this.lblError2 = new System.Windows.Forms.Label();
+            this.lblError1 = new System.Windows.Forms.Label();
+            this.btnSelectInicio = new System.Windows.Forms.Button();
+            this.txtInicio = new System.Windows.Forms.TextBox();
+            this.btnSelectDestino = new System.Windows.Forms.Button();
+            this.txtDestino = new System.Windows.Forms.TextBox();
             this.lblDestino = new System.Windows.Forms.Label();
             this.lblPrecio = new System.Windows.Forms.Label();
             this.txtPrecio = new System.Windows.Forms.TextBox();
             this.lblCodigo = new System.Windows.Forms.Label();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.lblInicio = new System.Windows.Forms.Label();
-            this.txtDestino = new System.Windows.Forms.TextBox();
-            this.btnSelectDestino = new System.Windows.Forms.Button();
-            this.btnSelectInicio = new System.Windows.Forms.Button();
-            this.txtInicio = new System.Windows.Forms.TextBox();
-            this.lblErrorDestino = new System.Windows.Forms.Label();
-            this.lblErrorCodigo = new System.Windows.Forms.Label();
-            this.lblErrorPrecio = new System.Windows.Forms.Label();
+            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnVolver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -62,15 +61,12 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.lblErrorPrecio);
-            this.groupBox1.Controls.Add(this.lblErrorCodigo);
-            this.groupBox1.Controls.Add(this.lblErrorDestino);
+            this.groupBox1.Controls.Add(this.lblError2);
+            this.groupBox1.Controls.Add(this.lblError1);
             this.groupBox1.Controls.Add(this.btnSelectInicio);
             this.groupBox1.Controls.Add(this.txtInicio);
             this.groupBox1.Controls.Add(this.btnSelectDestino);
             this.groupBox1.Controls.Add(this.txtDestino);
-            this.groupBox1.Controls.Add(this.btnGuardar);
-            this.groupBox1.Controls.Add(this.lblErrorInicio);
             this.groupBox1.Controls.Add(this.lblDestino);
             this.groupBox1.Controls.Add(this.lblPrecio);
             this.groupBox1.Controls.Add(this.txtPrecio);
@@ -79,32 +75,70 @@
             this.groupBox1.Controls.Add(this.lblInicio);
             this.groupBox1.Location = new System.Drawing.Point(12, 51);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(341, 223);
+            this.groupBox1.Size = new System.Drawing.Size(341, 162);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos de Recorrido";
             // 
-            // btnGuardar
+            // lblError2
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(103, 177);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(104, 40);
-            this.btnGuardar.TabIndex = 9;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            this.lblError2.AutoSize = true;
+            this.lblError2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblError2.ForeColor = System.Drawing.Color.Red;
+            this.lblError2.Location = new System.Drawing.Point(15, 132);
+            this.lblError2.Name = "lblError2";
+            this.lblError2.Size = new System.Drawing.Size(37, 16);
+            this.lblError2.TabIndex = 15;
+            this.lblError2.Text = "Error";
+            this.lblError2.Visible = false;
             // 
-            // lblErrorInicio
+            // lblError1
             // 
-            this.lblErrorInicio.AutoSize = true;
-            this.lblErrorInicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorInicio.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorInicio.Location = new System.Drawing.Point(150, 66);
-            this.lblErrorInicio.Name = "lblErrorInicio";
-            this.lblErrorInicio.Size = new System.Drawing.Size(44, 20);
-            this.lblErrorInicio.TabIndex = 8;
-            this.lblErrorInicio.Text = "Error";
-            this.lblErrorInicio.Visible = false;
+            this.lblError1.AutoSize = true;
+            this.lblError1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblError1.ForeColor = System.Drawing.Color.Red;
+            this.lblError1.Location = new System.Drawing.Point(15, 70);
+            this.lblError1.Name = "lblError1";
+            this.lblError1.Size = new System.Drawing.Size(37, 16);
+            this.lblError1.TabIndex = 14;
+            this.lblError1.Text = "Error";
+            this.lblError1.Visible = false;
+            // 
+            // btnSelectInicio
+            // 
+            this.btnSelectInicio.Location = new System.Drawing.Point(260, 41);
+            this.btnSelectInicio.Name = "btnSelectInicio";
+            this.btnSelectInicio.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectInicio.TabIndex = 12;
+            this.btnSelectInicio.Text = "Seleccionar";
+            this.btnSelectInicio.UseVisualStyleBackColor = true;
+            this.btnSelectInicio.Click += new System.EventHandler(this.btnSelectInicio_Click);
+            // 
+            // txtInicio
+            // 
+            this.txtInicio.Location = new System.Drawing.Point(154, 43);
+            this.txtInicio.Name = "txtInicio";
+            this.txtInicio.ReadOnly = true;
+            this.txtInicio.Size = new System.Drawing.Size(100, 20);
+            this.txtInicio.TabIndex = 11;
+            // 
+            // btnSelectDestino
+            // 
+            this.btnSelectDestino.Location = new System.Drawing.Point(260, 107);
+            this.btnSelectDestino.Name = "btnSelectDestino";
+            this.btnSelectDestino.Size = new System.Drawing.Size(75, 23);
+            this.btnSelectDestino.TabIndex = 10;
+            this.btnSelectDestino.Text = "Seleccionar";
+            this.btnSelectDestino.UseVisualStyleBackColor = true;
+            this.btnSelectDestino.Click += new System.EventHandler(this.btnSelectDestino_Click);
+            // 
+            // txtDestino
+            // 
+            this.txtDestino.Location = new System.Drawing.Point(154, 109);
+            this.txtDestino.Name = "txtDestino";
+            this.txtDestino.ReadOnly = true;
+            this.txtDestino.Size = new System.Drawing.Size(100, 20);
+            this.txtDestino.TabIndex = 4;
             // 
             // lblDestino
             // 
@@ -156,85 +190,35 @@
             this.lblInicio.TabIndex = 1;
             this.lblInicio.Text = "Puerto de inicio";
             // 
-            // txtDestino
+            // btnGuardar
             // 
-            this.txtDestino.Location = new System.Drawing.Point(154, 109);
-            this.txtDestino.Name = "txtDestino";
-            this.txtDestino.ReadOnly = true;
-            this.txtDestino.Size = new System.Drawing.Size(100, 20);
-            this.txtDestino.TabIndex = 4;
+            this.btnGuardar.Location = new System.Drawing.Point(243, 219);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(104, 40);
+            this.btnGuardar.TabIndex = 9;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
-            // btnSelectDestino
+            // btnVolver
             // 
-            this.btnSelectDestino.Location = new System.Drawing.Point(260, 107);
-            this.btnSelectDestino.Name = "btnSelectDestino";
-            this.btnSelectDestino.Size = new System.Drawing.Size(75, 23);
-            this.btnSelectDestino.TabIndex = 10;
-            this.btnSelectDestino.Text = "Seleccionar";
-            this.btnSelectDestino.UseVisualStyleBackColor = true;
-            this.btnSelectDestino.Click += new System.EventHandler(this.btnSelectDestino_Click);
-            // 
-            // btnSelectInicio
-            // 
-            this.btnSelectInicio.Location = new System.Drawing.Point(260, 41);
-            this.btnSelectInicio.Name = "btnSelectInicio";
-            this.btnSelectInicio.Size = new System.Drawing.Size(75, 23);
-            this.btnSelectInicio.TabIndex = 12;
-            this.btnSelectInicio.Text = "Seleccionar";
-            this.btnSelectInicio.UseVisualStyleBackColor = true;
-            this.btnSelectInicio.Click += new System.EventHandler(this.btnSelectInicio_Click);
-            // 
-            // txtInicio
-            // 
-            this.txtInicio.Location = new System.Drawing.Point(154, 43);
-            this.txtInicio.Name = "txtInicio";
-            this.txtInicio.ReadOnly = true;
-            this.txtInicio.Size = new System.Drawing.Size(100, 20);
-            this.txtInicio.TabIndex = 11;
-            // 
-            // lblErrorDestino
-            // 
-            this.lblErrorDestino.AutoSize = true;
-            this.lblErrorDestino.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorDestino.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorDestino.Location = new System.Drawing.Point(150, 132);
-            this.lblErrorDestino.Name = "lblErrorDestino";
-            this.lblErrorDestino.Size = new System.Drawing.Size(44, 20);
-            this.lblErrorDestino.TabIndex = 13;
-            this.lblErrorDestino.Text = "Error";
-            this.lblErrorDestino.Visible = false;
-            // 
-            // lblErrorCodigo
-            // 
-            this.lblErrorCodigo.AutoSize = true;
-            this.lblErrorCodigo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorCodigo.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorCodigo.Location = new System.Drawing.Point(15, 70);
-            this.lblErrorCodigo.Name = "lblErrorCodigo";
-            this.lblErrorCodigo.Size = new System.Drawing.Size(44, 20);
-            this.lblErrorCodigo.TabIndex = 14;
-            this.lblErrorCodigo.Text = "Error";
-            this.lblErrorCodigo.Visible = false;
-            // 
-            // lblErrorPrecio
-            // 
-            this.lblErrorPrecio.AutoSize = true;
-            this.lblErrorPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorPrecio.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorPrecio.Location = new System.Drawing.Point(15, 132);
-            this.lblErrorPrecio.Name = "lblErrorPrecio";
-            this.lblErrorPrecio.Size = new System.Drawing.Size(44, 20);
-            this.lblErrorPrecio.TabIndex = 15;
-            this.lblErrorPrecio.Text = "Error";
-            this.lblErrorPrecio.Visible = false;
+            this.btnVolver.Location = new System.Drawing.Point(12, 219);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(104, 40);
+            this.btnVolver.TabIndex = 10;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // AltaRecorrido
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(364, 284);
+            this.ClientSize = new System.Drawing.Size(364, 267);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Titulo);
+            this.Controls.Add(this.btnGuardar);
             this.Name = "AltaRecorrido";
             this.Text = "Alta Recorrido";
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
@@ -242,6 +226,7 @@
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AltaRecorrido_FormClosed);
 
         }
 
@@ -255,14 +240,13 @@
         private System.Windows.Forms.Label lblDestino;
         private System.Windows.Forms.Label lblPrecio;
         private System.Windows.Forms.TextBox txtPrecio;
-        private System.Windows.Forms.Label lblErrorInicio;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnSelectInicio;
         private System.Windows.Forms.TextBox txtInicio;
         private System.Windows.Forms.Button btnSelectDestino;
         private System.Windows.Forms.TextBox txtDestino;
-        private System.Windows.Forms.Label lblErrorPrecio;
-        private System.Windows.Forms.Label lblErrorCodigo;
-        private System.Windows.Forms.Label lblErrorDestino;
+        private System.Windows.Forms.Label lblError2;
+        private System.Windows.Forms.Label lblError1;
+        private System.Windows.Forms.Button btnVolver;
     }
 }
