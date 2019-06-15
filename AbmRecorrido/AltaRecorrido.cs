@@ -64,7 +64,7 @@ namespace FrbaCrucero.AbmRecorrido
             Puerto puertoInicio = tramo.PuertoInicio;
             Puerto puertoDestino = tramo.PuertoDestino;
             int precio = tramo.Precio;
-            DGVTramos.Rows.Add(puertoInicio.Nombre, puertoDestino.Nombre, precio, tramo.Id);
+            DGVTramos.Rows.Add(puertoInicio.Nombre, puertoDestino.Nombre, precio, tramo.Id, "Quitar");
         }
 
         public AltaRecorrido(AbmRecorrido _padre)
@@ -100,6 +100,7 @@ namespace FrbaCrucero.AbmRecorrido
             this.limpiar();
         }
 
+        //--Limpio la vista
         private void limpiar()
         {
             lblPrecio.Text = "Precio total:";
@@ -186,6 +187,21 @@ namespace FrbaCrucero.AbmRecorrido
         private bool noHayErrores()
         {
             return DGVTramos.Rows.Count > 1;
+        }
+
+        //--Remuevo un tramo previamente agregado al DGV
+        private void DGVTramos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                int idTramo = Int32.Parse(this.DGVTramos[3, e.RowIndex].Value.ToString());
+                tramos = tramos.Where(t => t.Id != idTramo).ToList();
+
+                this.DGVTramos.Rows.RemoveAt(e.RowIndex);
+            }
         }
     }
 }
