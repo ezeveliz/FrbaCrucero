@@ -87,6 +87,12 @@
     <Compile Include="AbmRecorrido\AbmRecorrido.Designer.cs">
       <DependentUpon>AbmRecorrido.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRecorrido\AltaTramo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\AltaTramo.Designer.cs">
+      <DependentUpon>AltaTramo.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRecorrido\AltaRecorrido.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,12 @@
     <Compile Include="AbmRecorrido\ModificacionRecorrido.Designer.cs">
       <DependentUpon>ModificacionRecorrido.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRecorrido\SeleccionarTramo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\SeleccionarTramo.Designer.cs">
+      <DependentUpon>SeleccionarTramo.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRol\AbmRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +137,8 @@
     </Compile>
     <Compile Include="Clases\Crucero.cs" />
     <Compile Include="Clases\Logger.cs" />
+    <Compile Include="Clases\Puerto.cs" />
+    <Compile Include="Clases\Tramo.cs" />
     <Compile Include="Clases\Validaciones.cs" />
     <Compile Include="Clases\Funcionalidades.cs" />
     <Compile Include="Clases\Database.cs" />
@@ -201,8 +215,14 @@
     <EmbeddedResource Include="AbmRecorrido\AltaRecorrido.resx">
       <DependentUpon>AltaRecorrido.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\AltaTramo.resx">
+      <DependentUpon>AltaTramo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\ListadoPuertos.resx">
       <DependentUpon>ListadoPuertos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\SeleccionarTramo.resx">
+      <DependentUpon>SeleccionarTramo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\Bienvenida.resx">
       <DependentUpon>Bienvenida.cs</DependentUpon>

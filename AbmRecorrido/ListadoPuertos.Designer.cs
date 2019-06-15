@@ -37,6 +37,7 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnSeleccionar = new System.Windows.Forms.Button();
             this.Titulo = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -99,13 +100,12 @@
             this.lstPuertos.Name = "lstPuertos";
             this.lstPuertos.Size = new System.Drawing.Size(152, 121);
             this.lstPuertos.TabIndex = 1;
-            this.lstPuertos.SelectedIndexChanged += new System.EventHandler(this.lstPuertos_SelectedIndexChanged);
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(48, 304);
+            this.btnLimpiar.Location = new System.Drawing.Point(132, 304);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.Size = new System.Drawing.Size(102, 44);
             this.btnLimpiar.TabIndex = 2;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
@@ -113,9 +113,9 @@
             // 
             // btnSeleccionar
             // 
-            this.btnSeleccionar.Location = new System.Drawing.Point(232, 304);
+            this.btnSeleccionar.Location = new System.Drawing.Point(252, 304);
             this.btnSeleccionar.Name = "btnSeleccionar";
-            this.btnSeleccionar.Size = new System.Drawing.Size(75, 23);
+            this.btnSeleccionar.Size = new System.Drawing.Size(93, 44);
             this.btnSeleccionar.TabIndex = 3;
             this.btnSeleccionar.Text = "Seleccionar";
             this.btnSeleccionar.UseVisualStyleBackColor = true;
@@ -132,11 +132,22 @@
             this.Titulo.TabIndex = 4;
             this.Titulo.Text = "Buscador de Puertos";
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Location = new System.Drawing.Point(9, 304);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(102, 44);
+            this.btnVolver.TabIndex = 5;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // ListadoPuertos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(357, 357);
+            this.ClientSize = new System.Drawing.Size(357, 360);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.Titulo);
             this.Controls.Add(this.btnSeleccionar);
             this.Controls.Add(this.btnLimpiar);
@@ -164,6 +175,7 @@
         private System.Windows.Forms.Button btnSeleccionar;
         private System.Windows.Forms.Label Titulo;
         private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Button btnVolver;
 
     }
 }

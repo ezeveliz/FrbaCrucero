@@ -57,6 +57,7 @@ namespace FrbaCrucero.Inicio
         {
             this.Hide();
             Usuario usuario = new Usuario(userName);//Genera el usuario que tiene es usurname 
+            bienvenidaView.Usuario = usuario;
             new MenuPrincipal(usuario, bienvenidaView).Show();
         }
 

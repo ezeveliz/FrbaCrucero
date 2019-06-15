@@ -13,6 +13,10 @@ namespace FrbaCrucero.Inicio
 {
     public partial class Bienvenida : Frame
     {
+        private Usuario usuario;
+
+        public Usuario Usuario { get { return usuario; } set { usuario = value; } }
+
         public Bienvenida()
         {
             InitializeComponent();
@@ -27,7 +31,14 @@ namespace FrbaCrucero.Inicio
         private void btnUsuario_Click(object sender, EventArgs e)
         {
             this.Hide();
-            new Login(this).ShowDialog();
+            if (usuario != null && usuario.Rol != 2)
+            {
+                new MenuPrincipal(usuario, this).Show();
+            }
+            else
+            {
+                new Login(this).ShowDialog();
+            }
         }
 
         public void Inicio_FormClosed(object sender, FormClosedEventArgs e)
