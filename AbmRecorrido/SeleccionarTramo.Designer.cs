@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Titulo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblError = new System.Windows.Forms.Label();
@@ -39,13 +40,15 @@
             this.lblInicio = new System.Windows.Forms.Label();
             this.txtInicio = new System.Windows.Forms.TextBox();
             this.DGVTramos = new System.Windows.Forms.DataGridView();
+            this.btnVolver = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Idinicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Inicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IdDestino = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Destino = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.btnVolver = new System.Windows.Forms.Button();
-            this.btnLimpiar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).BeginInit();
@@ -154,7 +157,9 @@
             this.DGVTramos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVTramos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Id,
+            this.Idinicio,
             this.Inicio,
+            this.IdDestino,
             this.Destino,
             this.Precio,
             this.Accion});
@@ -162,36 +167,7 @@
             this.DGVTramos.Name = "DGVTramos";
             this.DGVTramos.Size = new System.Drawing.Size(443, 150);
             this.DGVTramos.TabIndex = 8;
-            this.DGVTramos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // Id
-            // 
-            this.Id.HeaderText = "Id";
-            this.Id.Name = "Id";
-            this.Id.Visible = false;
-            // 
-            // Inicio
-            // 
-            this.Inicio.HeaderText = "Inicio";
-            this.Inicio.Name = "Inicio";
-            this.Inicio.ReadOnly = true;
-            // 
-            // Destino
-            // 
-            this.Destino.HeaderText = "Destino";
-            this.Destino.Name = "Destino";
-            this.Destino.ReadOnly = true;
-            // 
-            // Precio
-            // 
-            this.Precio.HeaderText = "Precio";
-            this.Precio.Name = "Precio";
-            this.Precio.ReadOnly = true;
-            // 
-            // Accion
-            // 
-            this.Accion.HeaderText = "Accion";
-            this.Accion.Name = "Accion";
+            this.DGVTramos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVTramos_CellContentClick);
             // 
             // btnVolver
             // 
@@ -213,6 +189,51 @@
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
+            // Id
+            // 
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.Visible = false;
+            // 
+            // Idinicio
+            // 
+            this.Idinicio.HeaderText = "IdInicio";
+            this.Idinicio.Name = "Idinicio";
+            this.Idinicio.Visible = false;
+            // 
+            // Inicio
+            // 
+            this.Inicio.HeaderText = "Inicio";
+            this.Inicio.Name = "Inicio";
+            this.Inicio.ReadOnly = true;
+            // 
+            // IdDestino
+            // 
+            this.IdDestino.HeaderText = "IdDestino";
+            this.IdDestino.Name = "IdDestino";
+            this.IdDestino.Visible = false;
+            // 
+            // Destino
+            // 
+            this.Destino.HeaderText = "Destino";
+            this.Destino.Name = "Destino";
+            this.Destino.ReadOnly = true;
+            // 
+            // Precio
+            // 
+            this.Precio.HeaderText = "Precio";
+            this.Precio.Name = "Precio";
+            this.Precio.ReadOnly = true;
+            // 
+            // Accion
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Accion.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Accion.HeaderText = "Accion";
+            this.Accion.Name = "Accion";
+            this.Accion.Text = "Seleccionar";
+            // 
             // SeleccionarTramo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,8 +246,8 @@
             this.Controls.Add(this.Titulo);
             this.Name = "SeleccionarTramo";
             this.Text = "Seleccionar Tramo";
-            ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SeleccionarTramo_FormClosed);
+            ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).EndInit();
@@ -247,13 +268,15 @@
         private System.Windows.Forms.Label lblInicio;
         private System.Windows.Forms.TextBox txtInicio;
         private System.Windows.Forms.DataGridView DGVTramos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Inicio;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Destino;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
-        private System.Windows.Forms.DataGridViewButtonColumn Accion;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Idinicio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inicio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IdDestino;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Destino;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
+        private System.Windows.Forms.DataGridViewButtonColumn Accion;
     }
 }

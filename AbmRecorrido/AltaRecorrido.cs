@@ -24,6 +24,14 @@ namespace FrbaCrucero.AbmRecorrido
             recalcularTotal();
         }
 
+        public void addPersistedTramo(Tramo tramo)
+        {
+            tramos.Add(tramo);
+            agregarAlDataGrid(tramo);
+            recalcularTotal();
+        }
+
+        //--Agrego una id temporal a los tramos sin persistir para poder referenciarlos desde el dataGridView
         private void addId(Tramo tramo)
         {
             if (tramos.Count() > 0)
@@ -38,12 +46,14 @@ namespace FrbaCrucero.AbmRecorrido
             
         }
 
+        //--Sumo todos los precios de todos los tramos
         private void recalcularTotal()
         {
             int total = tramos.Sum(t => t.Precio);
             lblPrecio.Text = "Precio total: " + total.ToString();
         }
 
+        //--Cargo los tramos en el dataGridView
         private void agregarAlDataGrid(Tramo tramo)
         {
             Puerto puertoInicio = tramo.PuertoInicio;
