@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -62,12 +64,53 @@ namespace FrbaCrucero.AbmRecorrido
         {
             if (noHayErrores())
             {
-
+                SqlCommand query = createQuery();
             }
             else 
             {
                 mostrarError("Debe seleccionar una ciudad como minimo");
             }
+        }
+
+        private SqlCommand createQuery()
+        {
+            string queryString = "SELECT * " +
+                                "FROM [GD1C2019].[CONCORDIA].[recorrido] " +
+                                "WHERE reco_id = (SELECT reco_id " +
+                                                    "FROM [GD1C2019].[CONCORDIA].[recorrido_tramo] " +
+                                                    "WHERE tram_id = (SELECT tram_id " +
+                                                                    "FROM [GD1C2019].[CONCORDIA].[tramo]";
+            if(puertoInicio != null && puertoDestino != null)
+            {
+                queryString += "WHERE puer_id_inicio = @inicio AND puer_id_fin = @destino))";
+            }
+            else if (puertoInicio != null)
+            {
+                queryString += "WHERE puer_id_inicio = @inicio))";
+            }
+            else
+            {
+                queryString += "WHERE puer_id_fin = @destino))";
+            }
+
+            SqlCommand query = Database.createQuery(queryString);
+
+            if (puertoInicio != null && puertoDestino != null)
+            {
+                query.Parameters.AddWithValue("@inicio", puertoInicio.Id);
+                query.Parameters.AddWithValue("@destino", puertoDestino.Id);
+            }
+            else if (puertoInicio != null)
+            {
+                query.Parameters.AddWithValue("@inicio", puertoInicio.Id);
+            }
+            else
+            {
+                query.Parameters.AddWithValue("@destino", puertoDestino.Id);
+            }
+
+            return query;
+
         }
 
         private void mostrarError(string mensaje)
