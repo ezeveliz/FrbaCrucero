@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Inicio;
 using FrbaCrucero.AbmCrucero;
+using FrbaCrucero.GeneracionViaje;
 
 namespace FrbaCrucero
 {
@@ -18,7 +19,7 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ListadoCruceros());
+            Application.Run(new GenerarViaje());
         }
     }
 }

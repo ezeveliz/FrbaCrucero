@@ -25,6 +25,7 @@ namespace FrbaCrucero.Inicio
         public MenuPrincipal(Usuario user)
         {
             InitializeComponent();
+            inicializarDiccFuncionalidades();
             this.Usuario = user;
             var funcionalidades = new List<KeyValuePair< int, string>>(); //Genera una lista de funcionalidades vacias
             user.Funcionalidades.ForEach(funcinalidad => funcionalidades.Add(new KeyValuePair<int, string>(funcinalidad.Id, funcinalidad.Nombre))); // Por cada funcionalidad de usuario la setea en una lista para agregarla al listbox 
@@ -52,14 +53,14 @@ namespace FrbaCrucero.Inicio
         private void inicializarDiccFuncionalidades() //Para agregar las funcioens a los formularios correspondientes y sus respectivos ids
         {
             this.funcDisponibles = new Dictionary<int, Func<Form>>();
-            /*this.funcDisponibles.Add(1, () => new abm()); */
+            this.funcDisponibles.Add(5, () => new AbmCrucero.AbmC() );
            
         }
 
         private void seleccionar_Click(object sender, EventArgs e)
         {
             int funcionalidadSeleccionada = ((KeyValuePair<int, string>)this.listFuncionalidades.SelectedItem).Key; //Agarra la key de la funcionalidad elegida 
-            this.funcDisponibles[funcionalidadSeleccionada]();//Ejecuta la funcion del diccionario
+            this.funcDisponibles[funcionalidadSeleccionada]().Show();//Ejecuta la funcion del diccionario
         }
 
 

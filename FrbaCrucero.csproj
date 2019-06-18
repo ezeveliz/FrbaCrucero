@@ -63,11 +63,17 @@
     <Compile Include="AbmCrucero\BajaCrucero.Designer.cs">
       <DependentUpon>BajaCrucero.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmCrucero\ListadoCruceros.cs">
+    <Compile Include="AbmCrucero\ListadoBaja.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCrucero\ListadoCruceros.Designer.cs">
-      <DependentUpon>ListadoCruceros.cs</DependentUpon>
+    <Compile Include="AbmCrucero\ListadoBaja.Designer.cs">
+      <DependentUpon>ListadoBaja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\ListadoModificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\ListadoModificacion.Designer.cs">
+      <DependentUpon>ListadoModificacion.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmCrucero\ModificacionCrucero.cs">
       <SubType>Form</SubType>
@@ -101,11 +107,23 @@
     <Compile Include="Clases\Rol.cs" />
     <Compile Include="Clases\Sesion.cs" />
     <Compile Include="Clases\Usuario.cs" />
-    <Compile Include="CompraReservaPasaje\Form1.cs">
+    <Compile Include="CompraReservaPasaje\Compra.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="CompraReservaPasaje\Compra.Designer.cs">
+      <DependentUpon>Compra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Reserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Reserva.Designer.cs">
+      <DependentUpon>Reserva.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Seleccionar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Seleccionar.Designer.cs">
+      <DependentUpon>Seleccionar.cs</DependentUpon>
     </Compile>
     <Compile Include="Frame.cs">
       <SubType>Form</SubType>
@@ -113,11 +131,17 @@
     <Compile Include="Frame.Designer.cs">
       <DependentUpon>Frame.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneracionViaje\Form1.cs">
+    <Compile Include="GeneracionViaje\GenerarViaje.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeneracionViaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GeneracionViaje\GenerarViaje.Designer.cs">
+      <DependentUpon>GenerarViaje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneracionViaje\SeleccionadorComponent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneracionViaje\SeleccionadorComponent.Designer.cs">
+      <DependentUpon>SeleccionadorComponent.cs</DependentUpon>
     </Compile>
     <Compile Include="Inicio\MenuPrincipal.cs">
       <SubType>Form</SubType>
@@ -166,11 +190,29 @@
     <EmbeddedResource Include="AbmCrucero\BajaCrucero.resx">
       <DependentUpon>BajaCrucero.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\ListadoCruceros.resx">
-      <DependentUpon>ListadoCruceros.cs</DependentUpon>
+    <EmbeddedResource Include="AbmCrucero\ListadoBaja.resx">
+      <DependentUpon>ListadoBaja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\ListadoModificacion.resx">
+      <DependentUpon>ListadoModificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\ModificacionCrucero.resx">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Compra.resx">
+      <DependentUpon>Compra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Reserva.resx">
+      <DependentUpon>Reserva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Seleccionar.resx">
+      <DependentUpon>Seleccionar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneracionViaje\GenerarViaje.resx">
+      <DependentUpon>GenerarViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneracionViaje\SeleccionadorComponent.resx">
+      <DependentUpon>SeleccionadorComponent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\Bienvenida.resx">
       <DependentUpon>Bienvenida.cs</DependentUpon>

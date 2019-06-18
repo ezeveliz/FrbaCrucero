@@ -7,7 +7,6 @@ using System.Data;
 using System.Data.SqlTypes;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 
 namespace FrbaCrucero.Clases
 {

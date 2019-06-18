@@ -39,26 +39,37 @@ namespace FrbaCrucero.AbmCrucero
         {
             textBoxId.Text = crucero.Id.ToString();
             textBoxIdentificador.Text = crucero.Identificador;
-            comboBoxMarca.SelectedIndex = crucero.Fabr_id;
+            comboBoxMarca.SelectedIndex = crucero.Fabr_id - 1 ;
             textBoxModelo.Text = crucero.Modelo;
             checkBoxInhabilitado.Checked = crucero.Inahbilitado;
             textBoxFechaAlta.Text = crucero.FechaAlta;
 
         }
 
-        private void ModificacionCrucero_Load(object sender, EventArgs e)
+        private void seleccionarFecha_Click(object sender, EventArgs e)
         {
-
+            textBoxFechaAlta.Text = pickerFechaAlta.Value.ToString();
         }
 
-        private void label5_Click(object sender, EventArgs e)
+        private void BtnModificar_Click(object sender, EventArgs e)
         {
-
+            int resultado = Database.modificarCrucero(Convert.ToInt32(textBoxId.Text), comboBoxMarca.SelectedIndex, textBoxFechaAlta.Text);
+          
+          if(resultado == 1)
+          {
+              MessageBox.Show("Se modifico con exito");
+          }
+          else
+          {
+              MessageBox.Show("Hubo un error intente mas tarde");
+          }
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
+        private void BtnAtras_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            this.Dispose();
         }
+
     }
 }

@@ -141,6 +141,25 @@ namespace FrbaCrucero.Clases
 
         }
 
+        public static int ObtenerIdCrucero(string identificador)
+        {
+            open();
+            SqlCommand idProcedure = createQuery("CONCORDIA.ObtenerIDCrucero");//Creo a query del Store Procedure 
+            idProcedure.CommandType = CommandType.StoredProcedure;
+            idProcedure.Parameters.AddWithValue("@identificador", identificador);// Seteo los parametros del Store Procedure
+
+            SqlParameter retval = new SqlParameter("@RESULTADO", SqlDbType.Int);// Seteo el parametro que retorna el Store Procedure 
+            retval.Direction = ParameterDirection.ReturnValue;
+
+            idProcedure.Parameters.Add(retval);
+
+            SqlDataReader resultado = idProcedure.ExecuteReader();
+
+            close();
+
+            return (int)idProcedure.Parameters["@RESULTADO"].Value; // Saco el parametro que retorna
+        }
+
         // Crea un crucero y devuelve -1 si ya existe o el id del crucero creado
         public static int CrearCrucero(string identificador, string modelo, int fabricante_id, string fecha_alta)
         {
@@ -181,6 +200,176 @@ namespace FrbaCrucero.Clases
 
             close();
 
+        }
+        public static int modificarCrucero(int cruc_id, int fabr_id, string fecha_alta)
+        {
+            open();
+
+            SqlCommand procidureCabina = Database.createQuery("CONCORDIA.ModificarCrucero");
+            procidureCabina.CommandType = CommandType.StoredProcedure;
+            procidureCabina.Parameters.AddWithValue("@cruc_id", cruc_id);
+            procidureCabina.Parameters.AddWithValue("@fabr_id", fabr_id);
+            procidureCabina.Parameters.AddWithValue("@fecha_alta", fecha_alta);
+
+            SqlDataReader resultado = procidureCabina.ExecuteReader();
+
+            close();
+
+            return resultado.RecordsAffected;// Retorna el numero de filas afectadas o -1 si no se pudo
+
+        }
+        public static int finDeVidaUtilCrucero(int cruc_id, string motivo)
+        {
+            int resultado;
+            try
+            {
+                open();
+
+                SqlCommand procidureBajaCrucero = Database.createQuery("CONCORDIA.BajaCrucero");
+                procidureBajaCrucero.CommandType = CommandType.StoredProcedure;
+                procidureBajaCrucero.Parameters.AddWithValue("@cruc_id", cruc_id);
+                procidureBajaCrucero.Parameters.AddWithValue("@motivo", motivo);
+
+                resultado = procidureBajaCrucero.ExecuteNonQuery();
+
+            }
+            catch (Exception)
+            {
+                resultado = -1;
+            }
+
+            close();
+            return resultado;
+        }
+
+        public static int fueraServicioCrucero(int cruc_id, string fecha_alta)
+        {
+            open();
+
+            SqlCommand procidureFeruaServicio = Database.createQuery("CONCORDIA.FueraServicioCrucero");
+            procidureFeruaServicio.CommandType = CommandType.StoredProcedure;
+            procidureFeruaServicio.Parameters.AddWithValue("@cruc_id", cruc_id);
+            procidureFeruaServicio.Parameters.AddWithValue("@motivo", cruc_id);
+            procidureFeruaServicio.Parameters.AddWithValue("@fecha_alta", fecha_alta);
+
+            int resultado = procidureFeruaServicio.ExecuteNonQuery();// Retorna el numero de filas afectadas o -1 si no se pudo
+
+            close();
+
+            return resultado;
+        }
+
+        public static int cancelarPasajes(int cruc_id, string motivo, string fecha_alta)
+        {
+            open();
+
+            SqlCommand procidureCabina = Database.createQuery("CONCORDIA.CancelacionDePasajes");
+            procidureCabina.CommandType = CommandType.StoredProcedure;
+            procidureCabina.Parameters.AddWithValue("@cruc_id", cruc_id);
+            procidureCabina.Parameters.AddWithValue("@motivo", motivo);
+            procidureCabina.Parameters.AddWithValue("@fecha_hasta", fecha_alta);
+
+            int resultado = procidureCabina.ExecuteNonQuery();// Retorna el numero de filas afectadas o -1 si no se pudo
+
+            close();
+
+            return resultado;
+
+        }
+
+        public static int cancelarPasajes(int curc_id, string motivo)
+        {
+            open();
+
+            SqlCommand procedureCancelar = Database.createQuery("CONCORDIA.CancelacionDeTodosLosPasajes");
+            procedureCancelar.CommandType = CommandType.StoredProcedure;
+            procedureCancelar.Parameters.AddWithValue("@cruc_id", curc_id);
+            procedureCancelar.Parameters.AddWithValue("@motivo", motivo);
+
+            int resultado = procedureCancelar.ExecuteNonQuery();// Retorna el numero de filas afectadas o -1 si no se pudo
+
+            close();
+
+            return resultado;
+        }
+
+        public static int desplazarPasajes(int curc_id, int cantDias, string fecha_hasta)
+        {
+            open();
+
+            SqlCommand procedureDesplazar = Database.createQuery("CONCORDIA.DesplazamientoDePasajes");
+            procedureDesplazar.CommandType = CommandType.StoredProcedure;
+            procedureDesplazar.Parameters.AddWithValue("@cruc_id", curc_id);
+            procedureDesplazar.Parameters.AddWithValue("@cant_dias", cantDias);
+            procedureDesplazar.Parameters.AddWithValue("@fecha_hasta", fecha_hasta);
+
+            int resultado = procedureDesplazar.ExecuteNonQuery();// Retorna el numero de filas afectadas o -1 si no se pudo
+
+            close();
+
+            return resultado;
+        }
+
+        public static int buscarCruceroRemplazo(int cruc_id)
+        {
+
+            open();
+
+            SqlCommand procedureRemplazo = Database.createQuery("CONCORDIA.IdCruceroRemplazante");
+            procedureRemplazo.CommandType = CommandType.StoredProcedure;
+            procedureRemplazo.Parameters.AddWithValue("@cruc_id", cruc_id);
+
+            SqlParameter retval = new SqlParameter("@remplazo_id", SqlDbType.Int);// Seteo el parametro que retorna el Store Procedure 
+            retval.Direction = ParameterDirection.ReturnValue;
+
+            procedureRemplazo.Parameters.Add(retval);
+
+            SqlDataReader resultado = procedureRemplazo.ExecuteReader();
+
+            close();
+
+            return (int)procedureRemplazo.Parameters["@remplazo_id"].Value; // Saco el parametro que retorna
+        }
+
+        public static int remplazarCrucero(int cruc_original, int cruc_remplazante)
+        {
+            open();
+
+            SqlCommand procedureRemplazo = Database.createQuery("CONCORDIA.RemplazarCruceroFVU");
+            procedureRemplazo.CommandType = CommandType.StoredProcedure;
+            procedureRemplazo.Parameters.AddWithValue("@cruc_id", cruc_original);
+            procedureRemplazo.Parameters.AddWithValue("@cruc_id_remplazante", cruc_remplazante);
+
+            int resultado = procedureRemplazo.ExecuteNonQuery();// Retorna el numero de filas afectadas o -1 si no se pudo
+
+            close();
+
+            return resultado;
+
+        }
+
+        public static int generarViaje(string fechaInicio, string fechaFin, int cruc_id, int reco_id)
+        {
+            open();
+
+            SqlCommand procedureGenerarViaje = Database.createQuery("CONCORDIA.generarViaje");
+            procedureGenerarViaje.CommandType = CommandType.StoredProcedure;
+            procedureGenerarViaje.Parameters.AddWithValue("@fech_inicio", fechaInicio);
+            procedureGenerarViaje.Parameters.AddWithValue("@fech_fin", fechaFin);
+            procedureGenerarViaje.Parameters.AddWithValue("@cruc_id", cruc_id);
+            procedureGenerarViaje.Parameters.AddWithValue("@reco_id", reco_id);
+
+            SqlParameter retval = new SqlParameter("@RESULTADO", SqlDbType.Int);// Seteo el parametro que retorna el Store Procedure 
+            retval.Direction = ParameterDirection.ReturnValue;
+
+            procedureGenerarViaje.Parameters.Add(retval);
+
+            SqlDataReader resultado = procedureGenerarViaje.ExecuteReader();
+
+            close();
+
+            return (int)procedureGenerarViaje.Parameters["@RESULTADO"].Value; // Saco el parametro que retorna
+        
         }
 
         public static DataRow buscarUsuario(string user)
