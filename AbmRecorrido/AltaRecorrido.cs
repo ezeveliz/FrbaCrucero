@@ -168,19 +168,37 @@ namespace FrbaCrucero.AbmRecorrido
             int idPuertoInicio = t.PuertoInicio.Id;
             int idPuertoDestino = t.PuertoDestino.Id;
             int precio = t.Precio;
-            string queryString = "INSERT [GD1C2019].[CONCORDIA].[tramo] (tram_precio, puer_id_inicio, puer_id_fin) VALUES(@precio, @inicio, @destino); SELECT SCOPE_IDENTITY();";
-            SqlCommand query = Database.createQuery(queryString);
-            Database.open();
-            int idTramo;
-            query.CommandType = CommandType.Text;
+
+            int idTramoVerificado = verificarQueNoExistaTramo(idPuertoInicio, idPuertoDestino);
+
+            if (idTramoVerificado == 0)
             {
-                query.Parameters.AddWithValue("@precio", precio);
-                query.Parameters.AddWithValue("@inicio", idPuertoInicio);
-                query.Parameters.AddWithValue("@destino", idPuertoDestino);
-                //Get the inserted query
-                idTramo = Convert.ToInt32(query.ExecuteScalar());
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[tramo] (tram_precio, puer_id_inicio, puer_id_fin) VALUES(@precio, @inicio, @destino); SELECT SCOPE_IDENTITY();";
+                SqlCommand query = Database.createQuery(queryString);
+                Database.open();
+
+                query.CommandType = CommandType.Text;
+                {
+                    query.Parameters.AddWithValue("@precio", precio);
+                    query.Parameters.AddWithValue("@inicio", idPuertoInicio);
+                    query.Parameters.AddWithValue("@destino", idPuertoDestino);
+                    //Get the inserted query
+                    return Convert.ToInt32(query.ExecuteScalar());
+                }
             }
-            return idTramo;
+            return idTramoVerificado;
+        }
+
+        //--Devuelvo 0 si el tramo no existe o el id en caso de que si
+        private int verificarQueNoExistaTramo(int inicio, int destino)
+        {
+            string queryString = "SELECT [tram_id] FROM [GD1C2019].[CONCORDIA].[tramo] WHERE puer_id_inicio = @inicio AND puer_id_fin = @destino";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@inicio", inicio);
+            query.Parameters.AddWithValue("@destino", destino);
+            string idTramo = Database.consultaObtenerValor(query);
+
+            return (idTramo == "" ? 0 : Int32.Parse(idTramo));
         }
 
         //--Verifica que se haya agregado 1 tramo minimamente
@@ -201,6 +219,7 @@ namespace FrbaCrucero.AbmRecorrido
                 tramos = tramos.Where(t => t.Id != idTramo).ToList();
 
                 this.DGVTramos.Rows.RemoveAt(e.RowIndex);
+                recalcularTotal();
             }
         }
     }

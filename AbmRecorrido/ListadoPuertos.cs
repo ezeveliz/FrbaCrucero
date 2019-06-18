@@ -16,6 +16,7 @@ namespace FrbaCrucero.AbmRecorrido
     public partial class ListadoPuertos : Frame
     {
         private AltaTramo padre;
+        private BajaRecorrido padreBR;
         private string elOtroCampo;
         private bool inicio;
 
@@ -23,6 +24,15 @@ namespace FrbaCrucero.AbmRecorrido
         {
             InitializeComponent();
             padre = _padre;
+            elOtroCampo = _elOtroCampo;
+            this.btnSeleccionar.Enabled = false;
+            inicio = _inicio;
+        }
+
+        public ListadoPuertos(BajaRecorrido _padre, string _elOtroCampo, bool _inicio)
+        {
+            InitializeComponent();
+            padreBR = _padre;
             elOtroCampo = _elOtroCampo;
             this.btnSeleccionar.Enabled = false;
             inicio = _inicio;
@@ -102,13 +112,27 @@ namespace FrbaCrucero.AbmRecorrido
             int idSeleccionada = ((KeyValuePair<int, string>)this.lstPuertos.SelectedItem).Key;
             string nombreSeleccionado = ((KeyValuePair<int, string>)this.lstPuertos.SelectedItem).Value;
             Puerto puerto = new Puerto(idSeleccionada, nombreSeleccionado);
-            if (inicio)
+            if (padre != null)
             {
-                padre.PuertoInicio = puerto;
+                if (inicio)
+                {
+                    padre.PuertoInicio = puerto;
+                }
+                else
+                {
+                    padre.PuertoDestino = puerto;
+                }
             }
-            else 
+            else
             {
-                padre.PuertoDestino = puerto;
+                if (inicio)
+                {
+                    padreBR.PuertoInicio = puerto;
+                }
+                else
+                {
+                    padreBR.PuertoDestino = puerto;
+                }
             }
             this.ListadoPuertos_FormClosed(sender, new FormClosedEventArgs(CloseReason.UserClosing));
         }

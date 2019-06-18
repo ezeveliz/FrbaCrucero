@@ -28,12 +28,14 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnModificacion_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            new ModificacionRecorrido(this).ShowDialog();
         }
 
         private void BtnBaja_Click(object sender, EventArgs e)
         {
-
+            this.Hide();
+            new BajaRecorrido(this).ShowDialog();
         }
 
         private void BtnAlta_Click(object sender, EventArgs e)

@@ -105,6 +105,12 @@
     <Compile Include="AbmRecorrido\BajaRecorrido.Designer.cs">
       <DependentUpon>BajaRecorrido.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRecorrido\DetalleDeRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\DetalleDeRecorrido.Designer.cs">
+      <DependentUpon>DetalleDeRecorrido.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRecorrido\ListadoPuertos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +144,7 @@
     <Compile Include="Clases\Crucero.cs" />
     <Compile Include="Clases\Logger.cs" />
     <Compile Include="Clases\Puerto.cs" />
+    <Compile Include="Clases\Recorrido.cs" />
     <Compile Include="Clases\Tramo.cs" />
     <Compile Include="Clases\Validaciones.cs" />
     <Compile Include="Clases\Funcionalidades.cs" />
@@ -217,6 +224,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\AltaTramo.resx">
       <DependentUpon>AltaTramo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\BajaRecorrido.resx">
+      <DependentUpon>BajaRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\DetalleDeRecorrido.resx">
+      <DependentUpon>DetalleDeRecorrido.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\ListadoPuertos.resx">
       <DependentUpon>ListadoPuertos.cs</DependentUpon>
