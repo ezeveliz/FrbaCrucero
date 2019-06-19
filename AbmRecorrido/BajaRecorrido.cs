@@ -18,6 +18,7 @@ namespace FrbaCrucero.AbmRecorrido
         private AbmRecorrido padre;
         private Puerto puertoInicio;
         private Puerto puertoDestino;
+        private List<Recorrido> recorridos;
 
         public Puerto PuertoInicio 
         { 
@@ -40,6 +41,7 @@ namespace FrbaCrucero.AbmRecorrido
         {
             InitializeComponent();
             padre = _padre;
+            recorridos = new List<Recorrido>();
         }
 
         private void btnSeleccionarI_Click(object sender, EventArgs e)
@@ -62,9 +64,14 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            recorridos.Clear();
+            DGVRecorridos.Rows.Clear();
+            lblError.Hide();
             if (noHayErrores())
             {
                 SqlCommand query = createQuery();
+                DataTable table = Database.getQueryTable(query);
+                completarDGV(table);
             }
             else 
             {
@@ -72,11 +79,30 @@ namespace FrbaCrucero.AbmRecorrido
             }
         }
 
+        private void completarDGV(DataTable table)
+        {
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows)
+                {
+                    int idRecorrido = Int32.Parse(fila[0].ToString());
+                    int inhabilitado = Int32.Parse(fila[2].ToString());
+                    DGVRecorridos.Rows.Add(idRecorrido, "Ver", "Quitar");
+                    recorridos.Add(new Recorrido(idRecorrido, inhabilitado));
+                }
+            }
+            else
+            {
+                mostrarError("No hay ningun recorrido como el que busca");
+            }
+        }
+
         private SqlCommand createQuery()
         {
             string queryString = "SELECT * " +
                                 "FROM [GD1C2019].[CONCORDIA].[recorrido] " +
-                                "WHERE reco_id = (SELECT reco_id " +
+                                "WHERE reco_inhabilitado = 0 AND " +
+                                    "reco_id = (SELECT reco_id " +
                                                     "FROM [GD1C2019].[CONCORDIA].[recorrido_tramo] " +
                                                     "WHERE tram_id = (SELECT tram_id " +
                                                                     "FROM [GD1C2019].[CONCORDIA].[tramo]";
@@ -141,7 +167,8 @@ namespace FrbaCrucero.AbmRecorrido
             puertoDestino = null;
             txtDestino.Text = "";
             lblError.Hide();
-            DGVTramos.Rows.Clear();
+            recorridos.Clear();
+            DGVRecorridos.Rows.Clear();
         }
 
         private void BajaRecorrido_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
@@ -153,7 +180,46 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void DGVTramos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            var senderGrid = (DataGridView)sender;
 
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                int idRecorridoSeleccionado = Int32.Parse(this.DGVRecorridos[0, e.RowIndex].Value.ToString());
+                Recorrido recorridoSeleccionado = recorridos.Where(r => r.Id == idRecorridoSeleccionado).First();
+                recorridoSeleccionado.getAll();
+
+                if (e.ColumnIndex == 1)//--Ver detalle
+                {
+                    new DetalleDeRecorrido(this, recorridoSeleccionado).ShowDialog();
+                }
+                else if (e.ColumnIndex == 2)//--Inhabilitar/Quitar
+                {
+                    int rows = inhabilitarRecorrido(recorridoSeleccionado);
+                    if (rows == 1)
+                    {
+                        ventanaInformarExito("El recorrido ha sido inhabilitado");
+                        DGVRecorridos.Rows.RemoveAt(e.RowIndex);
+                    }
+                    else
+                    {
+                        ventanaInformarError("Ha ocurrido un error");
+                    }
+                }
+                
+            }
+        }
+
+        private int inhabilitarRecorrido(Recorrido recorridoSeleccionado)
+        {
+            recorridos = recorridos.Where(r => r.Id != recorridoSeleccionado.Id).ToList();
+            string queryString = "UPDATE [GD1C2019].[CONCORDIA].[recorrido] " + 
+                                "SET reco_inhabilitado = @inhabilitado " +
+                                "WHERE reco_id = @recoId";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@inhabilitado", 1);
+            query.Parameters.AddWithValue("@recoId", recorridoSeleccionado.Id);
+            return Database.executeCUDQuery(query);
         }
     }
 }

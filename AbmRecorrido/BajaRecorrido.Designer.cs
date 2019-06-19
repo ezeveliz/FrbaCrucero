@@ -37,7 +37,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnSeleccionarI = new System.Windows.Forms.Button();
             this.txtInicio = new System.Windows.Forms.TextBox();
-            this.DGVTramos = new System.Windows.Forms.DataGridView();
+            this.DGVRecorridos = new System.Windows.Forms.DataGridView();
             this.lblError = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
@@ -46,7 +46,7 @@
             this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVRecorridos)).BeginInit();
             this.SuspendLayout();
             // 
             // Titulo
@@ -140,18 +140,18 @@
             this.txtInicio.Size = new System.Drawing.Size(100, 20);
             this.txtInicio.TabIndex = 0;
             // 
-            // DGVTramos
+            // DGVRecorridos
             // 
-            this.DGVTramos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVTramos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGVRecorridos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVRecorridos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.idRecorrido,
             this.Detalle,
             this.Accion});
-            this.DGVTramos.Location = new System.Drawing.Point(69, 181);
-            this.DGVTramos.Name = "DGVTramos";
-            this.DGVTramos.Size = new System.Drawing.Size(344, 150);
-            this.DGVTramos.TabIndex = 8;
-            this.DGVTramos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVTramos_CellContentClick);
+            this.DGVRecorridos.Location = new System.Drawing.Point(69, 181);
+            this.DGVRecorridos.Name = "DGVRecorridos";
+            this.DGVRecorridos.Size = new System.Drawing.Size(344, 150);
+            this.DGVRecorridos.TabIndex = 8;
+            this.DGVRecorridos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVTramos_CellContentClick);
             // 
             // lblError
             // 
@@ -208,7 +208,7 @@
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.lblError);
-            this.Controls.Add(this.DGVTramos);
+            this.Controls.Add(this.DGVRecorridos);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Titulo);
             this.Name = "BajaRecorrido";
@@ -217,7 +217,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVRecorridos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,7 +234,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSeleccionarI;
         private System.Windows.Forms.TextBox txtInicio;
-        private System.Windows.Forms.DataGridView DGVTramos;
+        private System.Windows.Forms.DataGridView DGVRecorridos;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Button btnLimpiar;

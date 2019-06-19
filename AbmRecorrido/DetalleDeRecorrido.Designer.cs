@@ -30,14 +30,12 @@
         {
             this.Titulo = new System.Windows.Forms.Label();
             this.DGVTramos = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idTramo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Inicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Destino = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnVolver = new System.Windows.Forms.Button();
-            this.btnQuitar = new System.Windows.Forms.Button();
             this.lblPrecioTotal = new System.Windows.Forms.Label();
-            this.lblError = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).BeginInit();
             this.SuspendLayout();
@@ -52,25 +50,26 @@
             this.Titulo.Size = new System.Drawing.Size(328, 39);
             this.Titulo.TabIndex = 7;
             this.Titulo.Text = "Detalle de Recorrido";
+            this.Titulo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // DGVTramos
             // 
             this.DGVTramos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVTramos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.id,
+            this.idTramo,
             this.Inicio,
             this.Destino,
             this.Precio});
-            this.DGVTramos.Location = new System.Drawing.Point(18, 79);
+            this.DGVTramos.Location = new System.Drawing.Point(12, 95);
             this.DGVTramos.Name = "DGVTramos";
             this.DGVTramos.Size = new System.Drawing.Size(343, 132);
             this.DGVTramos.TabIndex = 8;
             // 
-            // id
+            // idTramo
             // 
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.Visible = false;
+            this.idTramo.HeaderText = "idTramo";
+            this.idTramo.Name = "idTramo";
+            this.idTramo.Visible = false;
             // 
             // Inicio
             // 
@@ -89,7 +88,7 @@
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(29, 300);
+            this.btnVolver.Location = new System.Drawing.Point(117, 273);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(119, 42);
             this.btnVolver.TabIndex = 9;
@@ -97,53 +96,30 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
-            // btnQuitar
-            // 
-            this.btnQuitar.Location = new System.Drawing.Point(231, 300);
-            this.btnQuitar.Name = "btnQuitar";
-            this.btnQuitar.Size = new System.Drawing.Size(119, 42);
-            this.btnQuitar.TabIndex = 10;
-            this.btnQuitar.Text = "Quitar";
-            this.btnQuitar.UseVisualStyleBackColor = true;
-            this.btnQuitar.Click += new System.EventHandler(this.btnQuitar_Click);
-            // 
             // lblPrecioTotal
             // 
             this.lblPrecioTotal.AutoSize = true;
             this.lblPrecioTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPrecioTotal.Location = new System.Drawing.Point(18, 228);
+            this.lblPrecioTotal.Location = new System.Drawing.Point(12, 244);
             this.lblPrecioTotal.Name = "lblPrecioTotal";
             this.lblPrecioTotal.Size = new System.Drawing.Size(63, 13);
             this.lblPrecioTotal.TabIndex = 11;
             this.lblPrecioTotal.Text = "Precio total:";
             // 
-            // lblError
-            // 
-            this.lblError.AutoSize = true;
-            this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(21, 257);
-            this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(37, 16);
-            this.lblError.TabIndex = 12;
-            this.lblError.Text = "Error";
-            // 
             // DetalleDeRecorrido
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 355);
-            this.Controls.Add(this.lblError);
+            this.ClientSize = new System.Drawing.Size(381, 323);
             this.Controls.Add(this.lblPrecioTotal);
-            this.Controls.Add(this.btnQuitar);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.DGVTramos);
             this.Controls.Add(this.Titulo);
             this.Name = "DetalleDeRecorrido";
             this.Text = "Detalle De Recorrido";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DetalleRecorrido_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).EndInit();
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DetalleRecorrido_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,13 +129,11 @@
 
         private System.Windows.Forms.Label Titulo;
         private System.Windows.Forms.DataGridView DGVTramos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.Label lblPrecioTotal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idTramo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inicio;
         private System.Windows.Forms.DataGridViewTextBoxColumn Destino;
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
-        private System.Windows.Forms.Button btnVolver;
-        private System.Windows.Forms.Button btnQuitar;
-        private System.Windows.Forms.Label lblPrecioTotal;
-        private System.Windows.Forms.Label lblError;
     }
 }

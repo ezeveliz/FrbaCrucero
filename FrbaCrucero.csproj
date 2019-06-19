@@ -234,6 +234,9 @@
     <EmbeddedResource Include="AbmRecorrido\ListadoPuertos.resx">
       <DependentUpon>ListadoPuertos.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\ModificacionRecorrido.resx">
+      <DependentUpon>ModificacionRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\SeleccionarTramo.resx">
       <DependentUpon>SeleccionarTramo.cs</DependentUpon>
     </EmbeddedResource>

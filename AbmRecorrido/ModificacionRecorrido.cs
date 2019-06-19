@@ -19,5 +19,12 @@ namespace FrbaCrucero.AbmRecorrido
             InitializeComponent();
             padre = _padre;
         }
+
+        private void ModificacionRecorrido_FormClosed(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        {
+            this.Hide();
+            this.Dispose();
+            padre.Show();
+        }
     }
 }
