@@ -141,7 +141,7 @@ namespace FrbaCrucero.AbmRecorrido
             }
             if (!string.IsNullOrWhiteSpace(txtDestino.Text))
             {
-                string _destino = "%" + txtInicio.Text + "%";
+                string _destino = "%" + txtDestino.Text + "%";
                 query.Parameters.AddWithValue("@destino", _destino);
             }
             return query;
