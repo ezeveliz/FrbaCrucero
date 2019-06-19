@@ -14,6 +14,7 @@ namespace FrbaCrucero.AbmRecorrido
     public partial class AltaTramo : Frame
     {
         private AltaRecorrido padre;
+        private ModificarTramos padreMT;
         private Puerto puertoInicio;
         private Puerto puertoDestino;
 
@@ -40,6 +41,12 @@ namespace FrbaCrucero.AbmRecorrido
             padre = _padre;
         }
 
+        public AltaTramo(ModificarTramos _padre)
+        {
+            InitializeComponent();
+            padreMT = _padre;
+        }
+
         private void btnSelectInicio_Click(object sender, EventArgs e)
         {
             string elOtroCampo = buscarElOtroCampo(txtDestino);
@@ -57,7 +64,14 @@ namespace FrbaCrucero.AbmRecorrido
             if (this.todosLosCamposCompletos(txtPrecio))
             {
                 Tramo tramo = new Tramo(puertoInicio, puertoDestino, Int32.Parse(txtPrecio.Text), false, 0);
-                padre.addNonPersistedTramo(tramo);
+                if (padre != null)
+                {
+                    padre.addNonPersistedTramo(tramo);
+                }
+                else
+                {
+                    padreMT.addNonPersistedTramo(tramo);
+                }
                 limpiarAltaTramo();
                 ventanaInformarExito("El tramo ha sido agregado a su recorrido.");
             }
@@ -140,7 +154,6 @@ namespace FrbaCrucero.AbmRecorrido
         {
             this.Hide();
             this.Dispose();
-            padre.Show();
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)

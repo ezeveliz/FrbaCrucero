@@ -16,11 +16,18 @@ namespace FrbaCrucero.AbmRecorrido
     public partial class SeleccionarTramo : Frame
     {
         private AltaRecorrido padre;
+        private ModificarTramos padreMT;
 
         public SeleccionarTramo(AltaRecorrido _padre)
         {
             InitializeComponent();
             padre = _padre;
+        }
+
+        public SeleccionarTramo(ModificarTramos _padre)
+        {
+            InitializeComponent();
+            padreMT = _padre;
         }
 
         private void DGVTramos_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -41,7 +48,14 @@ namespace FrbaCrucero.AbmRecorrido
                 Puerto puertoDestino = new Puerto(puerto_id_destino, puerto_destino);
                 Tramo tramo = new Tramo(puertoInicio, puertoDestino, precio, true, tramo_id);
 
-                padre.addPersistedTramo(tramo);
+                if (padre != null)
+                {
+                    padre.addPersistedTramo(tramo);
+                }
+                else
+                {
+                    padreMT.addPersistedTramo(tramo);
+                }
 
                 this.DGVTramos.Rows.RemoveAt(e.RowIndex);
                 ventanaInformarExito("Tramo agregado a su recorrido.");
@@ -159,7 +173,6 @@ namespace FrbaCrucero.AbmRecorrido
         {
             this.Hide();
             this.Dispose();
-            padre.Show();
         }
     }
 }

@@ -32,9 +32,6 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.DGVRecorridos = new System.Windows.Forms.DataGridView();
-            this.idRecorrido = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Detalle = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -44,6 +41,8 @@
             this.btnSeleccionarI = new System.Windows.Forms.Button();
             this.txtInicio = new System.Windows.Forms.TextBox();
             this.Titulo = new System.Windows.Forms.Label();
+            this.idRecorrido = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVRecorridos)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -57,6 +56,7 @@
             this.btnVolver.TabIndex = 17;
             this.btnVolver.Text = "Volver";
             this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // btnLimpiar
             // 
@@ -66,6 +66,7 @@
             this.btnLimpiar.TabIndex = 18;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // lblError
             // 
@@ -84,27 +85,12 @@
             this.DGVRecorridos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVRecorridos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.idRecorrido,
-            this.Detalle,
             this.Accion});
-            this.DGVRecorridos.Location = new System.Drawing.Point(95, 189);
+            this.DGVRecorridos.Location = new System.Drawing.Point(129, 189);
             this.DGVRecorridos.Name = "DGVRecorridos";
-            this.DGVRecorridos.Size = new System.Drawing.Size(344, 150);
+            this.DGVRecorridos.Size = new System.Drawing.Size(244, 150);
             this.DGVRecorridos.TabIndex = 15;
-            // 
-            // idRecorrido
-            // 
-            this.idRecorrido.HeaderText = "idRecorrido";
-            this.idRecorrido.Name = "idRecorrido";
-            // 
-            // Detalle
-            // 
-            this.Detalle.HeaderText = "Detalle";
-            this.Detalle.Name = "Detalle";
-            // 
-            // Accion
-            // 
-            this.Accion.HeaderText = "Accion";
-            this.Accion.Name = "Accion";
+            this.DGVRecorridos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVRecorridos_CellContentClick);
             // 
             // groupBox1
             // 
@@ -130,6 +116,7 @@
             this.btnBuscar.TabIndex = 10;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // label2
             // 
@@ -148,6 +135,7 @@
             this.btnSeleccionarD.TabIndex = 4;
             this.btnSeleccionarD.Text = "Seleccionar";
             this.btnSeleccionarD.UseVisualStyleBackColor = true;
+            this.btnSeleccionarD.Click += new System.EventHandler(this.btnSeleccionarD_Click);
             // 
             // txtDestino
             // 
@@ -174,6 +162,7 @@
             this.btnSeleccionarI.TabIndex = 1;
             this.btnSeleccionarI.Text = "Seleccionar";
             this.btnSeleccionarI.UseVisualStyleBackColor = true;
+            this.btnSeleccionarI.Click += new System.EventHandler(this.btnSeleccionarI_Click);
             // 
             // txtInicio
             // 
@@ -193,6 +182,16 @@
             this.Titulo.Size = new System.Drawing.Size(411, 39);
             this.Titulo.TabIndex = 13;
             this.Titulo.Text = "Modificacion de Recorrido";
+            // 
+            // idRecorrido
+            // 
+            this.idRecorrido.HeaderText = "idRecorrido";
+            this.idRecorrido.Name = "idRecorrido";
+            // 
+            // Accion
+            // 
+            this.Accion.HeaderText = "Accion";
+            this.Accion.Name = "Accion";
             // 
             // ModificacionRecorrido
             // 
@@ -223,9 +222,6 @@
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.DataGridView DGVRecorridos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idRecorrido;
-        private System.Windows.Forms.DataGridViewButtonColumn Detalle;
-        private System.Windows.Forms.DataGridViewButtonColumn Accion;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Label label2;
@@ -235,5 +231,7 @@
         private System.Windows.Forms.Button btnSeleccionarI;
         private System.Windows.Forms.TextBox txtInicio;
         private System.Windows.Forms.Label Titulo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idRecorrido;
+        private System.Windows.Forms.DataGridViewButtonColumn Accion;
     }
 }

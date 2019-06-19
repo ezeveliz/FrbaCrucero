@@ -17,27 +17,35 @@ namespace FrbaCrucero.AbmRecorrido
     {
         private AltaTramo padre;
         private BajaRecorrido padreBR;
+        private ModificacionRecorrido padreMR;
         private string elOtroCampo;
         private bool inicio;
 
         public ListadoPuertos(AltaTramo _padre, string _elOtroCampo, bool _inicio)
         {
-            InitializeComponent();
             padre = _padre;
-            elOtroCampo = _elOtroCampo;
-            this.btnSeleccionar.Enabled = false;
-            inicio = _inicio;
+            inicializar(_elOtroCampo, _inicio);
         }
 
         public ListadoPuertos(BajaRecorrido _padre, string _elOtroCampo, bool _inicio)
         {
-            InitializeComponent();
             padreBR = _padre;
+            inicializar(_elOtroCampo, _inicio);
+        }
+
+        public ListadoPuertos(ModificacionRecorrido _padre, string _elOtroCampo, bool _inicio)
+        {
+            padreMR = _padre;
+            inicializar(_elOtroCampo, _inicio);
+        }
+
+        private void inicializar(string _elOtroCampo, bool _inicio)
+        {
+            InitializeComponent();
             elOtroCampo = _elOtroCampo;
             this.btnSeleccionar.Enabled = false;
             inicio = _inicio;
         }
-
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             lstPuertos.Items.Clear();
@@ -123,7 +131,7 @@ namespace FrbaCrucero.AbmRecorrido
                     padre.PuertoDestino = puerto;
                 }
             }
-            else
+            else if (padreBR != null)
             {
                 if (inicio)
                 {
@@ -132,6 +140,17 @@ namespace FrbaCrucero.AbmRecorrido
                 else
                 {
                     padreBR.PuertoDestino = puerto;
+                }
+            }
+            else 
+            {
+                if (inicio)
+                {
+                    padreMR.PuertoInicio = puerto;
+                }
+                else
+                {
+                    padreMR.PuertoDestino = puerto;
                 }
             }
             this.ListadoPuertos_FormClosed(sender, new FormClosedEventArgs(CloseReason.UserClosing));
