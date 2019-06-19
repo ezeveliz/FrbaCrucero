@@ -213,13 +213,7 @@ namespace FrbaCrucero.AbmRecorrido
         private int inhabilitarRecorrido(Recorrido recorridoSeleccionado)
         {
             recorridos = recorridos.Where(r => r.Id != recorridoSeleccionado.Id).ToList();
-            string queryString = "UPDATE [GD1C2019].[CONCORDIA].[recorrido] " + 
-                                "SET reco_inhabilitado = @inhabilitado " +
-                                "WHERE reco_id = @recoId";
-            SqlCommand query = Database.createQuery(queryString);
-            query.Parameters.AddWithValue("@inhabilitado", 1);
-            query.Parameters.AddWithValue("@recoId", recorridoSeleccionado.Id);
-            return Database.executeCUDQuery(query);
+            return Database.actualizarInhabilitacion(recorridoSeleccionado.Id, 1);
         }
     }
 }

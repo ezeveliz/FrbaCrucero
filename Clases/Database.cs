@@ -213,5 +213,104 @@ namespace FrbaCrucero.Clases
             return ConsultaListaFuncionalidades(getFuncionesProcedure);
         }
 
+        #region Recorrido
+
+        //--Persisto el recorrido y retorno su id
+        public static int persistirRecorrido()
+        {
+            string queryString = "INSERT [GD1C2019].[CONCORDIA].[recorrido] (reco_inhabilitado) VALUES(@inhabilitado); SELECT SCOPE_IDENTITY();";
+            SqlCommand query = Database.createQuery(queryString);
+            Database.open();
+            int idRecorrido;
+            query.CommandType = CommandType.Text;
+            {
+                query.Parameters.AddWithValue("@inhabilitado", 0);
+                //Get the inserted query
+                idRecorrido = Convert.ToInt32(query.ExecuteScalar());
+            }
+            return idRecorrido;
+        }
+
+        //--Persisto el tramo y retorno su id
+        public static int persistirTramo(Tramo t)
+        {
+            int idPuertoInicio = t.PuertoInicio.Id;
+            int idPuertoDestino = t.PuertoDestino.Id;
+            int precio = t.Precio;
+
+            int idTramoVerificado = verificarQueNoExistaTramo(idPuertoInicio, idPuertoDestino);
+
+            if (idTramoVerificado == 0)
+            {
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[tramo] (tram_precio, puer_id_inicio, puer_id_fin) VALUES(@precio, @inicio, @destino); SELECT SCOPE_IDENTITY();";
+                SqlCommand query = Database.createQuery(queryString);
+                Database.open();
+
+                query.CommandType = CommandType.Text;
+                {
+                    query.Parameters.AddWithValue("@precio", precio);
+                    query.Parameters.AddWithValue("@inicio", idPuertoInicio);
+                    query.Parameters.AddWithValue("@destino", idPuertoDestino);
+                    //Get the inserted query
+                    return Convert.ToInt32(query.ExecuteScalar());
+                }
+            }
+            return idTramoVerificado;
+        }
+
+        //--Devuelvo 0 si el tramo no existe o el id en caso de que si
+        public static int verificarQueNoExistaTramo(int inicio, int destino)
+        {
+            string queryString = "SELECT [tram_id] FROM [GD1C2019].[CONCORDIA].[tramo] WHERE puer_id_inicio = @inicio AND puer_id_fin = @destino";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@inicio", inicio);
+            query.Parameters.AddWithValue("@destino", destino);
+            string idTramo = Database.consultaObtenerValor(query);
+
+            return (idTramo == "" ? 0 : Int32.Parse(idTramo));
+        }
+
+        //--Persisto la relacion recorrido_tramo
+        public static void persistirRecorridoTramo(int idRecorrido, List<Tramo> tramos)
+        {
+            tramos.ForEach(t =>
+            {
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[recorrido_tramo] (reco_id, tram_id) VALUES(@idRecorrido, @idTramo)";
+                SqlCommand query = Database.createQuery(queryString);
+                query.Parameters.AddWithValue("@idRecorrido", idRecorrido);
+                query.Parameters.AddWithValue("@idTramo", t.Id);
+                Database.executeCUDQuery(query);
+            });
+        }
+
+        //--Elimino la relacion recorrido_tramo
+        public static int eliminarRecorridoTramo(int idRecorrido, List<Tramo> tramosAQuitar)
+        {
+            int executed = 0;
+            tramosAQuitar.ForEach(t =>
+            {
+                string queryString = "DELETE [GD1C2019].[CONCORDIA].[recorrido_tramo] " +
+                                    "WHERE reco_id = @recoId AND tram_id = @tramId";
+                SqlCommand query = Database.createQuery(queryString);
+                query.Parameters.AddWithValue("@recoId", idRecorrido);
+                query.Parameters.AddWithValue("@tramId", t.Id);
+                executed += executeCUDQuery(query);
+            });
+            return executed;
+        }
+
+        //--Modifico la habilitacion de un recorrido dado
+        public static int actualizarInhabilitacion(int recoId, int inhabilitado)
+        {
+            string queryString = "UPDATE [GD1C2019].[CONCORDIA].[recorrido] " +
+                                "SET reco_inhabilitado = @inhabilitado " +
+                                "WHERE reco_id = @recoId";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@inhabilitado", inhabilitado);
+            query.Parameters.AddWithValue("@recoId", recoId);
+            return Database.executeCUDQuery(query);
+        }
+
+        #endregion
     }
 }

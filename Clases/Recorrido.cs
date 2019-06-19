@@ -32,6 +32,17 @@ namespace FrbaCrucero.Clases
             buscarTramos();
         }
 
+        public void reload()
+        {
+            tramos.Clear();
+            SqlCommand query = getTramos();
+            List<string> idTramos = Database.consultaObtenerLista(query);
+            foreach (string idT in idTramos)
+            {
+                tramos.Add(new Tramo(Int32.Parse(idT)));
+            }
+        }
+
         private void buscarTramos()
         {
             SqlCommand query = getTramos();
@@ -40,7 +51,6 @@ namespace FrbaCrucero.Clases
             {
                 tramos.Add(new Tramo(Int32.Parse(idT)));
             }
-            inhabilitado = 0;
         }
 
         private SqlCommand getTramos()
@@ -49,11 +59,6 @@ namespace FrbaCrucero.Clases
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@recoId", id);
             return query;
-        }
-
-        public void AddTramo(Tramo _tramo)
-        {
-            tramos.Add(_tramo);
         }
 
     }

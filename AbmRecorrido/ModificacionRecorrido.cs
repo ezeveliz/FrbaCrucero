@@ -20,6 +20,8 @@ namespace FrbaCrucero.AbmRecorrido
         private Puerto puertoDestino;
         private List<Recorrido> recorridos;
 
+        public List<Recorrido> Recorridos { get { return recorridos; } set { recorridos = value; } }
+
         public Puerto PuertoInicio
         {
             set
@@ -111,8 +113,7 @@ namespace FrbaCrucero.AbmRecorrido
         {
             string queryString = "SELECT * " +
                                 "FROM [GD1C2019].[CONCORDIA].[recorrido] " +
-                                "WHERE reco_inhabilitado = 0 AND " +
-                                    "reco_id = (SELECT reco_id " +
+                                "WHERE reco_id = (SELECT reco_id " +
                                                     "FROM [GD1C2019].[CONCORDIA].[recorrido_tramo] " +
                                                     "WHERE tram_id = (SELECT tram_id " +
                                                                     "FROM [GD1C2019].[CONCORDIA].[tramo]";

@@ -42,6 +42,7 @@
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.cbInhabilitado = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVTramos)).BeginInit();
@@ -63,7 +64,7 @@
             this.lblError.AutoSize = true;
             this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(20, 319);
+            this.lblError.Location = new System.Drawing.Point(36, 365);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(37, 16);
             this.lblError.TabIndex = 21;
@@ -72,7 +73,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(306, 351);
+            this.btnGuardar.Location = new System.Drawing.Point(322, 397);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(102, 51);
             this.btnGuardar.TabIndex = 20;
@@ -82,7 +83,7 @@
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(71, 351);
+            this.btnVolver.Location = new System.Drawing.Point(87, 397);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(102, 51);
             this.btnVolver.TabIndex = 18;
@@ -176,11 +177,23 @@
             this.Accion.HeaderText = "Accion";
             this.Accion.Name = "Accion";
             // 
+            // cbInhabilitado
+            // 
+            this.cbInhabilitado.AutoSize = true;
+            this.cbInhabilitado.Location = new System.Drawing.Point(194, 335);
+            this.cbInhabilitado.Name = "cbInhabilitado";
+            this.cbInhabilitado.Size = new System.Drawing.Size(80, 17);
+            this.cbInhabilitado.TabIndex = 22;
+            this.cbInhabilitado.Text = "Inhabilitado";
+            this.cbInhabilitado.UseVisualStyleBackColor = true;
+            this.cbInhabilitado.CheckedChanged += new System.EventHandler(this.cbInhabilitado_CheckedChanged);
+            // 
             // ModificarTramos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 416);
+            this.ClientSize = new System.Drawing.Size(475, 458);
+            this.Controls.Add(this.cbInhabilitado);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnVolver);
@@ -215,5 +228,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.DataGridViewButtonColumn Accion;
+        private System.Windows.Forms.CheckBox cbInhabilitado;
     }
 }

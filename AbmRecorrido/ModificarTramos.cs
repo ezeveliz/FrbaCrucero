@@ -16,6 +16,7 @@ namespace FrbaCrucero.AbmRecorrido
         private ModificacionRecorrido padre;
         private Recorrido recorrido;
         private List<Tramo> tramos;
+        private int inhabilitado;
 
         public ModificarTramos(ModificacionRecorrido _padre, Recorrido _recorrido)
         {
@@ -29,6 +30,8 @@ namespace FrbaCrucero.AbmRecorrido
                 agregarAlDataGrid(t);
             }
             recalcularTotal();
+            inhabilitado = recorrido.Inhabilitado;
+            cbInhabilitado.Checked = (recorrido.Inhabilitado == 1);
         }
 
         //--Agrego un tramo al recorrido que aun no ha sido persistido
@@ -96,7 +99,79 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (DGVTramos.Rows.Count > 1)
+            {
+                List<Tramo> tramosViejos = recorrido.Tramos;
+                List<Tramo> tramosNuevos = tramos;
 
+                List<Tramo> tramosAAgregar = tramosNuevos.Where(tn =>
+                {
+                    return !tramosViejos.Any(tv => tv.Id == tn.Id);
+                }).ToList();
+
+                List<Tramo> tramosAQuitar = tramosViejos.Where(tv =>
+                {
+                    return tramosNuevos.All(tn => tn.Id != tv.Id);
+                }).ToList();
+
+                agregarTramos(tramosAAgregar);
+                quitarTramos(tramosAQuitar);
+                actualizarInhabilitacion();
+                ventanaInformarExito("Su recorrido ha sido modificado.");
+                actualizarRecorridos();
+            }
+            else
+            {
+                ventanaInformarError("El recorrido debe poseer minimamente un tramo, tu otra alternativa es darlo de baja.");
+            }
+        }
+
+        private void actualizarInhabilitacion()
+        {
+            if (inhabilitado != recorrido.Inhabilitado)
+            {
+                recorrido.Inhabilitado = inhabilitado;
+                Database.actualizarInhabilitacion(recorrido.Id, inhabilitado);
+            }
+        }
+
+        private void actualizarRecorridos()
+        {
+            recorrido.reload();
+            List<Recorrido> recorridos = padre.Recorridos;
+            recorridos.ForEach(r =>
+                {
+                    if (r.Id == recorrido.Id)
+                    {
+                        r = recorrido;
+                    }
+                });
+            padre.Recorridos = recorridos;
+        }
+
+        private void quitarTramos(List<Tramo> tramosAQuitar)
+        {
+            if (tramosAQuitar.Count() > 0)
+            {
+                Database.eliminarRecorridoTramo(recorrido.Id, tramosAQuitar);
+            }
+        }
+
+        private void agregarTramos(List<Tramo> tramosAAgregar)
+        {
+            if (tramosAAgregar.Count() > 0)
+            {
+                tramosAAgregar.ForEach(t =>
+                {
+                    if (!t.Persisted)
+                    {
+                        int id = Database.persistirTramo(t);
+                        t.Id = id;
+                    }
+                });
+                int idRecorrido = recorrido.Id;
+                Database.persistirRecorridoTramo(idRecorrido, tramosAAgregar);
+            }
         }
 
         private void ModificarTramos_FormClosed(object sender, FormClosedEventArgs e)
@@ -118,6 +193,11 @@ namespace FrbaCrucero.AbmRecorrido
                 this.DGVTramos.Rows.RemoveAt(e.RowIndex);
                 recalcularTotal();
             }
+        }
+
+        private void cbInhabilitado_CheckedChanged(object sender, EventArgs e)
+        {
+            inhabilitado = (cbInhabilitado.Checked ? 1 : 0); 
         }
 
 

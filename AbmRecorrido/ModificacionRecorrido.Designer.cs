@@ -32,6 +32,8 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.DGVRecorridos = new System.Windows.Forms.DataGridView();
+            this.idRecorrido = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,8 +43,6 @@
             this.btnSeleccionarI = new System.Windows.Forms.Button();
             this.txtInicio = new System.Windows.Forms.TextBox();
             this.Titulo = new System.Windows.Forms.Label();
-            this.idRecorrido = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Accion = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVRecorridos)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -91,6 +91,16 @@
             this.DGVRecorridos.Size = new System.Drawing.Size(244, 150);
             this.DGVRecorridos.TabIndex = 15;
             this.DGVRecorridos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVRecorridos_CellContentClick);
+            // 
+            // idRecorrido
+            // 
+            this.idRecorrido.HeaderText = "idRecorrido";
+            this.idRecorrido.Name = "idRecorrido";
+            // 
+            // Accion
+            // 
+            this.Accion.HeaderText = "Accion";
+            this.Accion.Name = "Accion";
             // 
             // groupBox1
             // 
@@ -182,16 +192,6 @@
             this.Titulo.Size = new System.Drawing.Size(411, 39);
             this.Titulo.TabIndex = 13;
             this.Titulo.Text = "Modificacion de Recorrido";
-            // 
-            // idRecorrido
-            // 
-            this.idRecorrido.HeaderText = "idRecorrido";
-            this.idRecorrido.Name = "idRecorrido";
-            // 
-            // Accion
-            // 
-            this.Accion.HeaderText = "Accion";
-            this.Accion.Name = "Accion";
             // 
             // ModificacionRecorrido
             // 
