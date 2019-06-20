@@ -141,6 +141,24 @@
     <Compile Include="AbmRol\AbmRol.Designer.cs">
       <DependentUpon>AbmRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRol\AltaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AltaRol.Designer.cs">
+      <DependentUpon>AltaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BajaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BajaRol.Designer.cs">
+      <DependentUpon>BajaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\ModificacionRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\ModificacionRol.Designer.cs">
+      <DependentUpon>ModificacionRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmUsuario\AbmUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\SeleccionarTramo.resx">
       <DependentUpon>SeleccionarTramo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AbmRol.resx">
+      <DependentUpon>AbmRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\Bienvenida.resx">
       <DependentUpon>Bienvenida.cs</DependentUpon>

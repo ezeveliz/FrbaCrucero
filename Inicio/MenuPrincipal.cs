@@ -55,7 +55,7 @@ namespace FrbaCrucero.Inicio
         private void inicializarDiccFuncionalidades() //Para agregar las funcioens a los formularios correspondientes y sus respectivos ids
         {
             this.funcDisponibles = new Dictionary<int, Func<Form>>();
-            this.funcDisponibles.Add(1, () => new AbmRol.AbmRol());
+            this.funcDisponibles.Add(1, () => new AbmRol.AbmRol(this));
             this.funcDisponibles.Add(2, () => new AbmUsuario.AbmUsuario());
             this.funcDisponibles.Add(3, () => new AbmPuerto.AbmPuerto());
             this.funcDisponibles.Add(4, () => new AbmRecorrido.AbmRecorrido(this));

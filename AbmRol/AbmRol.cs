@@ -7,14 +7,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Inicio;
 
 namespace FrbaCrucero.AbmRol
 {
-    public partial class AbmRol : Form
+    public partial class AbmRol : Frame
     {
-        public AbmRol()
+        private MenuPrincipal padre;
+
+        public AbmRol(MenuPrincipal _padre)
         {
             InitializeComponent();
+            padre = _padre;
+        }
+
+        private void BtnAlta_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new AltaRol(this);
+        }
+
+        private void BtnBaja_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new BajaRol(this);
+        }
+
+        private void btnModificacion_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new ModificacionRol(this);
+        }
+
+        private void Atras_Click(object sender, EventArgs e)
+        {
+            this.AbmRol_FormClosed(sender, new FormClosedEventArgs(CloseReason.UserClosing));
+        }
+
+        private void AbmRol_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Hide();
+            this.Dispose();
+            padre.Show();
         }
     }
 }
