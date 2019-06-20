@@ -228,6 +228,7 @@ namespace FrbaCrucero.Clases
                 //Get the inserted query
                 idRecorrido = Convert.ToInt32(query.ExecuteScalar());
             }
+            Database.close();
             return idRecorrido;
         }
 
@@ -309,6 +310,39 @@ namespace FrbaCrucero.Clases
             query.Parameters.AddWithValue("@inhabilitado", inhabilitado);
             query.Parameters.AddWithValue("@recoId", recoId);
             return Database.executeCUDQuery(query);
+        }
+
+        #endregion
+
+        #region Rol
+
+        public static int persistirRol(string descripcion)
+        {
+            string queryString = "INSERT [GD1C2019].[CONCORDIA].[roles] (rol_descripcion, rol_inhabilitado) VALUES(@descripcion, @inhabilitado); SELECT SCOPE_IDENTITY();";
+            SqlCommand query = Database.createQuery(queryString);
+            Database.open();
+            int idRol;
+            query.CommandType = CommandType.Text;
+            {
+                query.Parameters.AddWithValue("@descripcion", descripcion);
+                query.Parameters.AddWithValue("@inhabilitado", 0);
+                //Get the inserted query
+                idRol = Convert.ToInt32(query.ExecuteScalar());
+            }
+            Database.close();
+            return idRol;
+        }
+
+        public static void persistirRolFuncionalidad(int idRol, List<Funcionalidad> funcionalidadesActuales)
+        {
+            funcionalidadesActuales.ForEach(f =>
+            {
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[roles_funcionalidad] (rol_id, func_id) VALUES(@idRol, @idFunc)";
+                SqlCommand query = Database.createQuery(queryString);
+                query.Parameters.AddWithValue("@idRol", idRol);
+                query.Parameters.AddWithValue("@idfunc", f.Id);
+                Database.executeCUDQuery(query);
+            });
         }
 
         #endregion

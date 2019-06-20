@@ -17,6 +17,7 @@ namespace FrbaCrucero.AbmRol
     {
         private AbmRol padre;
         private List<Rol> rolesActuales;
+        private List<Funcionalidad> funcionalidadesActuales;
 
         public AltaRol(AbmRol _padre)
         {
@@ -36,7 +37,7 @@ namespace FrbaCrucero.AbmRol
             {
                 int id = Int32.Parse(fila[0].ToString());
                 string descripcion = fila[1].ToString();
-                bool inhabilitado = Boolean.Parse(fila[2].ToString());
+                bool inhabilitado = Int32.Parse(fila[2].ToString()) == 1;
                 Rol rol = new Rol(id, descripcion, inhabilitado);
                 rolesActuales.Add(rol);
             }
@@ -46,6 +47,7 @@ namespace FrbaCrucero.AbmRol
         //--Agrego las funcionalidades al comboBox
         private void inicializarComboBox()
         {
+            funcionalidadesActuales = new List<Funcionalidad>();
             List<KeyValuePair<int, string>> funcionalidades = new List<KeyValuePair<int, string>>();
             DataTable table = getFuncionalidades();
             foreach (DataRow fila in table.Rows)
@@ -74,7 +76,9 @@ namespace FrbaCrucero.AbmRol
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
                 e.RowIndex >= 0)
             {
+                int id = Int32.Parse(this.DGVFuncionalidad[0, e.RowIndex].Value.ToString());
                 this.DGVFuncionalidad.Rows.RemoveAt(e.RowIndex);
+                this.funcionalidadesActuales = funcionalidadesActuales.Where(f => f.Id != id).ToList();
             }
         }
 
@@ -85,7 +89,10 @@ namespace FrbaCrucero.AbmRol
             KeyValuePair<int, string> funcionalidadSeleccionada = (KeyValuePair<int, string>)CBFuncionalidad.SelectedItem;
             if (noFueAgregado(funcionalidadSeleccionada))
             {
-                DGVFuncionalidad.Rows.Add(funcionalidadSeleccionada.Key, funcionalidadSeleccionada.Value, "Quitar");
+                string descripcion = funcionalidadSeleccionada.Value;
+                int id = funcionalidadSeleccionada.Key;
+                this.DGVFuncionalidad.Rows.Add(id, descripcion, "Quitar");
+                this.funcionalidadesActuales.Add(new Funcionalidad(descripcion, id));
             }
         }
 
@@ -127,7 +134,69 @@ namespace FrbaCrucero.AbmRol
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            lblError.Hide();
+            if (noHayErrores())
+            {
+                int idRol = Database.persistirRol(this.txtNombre.Text);
+                Database.persistirRolFuncionalidad(idRol, funcionalidadesActuales);
+                limpiar();
+                ventanaInformarExito("Rol agregado.");
+            }
+        }
 
+        private bool noHayErrores()
+        {
+            bool rta = true;
+            if(string.IsNullOrWhiteSpace(this.txtNombre.Text))
+            {
+                mostrarErrores("El nombre no puede estar vacio.");
+                rta = false;
+            }
+            else if (funcionalidadesActuales.Count() == 0)
+            {
+                mostrarErrores("La lista debe poseer una funcionalidad como minimo.");
+                rta = false;
+            }
+            else if (hayOtroRolConLaMismaDescripcion())
+            {
+                mostrarErrores("Hay otro rol con las mismas funcionalidades.");
+                rta = false;
+            }
+            else if(hayOtroRolConLasMismasFuncionalidades())
+            {
+                mostrarErrores("Hay otro rol con las mismas funcionalidades.");
+                rta = false;
+            }
+            return rta;
+        }
+
+        private bool hayOtroRolConLaMismaDescripcion()
+        {
+            return rolesActuales.Any(r => r.Descripcion == this.txtNombre.Text);
+        }
+
+        private bool hayOtroRolConLasMismasFuncionalidades()
+        {
+            return rolesActuales.Any(r => r.poseeEstasFuncionalidades(this.funcionalidadesActuales));
+        }
+
+        private void mostrarErrores(string mensaje)
+        {
+            lblError.Text = mensaje;
+            lblError.Show();
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            this.limpiar();
+        }
+
+        private void limpiar()
+        {
+            lblError.Hide();
+            txtNombre.Text = "";
+            funcionalidadesActuales.Clear();
+            DGVFuncionalidad.Rows.Clear();
         }
     }
 }

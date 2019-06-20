@@ -41,6 +41,7 @@
             this.btnGuardar = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVFuncionalidad)).BeginInit();
@@ -50,7 +51,7 @@
             // 
             this.Titulo.AutoSize = true;
             this.Titulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.Titulo.Location = new System.Drawing.Point(83, 9);
+            this.Titulo.Location = new System.Drawing.Point(123, 7);
             this.Titulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(119, 26);
@@ -63,7 +64,7 @@
             this.groupBox1.Controls.Add(this.txtNombre);
             this.groupBox1.Controls.Add(this.lblFuncionalidad);
             this.groupBox1.Controls.Add(this.CBFuncionalidad);
-            this.groupBox1.Location = new System.Drawing.Point(23, 44);
+            this.groupBox1.Location = new System.Drawing.Point(63, 42);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(261, 86);
             this.groupBox1.TabIndex = 15;
@@ -112,7 +113,7 @@
             this.idFuncionalidad,
             this.Funcionalidad,
             this.Accion});
-            this.DGVFuncionalidad.Location = new System.Drawing.Point(23, 136);
+            this.DGVFuncionalidad.Location = new System.Drawing.Point(63, 134);
             this.DGVFuncionalidad.Name = "DGVFuncionalidad";
             this.DGVFuncionalidad.ReadOnly = true;
             this.DGVFuncionalidad.Size = new System.Drawing.Size(261, 150);
@@ -140,7 +141,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(170, 325);
+            this.btnGuardar.Location = new System.Drawing.Point(256, 325);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(114, 43);
             this.btnGuardar.TabIndex = 5;
@@ -153,7 +154,7 @@
             this.lblError.AutoSize = true;
             this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(30, 300);
+            this.lblError.Location = new System.Drawing.Point(12, 296);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(42, 16);
             this.lblError.TabIndex = 17;
@@ -170,11 +171,22 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.Location = new System.Drawing.Point(136, 325);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(114, 43);
+            this.btnLimpiar.TabIndex = 19;
+            this.btnLimpiar.Text = "Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
+            // 
             // AltaRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(305, 380);
+            this.ClientSize = new System.Drawing.Size(385, 380);
+            this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.btnGuardar);
@@ -208,5 +220,6 @@
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.Button btnLimpiar;
     }
 }

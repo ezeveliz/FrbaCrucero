@@ -38,7 +38,7 @@ namespace FrbaCrucero.Clases
         private void getFuncionalidades()
         {
             this.funcionalidades = new List<Funcionalidad>();
-            string queryString = "SELECT RF.func_id FROM [GD1C2019].[CONCORDIA].[funcionalidad] AS F, [GD1C2019].[CONCORDIA].[roles_funcionalidad] AS RF " +
+            string queryString = "SELECT RF.func_id, F.func_descripcion FROM [GD1C2019].[CONCORDIA].[funcionalidad] AS F, [GD1C2019].[CONCORDIA].[roles_funcionalidad] AS RF " +
                                 "WHERE RF.rol_id = @rolId AND RF.func_id = F.func_id";
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@rolId", this.id);
@@ -50,6 +50,11 @@ namespace FrbaCrucero.Clases
                 Funcionalidad funcionalidad = new Funcionalidad(descripcion, id);
                 this.funcionalidades.Add(funcionalidad);
             }
+        }
+
+        public bool poseeEstasFuncionalidades(List<Funcionalidad> list)
+        {
+            return (this.funcionalidades.Count == list.Count) && this.funcionalidades.All(f => list.Any(l => l.Id == f.Id));
         }
     }
 }
