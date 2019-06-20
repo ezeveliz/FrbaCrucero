@@ -213,7 +213,7 @@ namespace FrbaCrucero.AbmRecorrido
         private int inhabilitarRecorrido(Recorrido recorridoSeleccionado)
         {
             recorridos = recorridos.Where(r => r.Id != recorridoSeleccionado.Id).ToList();
-            return Database.actualizarInhabilitacion(recorridoSeleccionado.Id, 1);
+            return Database.actualizarInhabilitacionDeRecorrido(recorridoSeleccionado.Id, 1);
         }
     }
 }

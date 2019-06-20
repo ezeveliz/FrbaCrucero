@@ -24,24 +24,7 @@ namespace FrbaCrucero.AbmRol
             InitializeComponent();
             inicializarComboBox();
             padre = _padre;
-            getRoles();
-        }
-
-        private void getRoles()
-        {
-            rolesActuales = new List<Rol>();
-            string queryString = "SELECT R.rol_id, R.rol_descripcion, R.rol_inhabilitado FROM [GD1C2019].[CONCORDIA].[roles] AS R";
-            SqlCommand query = Database.createQuery(queryString);
-            DataTable table = Database.getQueryTable(query);
-            foreach (DataRow fila in table.Rows)
-            {
-                int id = Int32.Parse(fila[0].ToString());
-                string descripcion = fila[1].ToString();
-                bool inhabilitado = Int32.Parse(fila[2].ToString()) == 1;
-                Rol rol = new Rol(id, descripcion, inhabilitado);
-                rolesActuales.Add(rol);
-            }
-
+            rolesActuales = Database.getRoles(2);
         }
 
         //--Agrego las funcionalidades al comboBox

@@ -131,7 +131,7 @@ namespace FrbaCrucero.AbmRecorrido
             if (inhabilitado != recorrido.Inhabilitado)
             {
                 recorrido.Inhabilitado = inhabilitado;
-                Database.actualizarInhabilitacion(recorrido.Id, inhabilitado);
+                Database.actualizarInhabilitacionDeRecorrido(recorrido.Id, inhabilitado);
             }
         }
 

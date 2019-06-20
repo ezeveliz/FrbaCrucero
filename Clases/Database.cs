@@ -301,7 +301,7 @@ namespace FrbaCrucero.Clases
         }
 
         //--Modifico la habilitacion de un recorrido dado
-        public static int actualizarInhabilitacion(int recoId, int inhabilitado)
+        public static int actualizarInhabilitacionDeRecorrido(int recoId, int inhabilitado)
         {
             string queryString = "UPDATE [GD1C2019].[CONCORDIA].[recorrido] " +
                                 "SET reco_inhabilitado = @inhabilitado " +
@@ -316,6 +316,33 @@ namespace FrbaCrucero.Clases
 
         #region Rol
 
+        //--Obtengo los roles, si pongo 0 son los habilitado, con 1 son los inhabilitados, otros numero son ambos
+        public static List<Rol> getRoles(int _inhabilitado)
+        {
+            List<Rol> roles = new List<Rol>();
+            string queryString = "SELECT R.rol_id, R.rol_descripcion, R.rol_inhabilitado FROM [GD1C2019].[CONCORDIA].[roles] AS R";
+            if (_inhabilitado == 0 || _inhabilitado == 1)
+            {
+                queryString += " WHERE rol_inhabilitado = @inhabilitado";
+            }
+            SqlCommand query = Database.createQuery(queryString);
+            if (_inhabilitado == 0 || _inhabilitado == 1)
+            {
+                query.Parameters.AddWithValue("@inhabilitado", _inhabilitado);
+            }
+            DataTable table = Database.getQueryTable(query);
+            foreach (DataRow fila in table.Rows)
+            {
+                int id = Int32.Parse(fila[0].ToString());
+                string descripcion = fila[1].ToString();
+                bool inhabilitado = Int32.Parse(fila[2].ToString()) == 1;
+                Rol rol = new Rol(id, descripcion, inhabilitado);
+                roles.Add(rol);
+            }
+            return roles;
+        }
+
+        //--Persisto un rol y devuelvo su id
         public static int persistirRol(string descripcion)
         {
             string queryString = "INSERT [GD1C2019].[CONCORDIA].[roles] (rol_descripcion, rol_inhabilitado) VALUES(@descripcion, @inhabilitado); SELECT SCOPE_IDENTITY();";
@@ -333,6 +360,7 @@ namespace FrbaCrucero.Clases
             return idRol;
         }
 
+        //--Persisto la relacion rol funcionalidad
         public static void persistirRolFuncionalidad(int idRol, List<Funcionalidad> funcionalidadesActuales)
         {
             funcionalidadesActuales.ForEach(f =>
@@ -343,6 +371,28 @@ namespace FrbaCrucero.Clases
                 query.Parameters.AddWithValue("@idfunc", f.Id);
                 Database.executeCUDQuery(query);
             });
+        }
+
+        //--Actualizo la inhabilitacion de un rol dado
+        public static void actualizarInhabilitacionDeRol(int id, int inhabilitado)
+        {
+            string queryString = "UPDATE [GD1C2019].[CONCORDIA].[roles] " +
+                                "SET rol_inhabilitado = @inhabilitado " +
+                                "WHERE rol_id = @rolId";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@inhabilitado", inhabilitado);
+            query.Parameters.AddWithValue("@rolId", id);
+            Database.executeCUDQuery(query);
+            if (inhabilitado == 1)
+            {
+                string queryString2 = "UPDATE [GD1C2019].[CONCORDIA].[usuario] " +
+                                               "SET rol_id = @inhabilitado " +
+                                               "WHERE rol_id = @rolId";
+                SqlCommand query2 = Database.createQuery(queryString2);
+                query2.Parameters.AddWithValue("@inhabilitado", null);
+                query2.Parameters.AddWithValue("@rolId", id);
+                Database.executeCUDQuery(query);
+            }
         }
 
         #endregion

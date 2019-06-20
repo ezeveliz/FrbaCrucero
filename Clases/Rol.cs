@@ -56,5 +56,15 @@ namespace FrbaCrucero.Clases
         {
             return (this.funcionalidades.Count == list.Count) && this.funcionalidades.All(f => list.Any(l => l.Id == f.Id));
         }
+
+        public void inhabilitar()
+        {
+            Database.actualizarInhabilitacionDeRol(id, 1);
+        }
+
+        public void habilitar()
+        {
+            Database.actualizarInhabilitacionDeRol(id, 0);
+        }
     }
 }
