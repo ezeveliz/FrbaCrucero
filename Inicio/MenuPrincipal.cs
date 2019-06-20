@@ -24,7 +24,7 @@ namespace FrbaCrucero.Inicio
             this.bienvenidaView = _bienvenidaView;
             this.Usuario = user;
             var funcionalidades = new List<KeyValuePair< int, string>>(); //Genera una lista de funcionalidades vacias
-            user.Funcionalidades.ForEach(funcinalidad => funcionalidades.Add(new KeyValuePair<int, string>(funcinalidad.Id, funcinalidad.Nombre))); // Por cada funcionalidad de usuario la setea en una lista para agregarla al listbox 
+            user.Funcionalidades.ForEach(funcinalidad => funcionalidades.Add(new KeyValuePair<int, string>(funcinalidad.Id, funcinalidad.Descripcion))); // Por cada funcionalidad de usuario la setea en una lista para agregarla al listbox 
 
             this.listFuncionalidades.DisplayMember = "Value"; // setea el key y value para el listbox
             this.listFuncionalidades.ValueMember = "Key";

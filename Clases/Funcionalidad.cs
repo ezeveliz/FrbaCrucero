@@ -8,16 +8,16 @@ namespace FrbaCrucero.Clases
 {
     public class Funcionalidad
     {
-        private string nombre;
+        private string descripcion;
         private int id;
 
-        public string Nombre { get { return nombre; } set { nombre = value; } }
+        public string Descripcion { get { return descripcion; } set { descripcion = value; } }
         public int Id { get { return id; } set { id = value; } }
 
-        public Funcionalidad(string name, int id_set)
+        public Funcionalidad(string _descripcion, int _id)
         {
-            Nombre = name;
-            id = id_set;
+            Descripcion = _descripcion;
+            id = _id;
         }
   
 
