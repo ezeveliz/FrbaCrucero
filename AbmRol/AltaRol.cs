@@ -32,7 +32,7 @@ namespace FrbaCrucero.AbmRol
         {
             funcionalidadesActuales = new List<Funcionalidad>();
             List<KeyValuePair<int, string>> funcionalidades = new List<KeyValuePair<int, string>>();
-            DataTable table = getFuncionalidades();
+            DataTable table = Database.getFuncionalidades();
             foreach (DataRow fila in table.Rows)
             {
                 int id = Int32.Parse(fila[0].ToString());
@@ -42,14 +42,6 @@ namespace FrbaCrucero.AbmRol
             CBFuncionalidad.DisplayMember = "Value";
             CBFuncionalidad.ValueMember = "Key";
             funcionalidades.ForEach(f => CBFuncionalidad.Items.Add(f));
-        }
-
-        //--Obtengo las funcionalidades de la DB
-        private DataTable getFuncionalidades()
-        {
-            string queryString = "SELECT [func_id], [func_descripcion] FROM [GD1C2019].[CONCORDIA].[funcionalidad]";
-            SqlCommand query = Database.createQuery(queryString);
-            return Database.getQueryTable(query);
         }
 
         private void DGVFuncionalidad_CellContentClick(object sender, DataGridViewCellEventArgs e)

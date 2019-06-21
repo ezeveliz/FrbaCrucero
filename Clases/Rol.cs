@@ -57,14 +57,64 @@ namespace FrbaCrucero.Clases
             return (this.funcionalidades.Count == list.Count) && this.funcionalidades.All(f => list.Any(l => l.Id == f.Id));
         }
 
+        public void actualizarInhabilitacion(bool _inhabilitado)
+        {
+            if (_inhabilitado)
+            {
+                this.inhabilitar();
+            }
+            else
+            {
+                this.habilitar();
+            }
+            this.Inhabilitado = _inhabilitado;
+        }
+
         public void inhabilitar()
         {
-            Database.actualizarInhabilitacionDeRol(id, 1);
+            if (!this.inhabilitado)
+            {
+                Database.actualizarInhabilitacionDeRol(id, 1);
+            }
         }
 
         public void habilitar()
         {
-            Database.actualizarInhabilitacionDeRol(id, 0);
+            if (this.inhabilitado)
+            {
+                Database.actualizarInhabilitacionDeRol(id, 0);
+            }
+        }
+
+        public void actualizarFuncionalidades(List<Funcionalidad> funcionalidadesDelRolSeleccionado)
+        {
+            List<Funcionalidad> funcionalidadesAQuitar = this.funcionalidades.Where(f => 
+            {
+                return funcionalidadesDelRolSeleccionado.All(fn => fn.Id != f.Id);
+            }).ToList();
+            List<Funcionalidad> funcionalidadesAAgregar = funcionalidadesDelRolSeleccionado.Where(fn => 
+            {
+                return !this.funcionalidades.Any(f => f.Id == fn.Id);
+            }).ToList();
+
+            if (funcionalidadesAQuitar.Count > 0)
+            {
+                Database.eliminarRolFuncionalidad(this.id, funcionalidadesAQuitar);
+            }
+            if (funcionalidadesAAgregar.Count > 0)
+            {
+                Database.persistirRolFuncionalidad(this.id, funcionalidadesAAgregar);
+            }
+            this.funcionalidades = funcionalidadesDelRolSeleccionado;
+        }
+
+        public void actualizarDescripcion(string nuevaDescripcion)
+        {
+            if (descripcion != nuevaDescripcion)
+            {
+                Database.actualizarDescripcionDeRol(id, nuevaDescripcion);
+                this.Descripcion = nuevaDescripcion;
+            }
         }
     }
 }

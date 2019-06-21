@@ -44,6 +44,7 @@
             this.lblRoles = new System.Windows.Forms.Label();
             this.lbRoles = new System.Windows.Forms.ListBox();
             this.Titulo = new System.Windows.Forms.Label();
+            this.cbInhabilitado = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVFuncionalidad)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -51,28 +52,32 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(134, 450);
+            this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnLimpiar.Location = new System.Drawing.Point(134, 490);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(114, 43);
             this.btnLimpiar.TabIndex = 34;
             this.btnLimpiar.Text = "Limpiar";
-            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.UseVisualStyleBackColor = false;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(14, 450);
+            this.btnVolver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.btnVolver.Location = new System.Drawing.Point(14, 490);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(114, 43);
             this.btnVolver.TabIndex = 33;
             this.btnVolver.Text = "Volver";
-            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.UseVisualStyleBackColor = false;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
             // lblError
             // 
             this.lblError.AutoSize = true;
             this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(10, 421);
+            this.lblError.Location = new System.Drawing.Point(10, 461);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(42, 16);
             this.lblError.TabIndex = 32;
@@ -81,12 +86,14 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(254, 450);
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnGuardar.Location = new System.Drawing.Point(254, 490);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(114, 43);
             this.btnGuardar.TabIndex = 29;
             this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.UseVisualStyleBackColor = false;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // DGVFuncionalidad
             // 
@@ -100,6 +107,7 @@
             this.DGVFuncionalidad.ReadOnly = true;
             this.DGVFuncionalidad.Size = new System.Drawing.Size(261, 150);
             this.DGVFuncionalidad.TabIndex = 31;
+            this.DGVFuncionalidad.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVFuncionalidad_CellContentClick);
             // 
             // idFuncionalidad
             // 
@@ -166,6 +174,7 @@
             this.CBFuncionalidad.Size = new System.Drawing.Size(121, 21);
             this.CBFuncionalidad.TabIndex = 0;
             this.CBFuncionalidad.Text = "Seleccionar";
+            this.CBFuncionalidad.SelectedIndexChanged += new System.EventHandler(this.CBFuncionalidad_SelectedIndexChanged);
             // 
             // lblRoles
             // 
@@ -183,6 +192,7 @@
             this.lbRoles.Name = "lbRoles";
             this.lbRoles.Size = new System.Drawing.Size(120, 69);
             this.lbRoles.TabIndex = 27;
+            this.lbRoles.SelectedIndexChanged += new System.EventHandler(this.lbRoles_SelectedIndexChanged);
             // 
             // Titulo
             // 
@@ -195,11 +205,22 @@
             this.Titulo.TabIndex = 26;
             this.Titulo.Text = "Modificacion de Rol";
             // 
+            // cbInhabilitado
+            // 
+            this.cbInhabilitado.AutoSize = true;
+            this.cbInhabilitado.Location = new System.Drawing.Point(134, 428);
+            this.cbInhabilitado.Name = "cbInhabilitado";
+            this.cbInhabilitado.Size = new System.Drawing.Size(80, 17);
+            this.cbInhabilitado.TabIndex = 35;
+            this.cbInhabilitado.Text = "Inhabilitado";
+            this.cbInhabilitado.UseVisualStyleBackColor = true;
+            // 
             // ModificacionRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(381, 503);
+            this.ClientSize = new System.Drawing.Size(381, 547);
+            this.Controls.Add(this.cbInhabilitado);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.lblError);
@@ -239,5 +260,6 @@
         private System.Windows.Forms.Label lblRoles;
         private System.Windows.Forms.ListBox lbRoles;
         private System.Windows.Forms.Label Titulo;
+        private System.Windows.Forms.CheckBox cbInhabilitado;
     }
 }

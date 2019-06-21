@@ -38,13 +38,14 @@
             // 
             // Atras
             // 
+            this.Atras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.Atras.Location = new System.Drawing.Point(26, 233);
             this.Atras.Margin = new System.Windows.Forms.Padding(2);
             this.Atras.Name = "Atras";
             this.Atras.Size = new System.Drawing.Size(151, 39);
             this.Atras.TabIndex = 17;
             this.Atras.Text = "Atras";
-            this.Atras.UseVisualStyleBackColor = true;
+            this.Atras.UseVisualStyleBackColor = false;
             this.Atras.Click += new System.EventHandler(this.Atras_Click);
             // 
             // btnModificacion

@@ -342,6 +342,14 @@ namespace FrbaCrucero.Clases
             return roles;
         }
 
+        //--Obtengo todas las funcionalidades
+        public static DataTable getFuncionalidades()
+        {
+            string queryString = "SELECT [func_id], [func_descripcion] FROM [GD1C2019].[CONCORDIA].[funcionalidad]";
+            SqlCommand query = Database.createQuery(queryString);
+            return Database.getQueryTable(query);
+        }
+
         //--Persisto un rol y devuelvo su id
         public static int persistirRol(string descripcion)
         {
@@ -373,6 +381,19 @@ namespace FrbaCrucero.Clases
             });
         }
 
+        public static void eliminarRolFuncionalidad(int id, List<Funcionalidad> funcionalidadesAQuitar)
+        {
+            funcionalidadesAQuitar.ForEach(f => 
+            {
+                string queryString = "DELETE [GD1C2019].[CONCORDIA].[roles_funcionalidad] " +
+                                       "WHERE rol_id = @rolId AND func_id = @funcId";
+                SqlCommand query = Database.createQuery(queryString);
+                query.Parameters.AddWithValue("@rolId", id);
+                query.Parameters.AddWithValue("@funcId", f.Id);
+                executeCUDQuery(query);
+            });
+        }
+
         //--Actualizo la inhabilitacion de un rol dado
         public static void actualizarInhabilitacionDeRol(int id, int inhabilitado)
         {
@@ -393,6 +414,18 @@ namespace FrbaCrucero.Clases
                 query2.Parameters.AddWithValue("@rolId", id);
                 Database.executeCUDQuery(query);
             }
+        }
+
+        //--Actualizo la descripcion del rol
+        public static void actualizarDescripcionDeRol(int id, string nuevaDescripcion)
+        {
+            string queryString = "UPDATE [GD1C2019].[CONCORDIA].[roles] " +
+                                "SET rol_descripcion = @desc " +
+                                "WHERE rol_id = @rolId";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@desc", nuevaDescripcion);
+            query.Parameters.AddWithValue("@rolId", id);
+            Database.executeCUDQuery(query);
         }
 
         #endregion
