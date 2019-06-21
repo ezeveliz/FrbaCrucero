@@ -39,7 +39,7 @@
             // Atras
             // 
             this.Atras.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.Atras.Location = new System.Drawing.Point(26, 233);
+            this.Atras.Location = new System.Drawing.Point(47, 230);
             this.Atras.Margin = new System.Windows.Forms.Padding(2);
             this.Atras.Name = "Atras";
             this.Atras.Size = new System.Drawing.Size(151, 39);
@@ -50,7 +50,7 @@
             // 
             // btnModificacion
             // 
-            this.btnModificacion.Location = new System.Drawing.Point(26, 178);
+            this.btnModificacion.Location = new System.Drawing.Point(47, 175);
             this.btnModificacion.Margin = new System.Windows.Forms.Padding(2);
             this.btnModificacion.Name = "btnModificacion";
             this.btnModificacion.Size = new System.Drawing.Size(151, 39);
@@ -61,7 +61,7 @@
             // 
             // BtnBaja
             // 
-            this.BtnBaja.Location = new System.Drawing.Point(26, 117);
+            this.BtnBaja.Location = new System.Drawing.Point(47, 114);
             this.BtnBaja.Margin = new System.Windows.Forms.Padding(2);
             this.BtnBaja.Name = "BtnBaja";
             this.BtnBaja.Size = new System.Drawing.Size(151, 39);
@@ -72,7 +72,7 @@
             // 
             // BtnAlta
             // 
-            this.BtnAlta.Location = new System.Drawing.Point(26, 60);
+            this.BtnAlta.Location = new System.Drawing.Point(47, 57);
             this.BtnAlta.Margin = new System.Windows.Forms.Padding(2);
             this.BtnAlta.Name = "BtnAlta";
             this.BtnAlta.Size = new System.Drawing.Size(151, 39);
@@ -85,7 +85,7 @@
             // 
             this.Titulo.AutoSize = true;
             this.Titulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.Titulo.Location = new System.Drawing.Point(48, 23);
+            this.Titulo.Location = new System.Drawing.Point(69, 20);
             this.Titulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(99, 26);
@@ -96,7 +96,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(206, 290);
+            this.ClientSize = new System.Drawing.Size(250, 290);
             this.Controls.Add(this.Atras);
             this.Controls.Add(this.btnModificacion);
             this.Controls.Add(this.BtnBaja);

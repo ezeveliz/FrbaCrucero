@@ -28,11 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(250, 31);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "ABM Sin Codificar";
+            // 
+            // btnVolver
+            // 
+            this.btnVolver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.btnVolver.Location = new System.Drawing.Point(66, 133);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(127, 61);
+            this.btnVolver.TabIndex = 2;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = false;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
+            // AbmPuerto
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.btnVolver);
+            this.Controls.Add(this.label1);
+            this.Name = "AbmPuerto";
+            this.Text = "ABM Puerto";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AbmPuerto_FormClosed);
+            ((System.ComponentModel.ISupportInitialize)(this.errorController)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

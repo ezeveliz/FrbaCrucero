@@ -47,17 +47,15 @@ namespace FrbaCrucero.Inicio
         // vuelve al inicio 
         private void volver_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            this.Dispose();
-            bienvenidaView.Show();
+            this.MenuPrincipal_FormClosed(sender, new FormClosedEventArgs(CloseReason.UserClosing));
         }
 
         private void inicializarDiccFuncionalidades() //Para agregar las funcioens a los formularios correspondientes y sus respectivos ids
         {
             this.funcDisponibles = new Dictionary<int, Func<Form>>();
             this.funcDisponibles.Add(1, () => new AbmRol.AbmRol(this));
-            this.funcDisponibles.Add(2, () => new AbmUsuario.AbmUsuario());
-            this.funcDisponibles.Add(3, () => new AbmPuerto.AbmPuerto());
+            this.funcDisponibles.Add(2, () => new AbmUsuario.AbmUsuario(this));
+            this.funcDisponibles.Add(3, () => new AbmPuerto.AbmPuerto(this));
             this.funcDisponibles.Add(4, () => new AbmRecorrido.AbmRecorrido(this));
             this.funcDisponibles.Add(5, () => new AbmCrucero.AbmC());
             this.funcDisponibles.Add(6, () => new CompraPasajes.CompraPasajes());

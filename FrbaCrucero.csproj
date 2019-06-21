@@ -240,6 +240,9 @@
     <EmbeddedResource Include="AbmCrucero\ModificacionCrucero.resx">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmPuerto\AbmPuerto.resx">
+      <DependentUpon>AbmPuerto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\AbmRecorrido.resx">
       <DependentUpon>AbmRecorrido.cs</DependentUpon>
     </EmbeddedResource>
@@ -278,6 +281,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\ModificacionRol.resx">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmUsuario\AbmUsuario.resx">
+      <DependentUpon>AbmUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\Bienvenida.resx">
       <DependentUpon>Bienvenida.cs</DependentUpon>
