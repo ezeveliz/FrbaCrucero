@@ -59,6 +59,7 @@ namespace FrbaCrucero.Inicio
             this.funcDisponibles.Add(4, () => new AbmRecorrido.AbmRecorrido(this));
             this.funcDisponibles.Add(5, () => new AbmCrucero.AbmC());
             this.funcDisponibles.Add(6, () => new CompraPasajes.CompraPasajes());
+            this.funcDisponibles.Add(7, () => new PagoReserva.PagoReserva(this));
         }
 
         private void seleccionar_Click(object sender, EventArgs e)
