@@ -27,7 +27,20 @@ namespace FrbaCrucero.Clases
         public string Nombre { get { return nombre; } set { nombre = value; } }
         public string Apellido { get { return apellido; } set { apellido = value; } }
         public string UserName { get { return username; } set { username = value; } }
+        public string Email { get { return email; } }
+        public string Direccion { get { return direccion; } }
+        public int Telefono { get { return telefono; } }
         public int Rol { get { return rol_id; } set { rol_id = value; } }
+        public int DNI { get { return dni; } }
+        public DateTime Nacimiento { get { return nacimiento; } }
+        public string NacimientoString 
+        { 
+            get 
+            {
+                CultureInfo culture = new CultureInfo("es-AR");
+                return nacimiento.ToString("d", culture); 
+            } 
+        }
         public List<Funcionalidad> Funcionalidades { get { return funcionalidades; } set { funcionalidades = value; } }
 
         public Usuario() // Genera un usuario cliente Generico

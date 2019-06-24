@@ -53,6 +53,7 @@
             this.btnComprar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblErrorPago = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -63,7 +64,6 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.lblErrorPago = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -111,7 +111,7 @@
             this.lblErrorReserva.AutoSize = true;
             this.lblErrorReserva.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblErrorReserva.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorReserva.Location = new System.Drawing.Point(26, 66);
+            this.lblErrorReserva.Location = new System.Drawing.Point(6, 62);
             this.lblErrorReserva.Name = "lblErrorReserva";
             this.lblErrorReserva.Size = new System.Drawing.Size(42, 16);
             this.lblErrorReserva.TabIndex = 3;
@@ -330,6 +330,18 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Forma de Pago";
             // 
+            // lblErrorPago
+            // 
+            this.lblErrorPago.AutoSize = true;
+            this.lblErrorPago.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorPago.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorPago.Location = new System.Drawing.Point(25, 136);
+            this.lblErrorPago.Name = "lblErrorPago";
+            this.lblErrorPago.Size = new System.Drawing.Size(42, 16);
+            this.lblErrorPago.TabIndex = 10;
+            this.lblErrorPago.Text = "Error";
+            this.lblErrorPago.Visible = false;
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -410,18 +422,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 0;
-            // 
-            // lblErrorPago
-            // 
-            this.lblErrorPago.AutoSize = true;
-            this.lblErrorPago.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorPago.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorPago.Location = new System.Drawing.Point(25, 136);
-            this.lblErrorPago.Name = "lblErrorPago";
-            this.lblErrorPago.Size = new System.Drawing.Size(42, 16);
-            this.lblErrorPago.TabIndex = 10;
-            this.lblErrorPago.Text = "Error";
-            this.lblErrorPago.Visible = false;
             // 
             // PagoReserva
             // 

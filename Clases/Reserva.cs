@@ -19,7 +19,19 @@ namespace FrbaCrucero.Clases
         private Usuario user;
         private DateTime creacion;
 
+        public int Id { get { return id; } }
         public bool EsValida { get { return esValida; } }
+        public int IdViaje { get { return idViaje; } }
+        public Usuario User { get { return user; } }
+        public DateTime Creacion { get { return creacion; } }
+        public string CreacionString 
+        { 
+            get 
+            {
+                CultureInfo culture = new CultureInfo("es-AR");
+                return creacion.ToString("d", culture);
+            } 
+        }
 
         public Reserva(string _id)
         {
