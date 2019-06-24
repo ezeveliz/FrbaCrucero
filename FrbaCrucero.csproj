@@ -169,6 +169,7 @@
     <Compile Include="Clases\Logger.cs" />
     <Compile Include="Clases\Puerto.cs" />
     <Compile Include="Clases\Recorrido.cs" />
+    <Compile Include="Clases\Reserva.cs" />
     <Compile Include="Clases\Tramo.cs" />
     <Compile Include="Clases\Validaciones.cs" />
     <Compile Include="Clases\Funcionalidad.cs" />

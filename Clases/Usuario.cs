@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Data.SqlTypes;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace FrbaCrucero.Clases
 {
@@ -14,7 +15,12 @@ namespace FrbaCrucero.Clases
         private string nombre;
         private string apellido;
         private string username;
+        private string email;
+        private string direccion;
+        private int telefono;
         private int rol_id;
+        private int dni;
+        private DateTime nacimiento;
         private List<Funcionalidad> funcionalidades;
 
         public int Id { get { return id; } set { id = value; } }
@@ -47,6 +53,27 @@ namespace FrbaCrucero.Clases
             this.id = Convert.ToInt32(DatosUsuario.ItemArray[0]);
 
             funcionalidades = Database.funcionalidadesPorUsuario(this.id); // Busco las funcionalidades de acuerdo al rol del usuario
+        }
+
+        public Usuario(int _id) // Genera el usuario que tiene ese id
+        {
+            this.id = _id;
+            this.getDatos();
+        }
+
+        private void getDatos()
+        {
+            DataRow row = Database.buscarUsuarioPorId(this.id);
+            this.dni = Int32.Parse(row[0].ToString());
+            this.nombre = row[1].ToString();
+            this.apellido = row[2].ToString();
+            this.email = row[3].ToString();
+            string nac = row[4].ToString();
+            CultureInfo culture = new CultureInfo("es-AR");
+            DateTime tempDate = Convert.ToDateTime(nac, culture);
+            this.nacimiento = tempDate;
+            this.direccion = row[5].ToString();
+            this.telefono = Int32.Parse(row[6].ToString());
         }
 
     }

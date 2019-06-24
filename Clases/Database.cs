@@ -194,6 +194,14 @@ namespace FrbaCrucero.Clases
             return row;
         }
 
+        //--Busca el usuario por la id del mismo
+        public static DataRow buscarUsuarioPorId(int id)
+        {
+            string queryString = "SELECT usua_dni, usua_nombre, usua_apellido, usua_email, usua_fecha_nac, usua_direccion, usua_telefono FROM CONCORDIA.usuario where usua_id = @userId";
+            SqlCommand query = createQuery(queryString);
+            query.Parameters.AddWithValue("@userId", id);
+            return getQueryRow(query);
+        }
 
         public static List<Funcionalidad> funcionalidadesPorUsuario(int usua_id) //Busca las funcionalidades de un usuario 
         {
@@ -394,7 +402,7 @@ namespace FrbaCrucero.Clases
             });
         }
 
-        //--Actualizo la inhabilitacion de un rol dado
+        //--Actualizo la inhabilitacion de un rol dado y de los usuarios que lo posean en caso de que sea necesario
         public static void actualizarInhabilitacionDeRol(int id, int inhabilitado)
         {
             string queryString = "UPDATE [GD1C2019].[CONCORDIA].[roles] " +
@@ -428,6 +436,22 @@ namespace FrbaCrucero.Clases
             Database.executeCUDQuery(query);
         }
 
+        #endregion
+
+        //--Este metodo da de baja las reservas de mas de 3 dias de antiguedad
+        public static void verificarReservas()
+        {
+            string limitDate = DateTime.Now.AddDays(-3).ToString("yyyy/mm/dd hh:mm:ss");
+
+        }
+
+        #region PagoReserva
+        /*
+        public static Usuario getUsuarioFromReserva(string codReserva)
+        {
+            string queryString = "";
+        }
+        */
         #endregion
     }
 }

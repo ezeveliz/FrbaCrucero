@@ -35,6 +35,8 @@ namespace FrbaCrucero.Inicio
             {
                 this.seleccionar.Enabled = false;
             }
+
+            Database.verificarReservas();
         }
 
         public void MenuPrincipal_FormClosed(object sender, FormClosedEventArgs e)
