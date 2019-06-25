@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,11 +19,21 @@ namespace FrbaCrucero.PagoReserva
         private MenuPrincipal padre;
         private Reserva reserva;
         private Usuario user;
+        private DataTable medioDePago;
 
         public PagoReserva(MenuPrincipal _padre)
         {
             InitializeComponent();
             this.padre = _padre;
+            this.getDataForComboBox();
+        }
+
+        //--Obtengo los medios de pago
+        private void getDataForComboBox()
+        {
+            string queryString = "SELECT medi_pago_id, medi_pago_tipo FROM [GD1C2019].[CONCORDIA].[medio_pago]";
+            SqlCommand query = Database.createQuery(queryString);
+            medioDePago = Database.getQueryTable(query);
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
@@ -41,9 +53,10 @@ namespace FrbaCrucero.PagoReserva
         {
             this.limpiarErrores();
             this.limpiarDatosDeCliente();
-            //this.limpiarDatosDePago();
+            this.limpiarDatosDePago();
             if (this.noHayErroresEnCodReserva())
             {
+                btnConfirmar.Enabled = true;
                 txtNombre.Text = this.user.Nombre;
                 txtApellido.Text = this.user.Apellido;
                 txtDNI.Text = this.user.DNI.ToString();
@@ -51,7 +64,26 @@ namespace FrbaCrucero.PagoReserva
                 txtMail.Text = this.user.Email;
                 txtDireccion.Text = this.user.Direccion;
                 txtNacimiento.Text = this.user.NacimientoString;
+                txtMonto.Text = this.reserva.Monto.ToString();
+                this.reinicializarComboBox();
             }
+        }
+
+        //--Reinicio el comboBox(selector de medio de pago)
+        private void reinicializarComboBox()
+        {
+            CBMetodo.Items.Clear();
+            CBMetodo.SelectedIndex = -1;
+            List<KeyValuePair<int, string>> medios = new List<KeyValuePair<int, string>>();
+            foreach (DataRow fila in medioDePago.Rows)
+            {
+                int id = Int32.Parse(fila[0].ToString());
+                string func = fila[1].ToString();
+                medios.Add(new KeyValuePair<int, string>(id, func));
+            }
+            CBMetodo.DisplayMember = "Value";
+            CBMetodo.ValueMember = "Key";
+            medios.ForEach(f => CBMetodo.Items.Add(f));
         }
 
         //-- limpio errores, datos de usuario y de pago
@@ -60,13 +92,19 @@ namespace FrbaCrucero.PagoReserva
             txtReserva.Text = "";
             this.limpiarErrores();
             this.limpiarDatosDeCliente();
-            //this.limpiarDatosDePago();
+            this.limpiarDatosDePago();
         }
 
         //--Limpio los datos ingresados de pago
         private void limpiarDatosDePago()
         {
-            throw new NotImplementedException();
+            btnConfirmar.Enabled = false;
+            txtMonto.Text = "";
+            txtCuotas.Text = "";
+            txtCVV.Text = "";
+            txtTarjeta.Text = "";
+            CBMetodo.Items.Clear();
+            CBMetodo.SelectedIndex = -1;
         }
 
         //--Limpio los datos del cliente
@@ -95,9 +133,52 @@ namespace FrbaCrucero.PagoReserva
             this.limpiar();
         }
 
-        private void btnComprar_Click(object sender, EventArgs e)
+        private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            
+            if (this.noHayErroresEnPago())
+            { 
+
+            }
+        }
+
+        //--Verifico que todos los datos en la forma de pago esten y que sean correctos
+        private bool noHayErroresEnPago()
+        {
+            if (CBMetodo.SelectedItem == null)
+            {
+                this.mostrarErrores(lblErrorPago, "Debe seleccionar un metodo de pago");
+                return false;
+            }
+            else
+            {
+                KeyValuePair<int, string> metodoSeleccionado = (KeyValuePair<int, string>)CBMetodo.SelectedItem;
+                if (metodoSeleccionado.Value == "Debito")
+                {
+                    if (!this.isIntNumber(txtCuotas))
+                    {
+                        this.mostrarErrores(lblErrorPago, "El campo cuotas debe ser un entero mayor a 0");
+                        return false;
+                    }
+                    else if (!this.isIntNumber(txtTarjeta))
+                    {
+                        this.mostrarErrores(lblErrorPago, "El nro de tarjeta debe ser un entero mayor a 0");
+                        return false;
+                    }
+                    else if (!this.isIntNumber(txtCVV))
+                    {
+                        this.mostrarErrores(lblErrorPago, "El CVV debe ser un entero mayor a 0");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         //--Verifico que el codigo de reserva sea un nro positivo, que exista, que no haya vencido y que no haya sido pagado
@@ -137,6 +218,27 @@ namespace FrbaCrucero.PagoReserva
             int parsedValue;
             string contenido = campo.Text;
             return int.TryParse(contenido, out parsedValue) && parsedValue > 0;
+        }
+
+        private void CBMetodo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CBMetodo.SelectedItem == null) return;
+            KeyValuePair<int, string> metodoSeleccionado = (KeyValuePair<int, string>)CBMetodo.SelectedItem;
+            if (metodoSeleccionado.Value == "Efectivo")
+            {
+                txtCuotas.Text = "";
+                txtCuotas.ReadOnly = true;
+                txtCVV.Text = "";
+                txtCVV.ReadOnly = true;
+                txtTarjeta.Text = "";
+                txtTarjeta.ReadOnly = true;
+            }
+            else
+            {
+                txtCuotas.ReadOnly = false;
+                txtCVV.ReadOnly = false;
+                txtTarjeta.ReadOnly = false;
+            }
         }
     }
 }

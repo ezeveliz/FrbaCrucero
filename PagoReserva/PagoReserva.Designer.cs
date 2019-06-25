@@ -50,20 +50,20 @@
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
-            this.btnComprar = new System.Windows.Forms.Button();
+            this.btnConfirmar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.lblErrorPago = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.lblCVV = new System.Windows.Forms.Label();
+            this.txtCVV = new System.Windows.Forms.TextBox();
+            this.lblTarjeta = new System.Windows.Forms.Label();
+            this.txtTarjeta = new System.Windows.Forms.TextBox();
+            this.lblCuotas = new System.Windows.Forms.Label();
+            this.txtCuotas = new System.Windows.Forms.TextBox();
+            this.lblMonto = new System.Windows.Forms.Label();
+            this.txtMonto = new System.Windows.Forms.TextBox();
+            this.lblMetodo = new System.Windows.Forms.Label();
+            this.CBMetodo = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -286,17 +286,18 @@
             this.txtNombre.Size = new System.Drawing.Size(100, 20);
             this.txtNombre.TabIndex = 0;
             // 
-            // btnComprar
+            // btnConfirmar
             // 
-            this.btnComprar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnComprar.Location = new System.Drawing.Point(330, 478);
-            this.btnComprar.Margin = new System.Windows.Forms.Padding(2);
-            this.btnComprar.Name = "btnComprar";
-            this.btnComprar.Size = new System.Drawing.Size(151, 39);
-            this.btnComprar.TabIndex = 21;
-            this.btnComprar.Text = "Comprar";
-            this.btnComprar.UseVisualStyleBackColor = false;
-            this.btnComprar.Click += new System.EventHandler(this.btnComprar_Click);
+            this.btnConfirmar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnConfirmar.Enabled = false;
+            this.btnConfirmar.Location = new System.Drawing.Point(330, 478);
+            this.btnConfirmar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnConfirmar.Name = "btnConfirmar";
+            this.btnConfirmar.Size = new System.Drawing.Size(151, 39);
+            this.btnConfirmar.TabIndex = 21;
+            this.btnConfirmar.Text = "Confirmar";
+            this.btnConfirmar.UseVisualStyleBackColor = false;
+            this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
             // 
             // btnLimpiar
             // 
@@ -313,16 +314,16 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lblErrorPago);
-            this.groupBox3.Controls.Add(this.label13);
-            this.groupBox3.Controls.Add(this.textBox12);
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.textBox11);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.textBox10);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.textBox6);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.comboBox1);
+            this.groupBox3.Controls.Add(this.lblCVV);
+            this.groupBox3.Controls.Add(this.txtCVV);
+            this.groupBox3.Controls.Add(this.lblTarjeta);
+            this.groupBox3.Controls.Add(this.txtTarjeta);
+            this.groupBox3.Controls.Add(this.lblCuotas);
+            this.groupBox3.Controls.Add(this.txtCuotas);
+            this.groupBox3.Controls.Add(this.lblMonto);
+            this.groupBox3.Controls.Add(this.txtMonto);
+            this.groupBox3.Controls.Add(this.lblMetodo);
+            this.groupBox3.Controls.Add(this.CBMetodo);
             this.groupBox3.Location = new System.Drawing.Point(13, 311);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(468, 162);
@@ -335,93 +336,95 @@
             this.lblErrorPago.AutoSize = true;
             this.lblErrorPago.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblErrorPago.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorPago.Location = new System.Drawing.Point(25, 136);
+            this.lblErrorPago.Location = new System.Drawing.Point(6, 143);
             this.lblErrorPago.Name = "lblErrorPago";
             this.lblErrorPago.Size = new System.Drawing.Size(42, 16);
             this.lblErrorPago.TabIndex = 10;
             this.lblErrorPago.Text = "Error";
             this.lblErrorPago.Visible = false;
             // 
-            // label13
+            // lblCVV
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(272, 87);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 9;
-            this.label13.Text = "label13";
+            this.lblCVV.AutoSize = true;
+            this.lblCVV.Location = new System.Drawing.Point(272, 87);
+            this.lblCVV.Name = "lblCVV";
+            this.lblCVV.Size = new System.Drawing.Size(28, 13);
+            this.lblCVV.TabIndex = 9;
+            this.lblCVV.Text = "CVV";
             // 
-            // textBox12
+            // txtCVV
             // 
-            this.textBox12.Location = new System.Drawing.Point(272, 108);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(69, 20);
-            this.textBox12.TabIndex = 8;
+            this.txtCVV.Location = new System.Drawing.Point(272, 108);
+            this.txtCVV.Name = "txtCVV";
+            this.txtCVV.Size = new System.Drawing.Size(69, 20);
+            this.txtCVV.TabIndex = 8;
             // 
-            // label12
+            // lblTarjeta
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(99, 87);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(41, 13);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "label12";
+            this.lblTarjeta.AutoSize = true;
+            this.lblTarjeta.Location = new System.Drawing.Point(99, 87);
+            this.lblTarjeta.Name = "lblTarjeta";
+            this.lblTarjeta.Size = new System.Drawing.Size(75, 13);
+            this.lblTarjeta.TabIndex = 7;
+            this.lblTarjeta.Text = "Nro de Tarjeta";
             // 
-            // textBox11
+            // txtTarjeta
             // 
-            this.textBox11.Location = new System.Drawing.Point(99, 108);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(136, 20);
-            this.textBox11.TabIndex = 6;
+            this.txtTarjeta.Location = new System.Drawing.Point(99, 108);
+            this.txtTarjeta.Name = "txtTarjeta";
+            this.txtTarjeta.Size = new System.Drawing.Size(136, 20);
+            this.txtTarjeta.TabIndex = 6;
             // 
-            // label11
+            // lblCuotas
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(346, 29);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 13);
-            this.label11.TabIndex = 5;
-            this.label11.Text = "label11";
+            this.lblCuotas.AutoSize = true;
+            this.lblCuotas.Location = new System.Drawing.Point(346, 29);
+            this.lblCuotas.Name = "lblCuotas";
+            this.lblCuotas.Size = new System.Drawing.Size(40, 13);
+            this.lblCuotas.TabIndex = 5;
+            this.lblCuotas.Text = "Cuotas";
             // 
-            // textBox10
+            // txtCuotas
             // 
-            this.textBox10.Location = new System.Drawing.Point(346, 50);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(100, 20);
-            this.textBox10.TabIndex = 4;
+            this.txtCuotas.Location = new System.Drawing.Point(346, 50);
+            this.txtCuotas.Name = "txtCuotas";
+            this.txtCuotas.Size = new System.Drawing.Size(100, 20);
+            this.txtCuotas.TabIndex = 4;
             // 
-            // label10
+            // lblMonto
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(197, 29);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 13);
-            this.label10.TabIndex = 3;
-            this.label10.Text = "label10";
+            this.lblMonto.AutoSize = true;
+            this.lblMonto.Location = new System.Drawing.Point(197, 29);
+            this.lblMonto.Name = "lblMonto";
+            this.lblMonto.Size = new System.Drawing.Size(37, 13);
+            this.lblMonto.TabIndex = 3;
+            this.lblMonto.Text = "Monto";
             // 
-            // textBox6
+            // txtMonto
             // 
-            this.textBox6.Location = new System.Drawing.Point(197, 50);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 2;
+            this.txtMonto.Location = new System.Drawing.Point(197, 50);
+            this.txtMonto.Name = "txtMonto";
+            this.txtMonto.ReadOnly = true;
+            this.txtMonto.Size = new System.Drawing.Size(100, 20);
+            this.txtMonto.TabIndex = 2;
             // 
-            // label6
+            // lblMetodo
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(25, 29);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "label6";
+            this.lblMetodo.AutoSize = true;
+            this.lblMetodo.Location = new System.Drawing.Point(25, 29);
+            this.lblMetodo.Name = "lblMetodo";
+            this.lblMetodo.Size = new System.Drawing.Size(86, 13);
+            this.lblMetodo.TabIndex = 1;
+            this.lblMetodo.Text = "Metodo de Pago";
             // 
-            // comboBox1
+            // CBMetodo
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(25, 50);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 0;
+            this.CBMetodo.FormattingEnabled = true;
+            this.CBMetodo.Location = new System.Drawing.Point(25, 50);
+            this.CBMetodo.Name = "CBMetodo";
+            this.CBMetodo.Size = new System.Drawing.Size(121, 21);
+            this.CBMetodo.TabIndex = 0;
+            this.CBMetodo.SelectedIndexChanged += new System.EventHandler(this.CBMetodo_SelectedIndexChanged);
             // 
             // PagoReserva
             // 
@@ -430,7 +433,7 @@
             this.ClientSize = new System.Drawing.Size(492, 528);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnLimpiar);
-            this.Controls.Add(this.btnComprar);
+            this.Controls.Add(this.btnConfirmar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnVolver);
@@ -474,19 +477,19 @@
         private System.Windows.Forms.TextBox txtApellido;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.Button btnComprar;
+        private System.Windows.Forms.Button btnConfirmar;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox12;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label lblCVV;
+        private System.Windows.Forms.TextBox txtCVV;
+        private System.Windows.Forms.Label lblTarjeta;
+        private System.Windows.Forms.TextBox txtTarjeta;
+        private System.Windows.Forms.Label lblCuotas;
+        private System.Windows.Forms.TextBox txtCuotas;
+        private System.Windows.Forms.Label lblMonto;
+        private System.Windows.Forms.TextBox txtMonto;
+        private System.Windows.Forms.Label lblMetodo;
+        private System.Windows.Forms.ComboBox CBMetodo;
         private System.Windows.Forms.Label lblErrorPago;
     }
 }
