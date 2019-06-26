@@ -212,7 +212,6 @@ namespace FrbaCrucero.Clases
             return ConsultaListaFuncionalidades(getFuncionesProcedure);
         }
 
-
         public static List<Funcionalidad> funcionalidadesCliente()//Busca las funcionalidades de los clientes 
         {
             SqlCommand getFuncionesProcedure = createQuery("CONCORDIA.GetFuncionalidadesCliente");
@@ -441,17 +440,101 @@ namespace FrbaCrucero.Clases
         //--Este metodo da de baja las reservas de mas de 3 dias de antiguedad
         public static void verificarReservas()
         {
-            string limitDate = DateTime.Now.AddDays(-3).ToString("yyyy/mm/dd hh:mm:ss");
-
+            string limitDate = DateTime.Now.AddDays(-3).ToString("dd/MM/yyyy");
+            string queryString = "INSERT [GD1C2019].[CONCORDIA].[cancelacion_reserva] (rese_id, canc_descripcion) " +
+                                    "SELECT rese_id, 'Reserva expirada' FROM [GD1C2019].[CONCORDIA].[reserva] " +
+                                    "WHERE rese_creacion < CONVERT(datetime, @fecha, 103)";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@fecha", limitDate);
+            Database.executeCUDQuery(query);
         }
 
         #region PagoReserva
-        /*
-        public static Usuario getUsuarioFromReserva(string codReserva)
+
+        //--Persisto la reserva con efectivo
+        public static int pagarReservaConEfectivo(Reserva reserva)
         {
-            string queryString = "";
+            int idPasaje = Database.persistirPasaje(reserva, "efectivo");
+            Database.persistirCabinaPasaje(idPasaje, reserva);
+            Database.updateReservaStatus(reserva);
+            return idPasaje;
         }
-        */
+
+        //--Persisto la reserva con debito
+        public static int pagarReservaConDebito(Reserva reserva, string tarjeta)
+        {
+            int idPasaje = Database.persistirPasaje(reserva, "debito", Int32.Parse(tarjeta));
+            Database.persistirCabinaPasaje(idPasaje, reserva);
+            Database.updateReservaStatus(reserva);
+            return idPasaje;
+        }
+
+        //--Persisto la relacion cabina_pasaje
+        private static void persistirCabinaPasaje(int idPasaje, Reserva reserva)
+        {
+            List<Cabina> cabinas = reserva.Cabinas;
+            cabinas.ForEach(c =>
+            {
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[cabina_pasaje] (pasaje_id, cabina_id) VALUES(@idPasaje, @cabinaId)";
+                SqlCommand query = Database.createQuery(queryString);
+                query.Parameters.AddWithValue("@idPasaje", idPasaje);
+                query.Parameters.AddWithValue("@cabinaId", c.Id);
+                Database.executeCUDQuery(query);
+            });
+            
+        }
+
+        //--persisto el pasaje y retorno su id
+        private static int persistirPasaje(Reserva reserva, string tipo, int tarjeta = 0)
+        {
+            int idPasaje;
+            Database.open();
+            if (tipo == "efectivo")
+            {
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[pasaje] (viaj_id, usua_id, pasa_fecha_compra, medi_pago_id, pasa_precio) " +
+                                    "VALUES(@idViaje, @userId, CONVERT(datetime, @fecha, 103), @medioPago, @precio); SELECT SCOPE_IDENTITY();";
+                SqlCommand query = Database.createQuery(queryString);
+                query.CommandType = CommandType.Text;
+                {
+                    query.Parameters.AddWithValue("@idViaje", reserva.IdViaje);
+                    query.Parameters.AddWithValue("@userId", reserva.User.Id);
+                    query.Parameters.AddWithValue("@fecha", reserva.CreacionString);
+                    query.Parameters.AddWithValue("@medioPago", 2);
+                    query.Parameters.AddWithValue("@precio", (int)reserva.MontoTotal);
+                    //Get the inserted query
+                    idPasaje = Convert.ToInt32(query.ExecuteScalar());
+                }
+            }
+            else
+            {
+                string queryString = "INSERT [GD1C2019].[CONCORDIA].[pasaje] (viaj_id, usua_id, pasa_fecha_compra, medi_pago_id, pasa_cod_tajeta, pasa_precio) " +
+                                    "VALUES(@idViaje, @userId, CONVERT(datetime, @fecha, 103), @medioPago, @codTarjeta, @precio); SELECT SCOPE_IDENTITY();";
+                SqlCommand query = Database.createQuery(queryString);
+                query.CommandType = CommandType.Text;
+                {
+                    query.Parameters.AddWithValue("@idViaje", reserva.IdViaje);
+                    query.Parameters.AddWithValue("@userId", reserva.User.Id);
+                    query.Parameters.AddWithValue("@fecha", reserva.CreacionString);
+                    query.Parameters.AddWithValue("@medioPago", 1);
+                    query.Parameters.AddWithValue("@codTarjeta", tarjeta);
+                    query.Parameters.AddWithValue("@precio", (int)reserva.MontoTotal);
+                    //Get the inserted query
+                    idPasaje = Convert.ToInt32(query.ExecuteScalar());
+                }
+            }
+            Database.close();
+            return idPasaje;
+        }
+
+        //--Marco una reserva dada como pagada
+        private static void updateReservaStatus(Reserva reserva)
+        {
+            string queryString = "UPDATE [GD1C2019].[CONCORDIA].[reserva] SET rese_pagada = @pagada WHERE rese_id = @idReserva";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@pagada", 1);
+            query.Parameters.AddWithValue("@idReserva", reserva.Id);
+            Database.executeCUDQuery(query);
+        }
         #endregion
     }
 }

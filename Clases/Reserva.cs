@@ -18,7 +18,10 @@ namespace FrbaCrucero.Clases
         private int idViaje;
         private Usuario user;
         private DateTime creacion;
-        private int monto;
+        private int montoBase;
+        private List<Cabina> cabinas;
+        private float multiplicador = 1;
+        private float montoTotal;
 
         public int Id { get { return id; } }
         public bool EsValida { get { return esValida; } }
@@ -33,7 +36,8 @@ namespace FrbaCrucero.Clases
                 return creacion.ToString("d", culture);
             } 
         }
-        public int Monto { get { return monto; } }
+        public float MontoTotal { get { return montoTotal; } }
+        public List<Cabina> Cabinas { get { return cabinas; } } 
 
         public Reserva(string _id)
         {
@@ -46,7 +50,7 @@ namespace FrbaCrucero.Clases
             // Verificar de alguna manera que la reserva no haya sido pagada anteriormente
             string queryString = "SELECT viaj_id, usua_id, rese_creacion " +
                                 "FROM [GD1C2019].[CONCORDIA].[reserva] " +
-                                "WHERE rese_id = @idReserva AND rese_id != (SELECT pasa_id FROM [GD1C2019].[CONCORDIA].[cancelacion_reserva])";
+                                "WHERE rese_id = @idReserva AND rese_id NOT IN (SELECT rese_id FROM [GD1C2019].[CONCORDIA].[cancelacion_reserva]) AND rese_pagada != 1";
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@idReserva", _id);
             DataRow resultado = Database.getQueryRow(query);
@@ -60,12 +64,41 @@ namespace FrbaCrucero.Clases
                 CultureInfo culture = new CultureInfo("es-AR");
                 DateTime tempDate = Convert.ToDateTime(date, culture);
                 this.creacion = tempDate;
-                this.monto = this.getMOnto();
+                this.montoBase = this.getMOnto();
+                this.cabinas = this.getCabinas();
+                this.cabinas.ForEach(c =>
+                    {
+                        this.multiplicador *= c.Recargo;
+                    });
+                this.montoTotal = this.montoBase * this.multiplicador;
             }
             else
             {
                 this.esValida = false;
             }
+        }
+
+        //--Obtengo las cabinas de la reserva
+        private List<Cabina> getCabinas()
+        {
+            List<Cabina> cabinasReservadas = new List<Cabina>();
+            string queryString = "SELECT CR.cabina_id, TC.tipo_cabi_recargo, TC.tipo_cabi_descripcion " +
+                                "FROM [GD1C2019].CONCORDIA.cabina_reserva AS CR, GD1C2019.CONCORDIA.tipo_cabina AS TC, GD1C2019.CONCORDIA.cabina AS C " +
+                                "WHERE CR.reserva_id = @idReserva AND CR.cabina_id = C.cabi_id AND C.tipo_cabi_id = TC.tipo_cabi_id";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@idReserva", this.id);
+            DataTable table = Database.getQueryTable(query);
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows)
+                {
+                    int id = Int32.Parse(fila[0].ToString());
+                    float recargo = float.Parse(fila[1].ToString());
+                    string descripcion = fila[2].ToString();
+                    cabinasReservadas.Add(new Cabina(id, recargo, descripcion));
+                }
+            }
+            return cabinasReservadas;
         }
 
         private int getMOnto()

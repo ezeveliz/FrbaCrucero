@@ -64,7 +64,7 @@ namespace FrbaCrucero.PagoReserva
                 txtMail.Text = this.user.Email;
                 txtDireccion.Text = this.user.Direccion;
                 txtNacimiento.Text = this.user.NacimientoString;
-                txtMonto.Text = this.reserva.Monto.ToString();
+                txtMonto.Text = this.reserva.MontoTotal.ToString();
                 this.reinicializarComboBox();
             }
         }
@@ -137,8 +137,31 @@ namespace FrbaCrucero.PagoReserva
         {
             if (this.noHayErroresEnPago())
             { 
-
+                KeyValuePair<int, string> metodoSeleccionado = (KeyValuePair<int, string>)CBMetodo.SelectedItem;
+                int codPasaje;
+                if (metodoSeleccionado.Value == "Debito")
+                {
+                    codPasaje = this.pagarConDebito();
+                }
+                else
+                {
+                    codPasaje = this.pagarConEfectivo();
+                }
+                this.limpiar();
+                ventanaInformarExito("Su reserva ha sido pagada con exito, su codigo de pasaje es: " + codPasaje);
             }
+        }
+
+        //--Creo el pasaje y sus relaciones y retorno su id
+        private int pagarConEfectivo()
+        {
+            return Database.pagarReservaConEfectivo(this.reserva);
+        }
+
+        //--Creo el pasaje y sus relaciones y retorno su id
+        private int pagarConDebito()
+        {
+            return Database.pagarReservaConDebito(this.reserva, txtTarjeta.Text);
         }
 
         //--Verifico que todos los datos en la forma de pago esten y que sean correctos

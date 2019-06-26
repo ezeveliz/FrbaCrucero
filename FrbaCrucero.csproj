@@ -165,6 +165,7 @@
     <Compile Include="AbmUsuario\AbmUsuario.Designer.cs">
       <DependentUpon>AbmUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Clases\Cabina.cs" />
     <Compile Include="Clases\Crucero.cs" />
     <Compile Include="Clases\Logger.cs" />
     <Compile Include="Clases\Puerto.cs" />
