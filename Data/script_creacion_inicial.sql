@@ -5,17 +5,17 @@ GO
 	   Eliminacion de objetos prexistentes 
 ----------------------------------------------- */
 
-IF OBJECT_ID('CONCORDIA.compra_cabina','U') IS NOT NULL
-    DROP TABLE CONCORDIA.compra_cabina;
-
 IF OBJECT_ID('CONCORDIA.recorrido_tramo','U') IS NOT NULL
     DROP TABLE CONCORDIA.recorrido_tramo;
 
 IF OBJECT_ID('CONCORDIA.roles_funcionalidad','U') IS NOT NULL
     DROP TABLE CONCORDIA.roles_funcionalidad;
 
-IF OBJECT_ID('CONCORDIA.cancelacion','U') IS NOT NULL
-    DROP TABLE CONCORDIA.cancelacion;
+IF OBJECT_ID('CONCORDIA.cancelacion_pasaje','U') IS NOT NULL
+    DROP TABLE CONCORDIA.cancelacion_pasaje;
+
+IF OBJECT_ID('CONCORDIA.cancelacion_reserva','U') IS NOT NULL
+    DROP TABLE CONCORDIA.cancelacion_reserva;
 
 IF OBJECT_ID('CONCORDIA.crucero_fuera_servicio','U') IS NOT NULL
     DROP TABLE CONCORDIA.crucero_fuera_servicio;
@@ -47,6 +47,14 @@ IF OBJECT_ID('CONCORDIA.puerto','U') IS NOT NULL
 IF OBJECT_ID('CONCORDIA.cabina','U') IS NOT NULL
     DROP TABLE CONCORDIA.cabina;
 
+/*Estos 2 no estaban*/
+
+IF OBJECT_ID('CONCORDIA.cabina_pasaje','U') IS NOT NULL
+    DROP TABLE CONCORDIA.cabina_pasaje;
+
+IF OBJECT_ID('CONCORDIA.cabina_reserva','U') IS NOT NULL
+    DROP TABLE CONCORDIA.cabina_reserva;
+
 IF OBJECT_ID('CONCORDIA.crucero','U') IS NOT NULL
     DROP TABLE CONCORDIA.crucero; 
 
@@ -74,6 +82,51 @@ IF OBJECT_ID('CONCORDIA.GetFuncionalidadesUsuario') IS NOT NULL
 
 IF OBJECT_ID('CONCORDIA.GetFuncionalidadesCliente') IS NOT NULL
 	DROP PROCEDURE CONCORDIA.GetFuncionalidadesCliente
+
+IF OBJECT_ID('CONCORDIA.InsertCrucero') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.InsertCrucero
+
+IF OBJECT_ID('CONCORDIA.InsertarCabina') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.InsertarCabina
+
+IF OBJECT_ID('CONCORDIA.BajaCrucero') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.BajaCrucero
+
+IF OBJECT_ID('CONCORDIA.ObtenerIDCrucero') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.ObtenerIDCrucero
+
+IF OBJECT_ID('CONCORDIA.RemplazarCruceroFVU') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.RemplazarCruceroFVU
+
+IF OBJECT_ID('CONCORDIA.DesplazamientoDePasajes') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.DesplazamientoDePasajes
+
+IF OBJECT_ID('CONCORDIA.CancelacionDePasajes') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.CancelacionDePasajes
+
+IF OBJECT_ID('CONCORDIA.CancelacionDeTodosLosPasajes') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.CancelacionDeTodosLosPasajes
+
+IF OBJECT_ID('CONCORDIA.ModificarCrucero') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.ModificarCrucero
+
+IF OBJECT_ID('CONCORDIA.FueraServicioCrucero') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.FueraServicioCrucero
+
+IF OBJECT_ID('CONCORDIA.IdCruceroRemplazante') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.IdCruceroRemplazante
+	
+IF OBJECT_ID('CONCORDIA.GenerarViaje') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.GenerarViaje
+
+IF OBJECT_ID('CONCORDIA.ViajesDisponibles') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.ViajesDisponibles
+
+IF OBJECT_ID('CONCORDIA.crearPasaje') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.crearPasaje 
+
+IF OBJECT_ID('CONCORDIA.datosUsuario') IS NOT NULL
+	DROP PROCEDURE CONCORDIA.datosUsuario
 
 IF EXISTS (SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'CONCORDIA')
     DROP SCHEMA CONCORDIA
@@ -140,6 +193,7 @@ reco_inhabilitado tinyint DEFAULT 0)
 CREATE TABLE CONCORDIA.recorrido_tramo(
 reco_id INT REFERENCES CONCORDIA.recorrido,
 tram_id SMALLINT REFERENCES CONCORDIA.tramo,
+orden TINYINT DEFAULT 1
 PRIMARY KEY (reco_id,tram_id))
 
 CREATE TABLE CONCORDIA.fabricante(
@@ -163,10 +217,9 @@ cfs_fecha_alta DATETIME)
  
 CREATE TABLE CONCORDIA.crucero_fin_vida_util(
 cfvu_id smallint PRIMARY KEY IDENTITY(1,1),
-cruc_id SMALLINT REFERENCES CONCORDIA.crucero,
+cruc_id SMALLINT UNIQUE REFERENCES CONCORDIA.crucero,
 cfvu_motivo varchar(50),
-cfvu_fecha_baja DATETIME,
-cfvu_fecha_alta DATETIME)
+cfvu_fecha_baja DATETIME)
 
 CREATE TABLE CONCORDIA.tipo_cabina(
 tipo_cabi_id SMALLINT PRIMARY KEY IDENTITY(1,1),
@@ -177,7 +230,6 @@ CREATE TABLE CONCORDIA.cabina(
 cabi_id int PRIMARY KEY IDENTITY(1,1),
 cruc_id SMALLINT REFERENCES CONCORDIA.crucero,
 tipo_cabi_id SMALLINT REFERENCES CONCORDIA.tipo_cabina,
-cabi_estado TINYINT DEFAULT 0,
 cabi_piso decimal(2,0),
 cabi_nro decimal(3,0))
 
@@ -195,8 +247,10 @@ rese_id INT PRIMARY KEY IDENTITY(1,1),
 rese_codViejo INT DEFAULT NULL,
 viaj_id SMALLINT REFERENCES CONCORDIA.viaje NOT NULL,
 usua_id INT REFERENCES CONCORDIA.usuario NOT NULL,
-cabi_id INT REFERENCES CONCORDIA.cabina NOT NULL,
-rese_cant_pasajeros DECIMAL(2,0) NOT NULL,
+--Esto tiene que ir en la tabla reserva_cabina
+--cabi_id INT REFERENCES CONCORDIA.cabina NOT NULL,
+--Indica si la reserva fue pagada
+rese_pagada TINYINT DEFAULT 0,
 rese_creacion DATETIME DEFAULT GETDATE())
 
 CREATE TABLE CONCORDIA.medio_pago(
@@ -208,23 +262,39 @@ pasa_id INT PRIMARY KEY IDENTITY(1,1),
 pasa_codviejo INT DEFAULT NULL,
 viaj_id SMALLINT REFERENCES CONCORDIA.viaje NOT NULL,
 usua_id INT REFERENCES CONCORDIA.usuario NOT NULL,
-pasa_cant_pasajeros DECIMAL(2,0) NOT NULL,
 pasa_fecha_compra DATETIME NOT NULL DEFAULT GETDATE(),
 medi_pago_id SMALLINT NOT NULL REFERENCES CONCORDIA.medio_pago,
-cabi_id INT REFERENCES CONCORDIA.cabina,
+--Esto tiene que ir en la tabla pasaje_cabina
+--cabi_id INT REFERENCES CONCORDIA.cabina,
 pasa_cod_tajeta DECIMAL(10),
 pasa_precio SMALLINT NOT NULL,
 pasa_cancelado TINYINT DEFAULT 0)
 
-CREATE TABLE CONCORDIA.cancelacion(
-canc_id SMALLINT PRIMARY KEY IDENTITY(1,1),
-pasa_id INT REFERENCES CONCORDIA.pasaje,
-canc_descripcion varchar(50))
+CREATE TABLE CONCORDIA.cancelacion_reserva(
+--Una reserva no se puede cncelar 2 veces por lo que no hace falta una PK Propia, podemos usar la de la reserva
+--canc_id SMALLINT PRIMARY KEY IDENTITY(1,1),
+rese_id INT REFERENCES CONCORDIA.reserva,
+canc_descripcion varchar(50)
+PRIMARY KEY(rese_id))
 
-CREATE TABLE CONCORDIA.compra_cabina(
+CREATE TABLE CONCORDIA.cancelacion_pasaje(
+--Un pasaje no se puede cncelar 2 veces por lo que no hace falta una PK Propia, podemos usar la del pasaje
+--canc_id SMALLINT PRIMARY KEY IDENTITY(1,1),
+pasa_id INT REFERENCES CONCORDIA.pasaje,
+canc_descripcion varchar(50)
+PRIMARY KEY(pasa_id))
+
+CREATE TABLE CONCORDIA.cabina_pasaje(
 pasaje_id  iNT REFERENCES CONCORDIA.pasaje,
 cabina_id INT REFERENCES CONCORDIA.cabina,
 PRIMARY KEY( pasaje_id, cabina_id))
+
+CREATE TABLE CONCORDIA.cabina_reserva(
+--Este nombre es mas representativo
+reserva_id  INT REFERENCES CONCORDIA.reserva,
+--pasaje_id  iNT REFERENCES CONCORDIA.reserva,
+cabina_id INT REFERENCES CONCORDIA.cabina,
+PRIMARY KEY( reserva_id, cabina_id))
 
 use GD1C2019;
 GO
@@ -235,17 +305,19 @@ GO
 	
 /* Ingreso los roles en la tabla roles */
 INSERT INTO CONCORDIA.roles (rol_descripcion)
-	VALUES ('Administrativo'),
-		   ('Cliente');
+	VALUES ('administrador'),
+		   ('cliente');
 
 /* Ingresa las funcionalidades */
 INSERT INTO CONCORDIA.funcionalidad(func_descripcion)
-	VALUES ('ABMRol'),
-		   ('ABMusuario'),
-		   ('ABMPuerto'),
-		   ('ABMrecorrido'),
-		   ('ABMCrucero'),
-		   ('CompraPasajes')
+	VALUES ('ABM Rol'),
+		   ('ABM Usuario'),
+		   ('ABM Puerto'),
+		   ('ABM Recorrido'),
+		   ('ABM Crucero'),
+		   ('Compra/reserva pasajes'),
+		   ('Pago reserva'),
+		   ('Listado estadistico')
 
 INSERT INTO CONCORDIA.roles_funcionalidad(rol_id,func_id)
 	VALUES (1,1),
@@ -253,7 +325,11 @@ INSERT INTO CONCORDIA.roles_funcionalidad(rol_id,func_id)
 	       (1,3),
  	       (1,4),
 	       (1,5),
-		   (2,6)
+		   (1,6),
+		   (1,7),
+		   (1,8),
+		   (2,6),
+		   (2,7)
 
 /* Genero una contraseña para el usuario admin */
 DECLARE @SHA2_25 VARBINARY(225)
@@ -318,7 +394,7 @@ INSERT INTO CONCORDIA.cabina( cabi_nro, cabi_piso,  cruc_id, tipo_cabi_id)
 
 
 /* CREO UNA TABLA TEMPORAL DONDE INCORPORO LOS ID DE PUERTOS RECORRIDOS Y CRUCEROS */
-CREATE TABLE #TEMP1(
+CREATE TABLE #TEMP2(
 	TEMP_ID INT PRIMARY KEY IDENTITY(1,1),
 	usua_id INT,
 	fecha_salida datetime,
@@ -338,7 +414,7 @@ CREATE TABLE #TEMP1(
 	 )
 
 /* Ingreso los datos en la tabla temporal */
-INSERT INTO #TEMP1( usua_id ,fecha_salida ,fecha_llegada, fecha_llegada_estimada, pasaje_codigo, PASAJE_FECHA_COMPRA, recorrido_id , crucero_id, RESERVA_CODIGO, RESERV_FECHA, PASAJE_PRECIO, cabina_nro, cabina_piso, puerto_desde, puerto_hasta)
+INSERT INTO #TEMP2( usua_id ,fecha_salida ,fecha_llegada, fecha_llegada_estimada, pasaje_codigo, PASAJE_FECHA_COMPRA, recorrido_id , crucero_id, RESERVA_CODIGO, RESERV_FECHA, PASAJE_PRECIO, cabina_nro, cabina_piso, puerto_desde, puerto_hasta)
 	SELECT U.usua_id, M.FECHA_SALIDA, M.FECHA_LLEGADA, M.FECHA_LLEGADA_ESTIMADA, M.PASAJE_CODIGO, M.PASAJE_FECHA_COMPRA, R.reco_id, C.cruc_id, M.RESERVA_CODIGO, M.RESERVA_FECHA, M.PASAJE_PRECIO, M.CABINA_NRO, M.CABINA_PISO, D.puer_id, h.puer_id
 	from gd_esquema.Maestra M
 	join CONCORDIA.crucero C on M.CRUCERO_IDENTIFICADOR = C.cruc_identificador 
@@ -350,31 +426,54 @@ INSERT INTO #TEMP1( usua_id ,fecha_salida ,fecha_llegada, fecha_llegada_estimada
 /* Ingreso los datos en la tabla viajes */
 INSERT INTO CONCORDIA.viaje(reco_id, viaj_salida, viaj_llegada, viaj_llegada_estimada, cruc_id)	
 	select DISTINCT  M.recorrido_id, M.fecha_salida, M.fecha_llegada, M.fecha_llegada_estimada, M.crucero_id
-	from #TEMP1 M
+	from #TEMP2 M
 
-/* Ingreso los datos en la tabla recorridos_tramo */
+/* Ingreso los datos en la tabla recorridos_tramo */ 
 INSERT INTO CONCORDIA.recorrido_tramo(reco_id, tram_id)
 	SELECT DISTINCT M.recorrido_id, T.tram_id 
-	FROM #TEMP1 M
+	FROM #TEMP2 M /*ver como agregarle orden*/ 
 	JOIN CONCORDIA.tramo T ON T.puer_id_inicio = M.puerto_desde AND T.puer_id_fin = M.puerto_hasta 
 
+
+	/*QUITO CABI_ID DE LA RESERVA Y EL PASAJE Y CARGO LA TABLA CABINA_PASAJE Y CABINA_RESERVA */
+
+
 /* Ingreso los datos en la tabla pasajes */
-INSERT INTO CONCORDIA.pasaje (pasa_codviejo, viaj_id, usua_id, pasa_cant_pasajeros, pasa_fecha_compra, medi_pago_id, pasa_precio, cabi_id )
-	SELECT DISTINCT  M.PASAJE_CODIGO,V.viaj_id, M.usua_id, '1' , M.PASAJE_FECHA_COMPRA, '1', M.PASAJE_PRECIO, C.cabi_id 
-	FROM #TEMP1 M
+INSERT INTO CONCORDIA.pasaje (pasa_codviejo, viaj_id, usua_id, pasa_fecha_compra, medi_pago_id, pasa_precio)
+	SELECT DISTINCT  M.PASAJE_CODIGO,V.viaj_id, M.usua_id , M.PASAJE_FECHA_COMPRA, '1', M.PASAJE_PRECIO
+	FROM #TEMP2 M
 	JOIN CONCORDIA.cabina C ON M.cabina_nro = C.cabi_nro AND M.cabina_piso = C.cabi_piso AND M.crucero_id = C.cruc_id
 	JOIN CONCORDIA.viaje v ON M.fecha_llegada  = V.viaj_llegada AND M.fecha_salida = V.viaj_salida AND M.recorrido_id = V.reco_id
 	WHERE PASAJE_CODIGO IS NOT NULL 
 
 /* Ingreso los datos en la tabla reserva */
-INSERT INTO CONCORDIA.reserva( rese_codviejo, viaj_id , usua_id, rese_creacion, rese_cant_pasajeros, cabi_id )
-	SELECT DISTINCT  M.RESERVA_CODIGO, V.viaj_id, M.usua_id, M.RESERV_FECHA, '1', C.cabi_id
-	FROM #TEMP1 M
+INSERT INTO CONCORDIA.reserva( rese_codviejo, viaj_id , usua_id, rese_creacion )
+	SELECT DISTINCT  M.RESERVA_CODIGO, V.viaj_id, M.usua_id, M.RESERV_FECHA
+	FROM #TEMP2 M
 	JOIN CONCORDIA.cabina C ON M.cabina_nro = C.cabi_nro AND M.cabina_piso = C.cabi_piso AND M.crucero_id = C.cruc_id
 	JOIN CONCORDIA.viaje v ON M.fecha_llegada  = V.viaj_llegada AND M.fecha_salida = V.viaj_salida AND M.recorrido_id = V.reco_id
 	WHERE RESERVA_CODIGO IS NOT NULL 
 
-    DROP TABLE #TEMP1;
+    DROP TABLE #TEMP2;
+
+/* Ingreso los datos en la tabla cabina_pasaje */
+INSERT INTO CONCORDIA.cabina_pasaje( pasaje_id, cabina_id)
+	SELECT DISTINCT P.pasa_id, C.cabi_id
+	FROM CONCORDIA.pasaje P
+	JOIN gd_esquema.Maestra M ON P.pasa_codviejo = M.PASAJE_CODIGO 
+	JOIN CONCORDIA.cabina AS C ON M.cabina_nro = C.cabi_nro AND M.cabina_piso = C.cabi_piso
+	join CONCORDIA.crucero CR on M.CRUCERO_IDENTIFICADOR = CR.cruc_identificador AND CR.cruc_id = C.cruc_id
+	WHERE PASAJE_CODIGO IS NOT NULL
+
+/* Ingreso los datos en la tabla cabina_reserva */
+INSERT INTO  [GD1C2019].[CONCORDIA].cabina_reserva( reserva_id, cabina_id)
+	SELECT DISTINCT R.rese_id, C.cabi_id
+	FROM  [GD1C2019].[CONCORDIA].reserva R
+	JOIN  [GD1C2019].gd_esquema.Maestra M ON R.rese_codviejo = M.RESERVA_CODIGO 
+	JOIN  [GD1C2019].[CONCORDIA].cabina AS C ON M.cabina_nro = C.cabi_nro AND M.cabina_piso = C.cabi_piso
+	join  [GD1C2019].[CONCORDIA].crucero CR on M.CRUCERO_IDENTIFICADOR = CR.cruc_identificador AND CR.cruc_id = C.cruc_id
+	WHERE RESERVA_CODIGO IS NOT NULL
+
 go
 /* --------------------------------------------
          Creacion de Store Procedues 				
@@ -452,6 +551,7 @@ GO
 USE GD1C2019;
 GO
 
+
 CREATE PROCEDURE CONCORDIA.InsertCrucero (@identificador varchar(50), @modelo varchar(50), @fabricante_id int, @fecha_alta varchar(50))
 AS 
  BEGIN
@@ -488,20 +588,135 @@ GO
 
 /************* Baja de cruceros *******************/
 
-CREATE PROCEDURE CONCORDIA.RemplazarCruceroFVU(@identificador_crucero varchar(20))
+CREATE PROCEDURE CONCORDIA.BajaCrucero (@cruc_id int, @motivo varchar(50)) 
 AS 
 	BEGIN 
-		DECLARE @id_crucero int = (SELECT cruc_id FROM CONCORDIA.crucero WHERE cruc_identificador = @identificador_crucero)
-		DECLARE @fechaHoy date = CONVERT (date, GETDATE())  
+		UPDATE CONCORDIA.crucero SET cruc_inhabilitado = '1'
+		FROM CONCORDIA.crucero
+		WHERE cruc_id = @cruc_id
+	END
+	BEGIN 
+		INSERT INTO CONCORDIA.crucero_fin_vida_util (cruc_id,cfvu_motivo,cfvu_fecha_baja)
+		VALUES (@cruc_id, @motivo, CONVERT(DATE, GETDATE()))
+	END
+	
+GO
 
-		SELECT P.viaj_id
-		FROM CONCORDIA.pasaje p
-		JOIN CONCORDIA.viaje V ON P.viaj_id = V.viaj_id
-		WHERE  v.cruc_id = @id_crucero AND v.viaj_salida > @fechaHoy
-		 
+CREATE PROCEDURE CONCORDIA.FueraServicioCrucero (@cruc_id int, @motivo varchar(50), @fecha_alta varchar(20)) 
+AS 
+	BEGIN 
+		UPDATE CONCORDIA.crucero SET cruc_inhabilitado = '1'
+		FROM CONCORDIA.crucero
+		WHERE cruc_id = @cruc_id
+	END
+	BEGIN 
+		INSERT INTO CONCORDIA.crucero_fuera_servicio (cruc_id,cfs_motivo,cfs_fecha_baja,cfs_fecha_alta)
+		VALUES (@cruc_id, @motivo, CONVERT(DATE, GETDATE()),CONVERT(DATE,@fecha_alta) )
+	END		
+GO
+
+CREATE PROCEDURE CONCORDIA.ObtenerIDCrucero(@identificador varchar(50))
+AS	
+	BEGIN 
+		DECLARE @RESULTADO int 
+		DECLARE @cruceroExistente int
+		SET @cruceroExistente = (SELECT cruc_id FROM CONCORDIA.crucero where cruc_identificador = @identificador and cruc_inhabilitado = '0') 
 		
+		IF(@cruceroExistente is null )
+			SET @RESULTADO = -1
+		ELSE 
+			SET @RESULTADO = @cruceroExistente
+
+		RETURN @RESULTADO
 	END
 GO
+	
+CREATE PROCEDURE CONCORDIA.RemplazarCruceroFVU(@cruc_id int, @cruc_id_remplazante int)
+AS 
+	BEGIN 
+		UPDATE CONCORDIA.viaje SET cruc_id = @cruc_id_remplazante
+		WHERE cruc_id = @cruc_id AND viaj_salida > GETDATE()
+				
+	END
+GO
+
+CREATE PROCEDURE CONCORDIA.IdCruceroRemplazante (@cruc_id int)
+AS	
+	BEGIN 
+				
+		CREATE TABLE #TEMP_NO_REMPLZANATES(
+			id int identity(1,1) primary key,
+			cruc_id int)
+
+		DECLARE @fechaDesde date = getdate();
+		DECLARE @remplazo_id int 
+
+		DECLARE @viajes TABLE
+			(viaj_id int,
+			 viaj_salida date,
+			 viaj_llegada date)
+
+		
+		/* Obtengo todos los viajes del crucero al que voy a remplazar */
+		INSERT INTO @viajes (viaj_id, viaj_salida, viaj_llegada)
+			SELECT viaj_id, viaj_salida, viaj_llegada
+			FROM CONCORDIA.viaje v
+			where cruc_id = @cruc_id and v.viaj_salida > convert(date,@fechaDesde)
+
+		DECLARE @FECHA_DESDE DATE
+		DECLARE @FECHA_HASTA DATE
+ 
+		DECLARE @count INT
+		SELECT @count = COUNT(*) FROM @viajes;
+
+		/*Hago una iteracion por cada viaje del crucero a remplzarar */
+		IF @count = 0 
+			SET @remplazo_id = 0 
+		ELSE 
+			BEGIN
+
+				WHILE  @count > 0
+					BEGIN
+					/* Seteo las fechas de inicio y fin del viaje al que voy a remplazar */
+					SET @FECHA_DESDE = (select top (1) viaj_salida from @viajes)
+					SET @FECHA_HASTA = (select top (1) viaj_llegada from @viajes)	
+
+					/* Inserto los cruceros que no cumplen con el criterio de remplazo */
+					INSERT INTO #TEMP_NO_REMPLZANATES (cruc_id)
+						SELECT V.cruc_id
+						FROM CONCORDIA.viaje v 
+						WHERE (convert(date,v.viaj_salida) between convert(date,@FECHA_DESDE)  and convert(date,@FECHA_HASTA) or
+							  convert(date,v.viaj_llegada) between convert(date,@FECHA_DESDE)  and  convert(date,@FECHA_HASTA)or
+							  convert(date,@FECHA_DESDE) < convert(date,v.viaj_salida) and convert(date,@FECHA_HASTA) > convert(date,v.viaj_llegada))
+					  
+								 /* Controlo que la cantidad de cabinas por clase sea igual en los dos crucero*/
+					 /* no se como agruparlos por cabinas */
+					 /* NOT EXISTS (
+					  (select c.cruc_id, c.tipo_cabi_id , COUNT(c.cabi_id) from CONCORDIA.cabina C where C.cruc_id = '7'  group by c.cruc_id ,c.tipo_cabi_id) 
+						EXCEPT
+					  (select  c.cruc_id,c.tipo_cabi_id, COUNT(c.cabi_id) from CONCORDIA.cabina C where C.cruc_id = V.cruc_id group by c.cruc_id ,c.tipo_cabi_id)
+					  ) */
+
+					DELETE TOP (1) FROM @viajes
+					SELECT @count = COUNT(*) FROM @viajes;
+					END
+
+				/*Hago una consulta si existe algun crucero no exista en la tabla no remplazantes y tomo el primero */
+				SET @remplazo_id = (select TOP (1) c.cruc_id from CONCORDIA.crucero C where cruc_id NOT IN (SELECT T.cruc_id FROM #TEMP_NO_REMPLZANATES T group by T.cruc_id) AND c.cruc_inhabilitado = 0)
+		
+				/* si no existe ninguno lo seteo en -1*/
+				IF(@remplazo_id IS NULL) 
+					SET @remplazo_id = -1
+
+			END
+				DROP TABLE #TEMP_NO_REMPLZANATES
+
+		END 
+
+	RETURN @remplazo_id
+GO 
+
+
 
 CREATE PROCEDURE CONCORDIA.DesplazamientoDePasajes(@cruc_id int, @cant_dias int , @fecha_hasta date)
 AS
@@ -515,31 +730,208 @@ AS
 	END
 GO
 
-CREATE PROCEDURE CONCORDIA.CancelacionDePasajes (@cruc_id int, @motivo varchar(50),@fecha_desde date)
+CREATE PROCEDURE CONCORDIA.CancelacionDePasajes (@cruc_id int, @motivo varchar(50),@fecha_hasta varchar(50))
 AS	
 	BEGIN 
 
-		UPDATE pasaje SET pasa_cancelado = '1' 
+		UPDATE PASAJE SET pasa_cancelado = '1' 
 		FROM CONCORDIA.pasaje P
 		JOIN CONCORDIA.viaje V ON P.viaj_id = V.viaj_id
-		WHERE V.viaj_salida > @fecha_desde AND V.cruc_id = @cruc_id
+		WHERE V.viaj_salida BETWEEN  Convert(date,GETDATE()) AND Convert(date,@fecha_hasta) AND V.cruc_id = @cruc_id
 
-		INSERT INTO CONCORDIA.cancelacion (pasa_id, canc_descripcion)
+		INSERT INTO CONCORDIA.cancelacion_pasaje(pasa_id, canc_descripcion)
 			SELECT pasa_id, @motivo       
 			FROM CONCORDIA.pasaje P
 			JOIN CONCORDIA.viaje V on V.viaj_id = P.viaj_id 
-			WHERE V.viaj_salida > @fecha_desde AND V.cruc_id = @cruc_id
+			WHERE V.viaj_salida BETWEEN Convert(date,GETDATE()) AND Convert(date,@fecha_hasta) AND V.cruc_id = @cruc_id
 
 	END
 GO
 
+CREATE PROCEDURE CONCORDIA.CancelacionDeTodosLosPasajes (@cruc_id int, @motivo varchar(50))
+AS	
+	BEGIN 
+		BEGIN
+			UPDATE PASAJE SET pasa_cancelado = '1' 
+			FROM CONCORDIA.pasaje P
+			JOIN CONCORDIA.viaje V ON P.viaj_id = V.viaj_id
+			WHERE V.viaj_salida >  Convert(date,GETDATE())  AND V.cruc_id = @cruc_id
+		END
+
+		BEGIN
+			INSERT INTO CONCORDIA.cancelacion_pasaje(pasa_id, canc_descripcion)
+				SELECT P.pasa_id, @motivo    
+				FROM CONCORDIA.pasaje P
+				JOIN CONCORDIA.viaje V on V.viaj_id = P.viaj_id 
+				WHERE V.viaj_salida > Convert(date,GETDATE())  AND  V.cruc_id = @cruc_id
+		END
+	END
+GO
+
+
 /**************** Modificacion Crucero **********************************/
 
-select *
-from CONCORDIA.crucero
-where cruc_identificador = 'que'
+CREATE PROCEDURE CONCORDIA.ModificarCrucero (@cruc_id int, @fabr_id int, @fecha_alta varchar(30))
+AS 
+	BEGIN 
+		UPDATE CONCORDIA.crucero 
+		SET fabr_id = @fabr_id, cruc_fecha_alta = CONVERT(DATE, @fecha_alta)
+		WHERE cruc_id = @crUc_id 
+	END
+GO
 
+
+/**************** Generacion de viajes **********************************/
+
+CREATE PROCEDURE CONCORDIA.GenerarViaje (@fech_inicio varchar(20), @fech_fin varchar(20), @cruc_id int, @reco_id int)
+AS  
+	DECLARE @RESULTADO INT
+	DECLARE @cruceroLibre INT
+
+	BEGIN 
+		SET @cruceroLibre = (SELECT V.viaj_id 
+						FROM CONCORDIA.viaje v 
+						WHERE (convert(date,v.viaj_salida) between convert(date,@fech_inicio)  and convert(date,@fech_fin) or
+							  convert(date,v.viaj_llegada) between convert(date,@fech_inicio)  and  convert(date,@fech_fin)or
+							  convert(date,@fech_inicio) < convert(date,v.viaj_salida) and convert(date,@fech_fin) > convert(date,v.viaj_llegada)  AND
+							  v.cruc_id = @cruc_id)) 
+		
+		IF (@cruceroLibre IS NULL)
+			BEGIN
+				INSERT INTO CONCORDIA.viaje (viaj_salida, viaj_llegada, viaj_llegada_estimada, cruc_id, reco_id)
+					VALUES (CONVERT(date,@fech_inicio), CONVERT(date,@fech_fin), CONVERT(date,@fech_fin), @cruc_id, @reco_id)
+			
+				SET @RESULTADO = (SELECT viaj_id FROM CONCORDIA.viaje WHERE viaj_salida = CONVERT(date,@fech_inicio) AND viaj_llegada = CONVERT(date,@fech_fin) AND cruc_id = @cruc_id)
+		
+			END
+		
+		ELSE 
+			BEGIN
+				SET @RESULTADO = '-1'
+			END
+	END
+	
+	RETURN @RESULTADO
+GO
+
+/******************** Compra/Reserva *********************/
+
+CREATE PROCEDURE CONCORDIA.ViajesDisponibles (@FECHA_BUSQUEDA VARCHAR(30), @PUERTO_INICIO INT, @PUERTO_FIN INT)
+AS
+	BEGIN
+
+		SELECT  V.viaj_id , V.cruc_id, C.cabi_id, C.cabi_nro, C.cabi_piso, CT.tipo_cabi_descripcion 
+		FROM CONCORDIA.viaje V
+		JOIN CONCORDIA.cabina C ON C.cruc_id = V.cruc_id
+		JOIN CONCORDIA.tipo_cabina CT ON C.tipo_cabi_id = ct.tipo_cabi_id 
+		JOIN CONCORDIA.recorrido R ON R.reco_id = V.reco_id
+		JOIN CONCORDIA.recorrido_tramo RT ON R.reco_id = RT.reco_id
+		JOIN CONCORDIA.tramo T ON RT.tram_id = T.tram_id
+		JOIN CONCORDIA.puerto PS ON PS.puer_id = T.puer_id_inicio AND RT.orden = '1'
+		JOIN CONCORDIA.puerto PF ON PF.puer_id = T.puer_id_fin AND RT.orden = (SELECT MAX(orden) FROM CONCORDIA.recorrido_tramo RTS WHERE RTS.reco_id = R.reco_id )
+		JOIN CONCORDIA.crucero CR ON CR.cruc_id = V.cruc_id
+		WHERE V.viaj_salida = CONVERT(DATE,@FECHA_BUSQUEDA) AND PS.puer_id = @PUERTO_INICIO AND PF.puer_id =@PUERTO_FIN AND CR.cruc_inhabilitado = '0'
+	
+	END
+GO
+
+CREATE PROCEDURE CONCORDIA.datosUsuario (@usua_dni int)
+AS 
+	BEGIN
+		SELECT TOP (1)  U.usua_email, U.usua_nombre, U.usua_apellido, U.usua_direccion, U.usua_fecha_nac, U.usua_telefono, U.usua_id
+		FROM CONCORDIA.usuario U
+		WHERE U.usua_dni = @usua_dni
+	END
+GO
+
+/*cabi_id ya no va mas en la tabla pajae, va en la de cabina_pasaje*/
+/*
+CREATE PROCEDURE CONCORDIA.crearPasaje (@viaj_id int,@usua_id int, @medi_pago_id int, @cabi_id int, @precio int )
+AS
+	BEGIN 
+/* Hay que crear tantos pasajes como cabinabas*/	
+		INSERT INTO CONCORDIA.pasaje (viaj_id, usua_id, pasa_fecha_compra, medi_pago_id, pasa_precio, cabi_id)
+		values (@viaj_id, @usua_id, GETDATE(), @medi_pago_id, @precio, @cabi_id)
+	
+	END
+GO 
+*/
+
+/*
+CREATE PROCEDURE CONCORDIA.insertPasaje ()
+AS
+	BEGIN
+
+	END
+GO
+
+
+INSERT INTO CONCORDIA.usuario (rol_id,usua_dni,usua_nombre,usua_apellido, usua_direccion, usua_fecha_nac, usua_telefono)
+	Values (1, '40464222', 'Emiliano',' Ortiz', 'juarez 3585', CONVERT(date,'1997/07/01'),'47550962')
+	
+	
+	SELECT medi_pago_tipo
+	FROM CONCORDIA.medio_pago
+	join CONCORDIA.recorrido_tramo r on r.reco_id =  v.reco_id
+	join CONCORDIA.tramo t on r.tram_id = t.tram_id
+
+	insert into CONCORDIA.tramo (puer_id_inicio,puer_id_fin,tram_precio)
+		values (1,2,450)
+
+	insert into CONCORDIA.recorrido_tramo(reco_id, tram_id)
+		values (46,89)
+		select *
+		from CONCORDIA.viaje v
+		join CONCORDIA.recorrido_tramo rt on v.reco_id = rt.reco_id
+		join CONCORDIA.tramo t on rt.tram_id = t.tram_id
+SELECT * 
+FROM CONCORDIA.viaje
+WHERE viaj_salida > GETDATE()
+SELECT *
+FROM CONCORDIA.crucero
+
+select * 
+from concordia.viaje v
+join CONCORDIA.crucero c on v.cruc_id = c.cruc_id
+where v.cruc_id = '2'
+
+
+select C.canc_id, C.canc_descripcion ,V.cruc_id
+from CONCORDIA.cancelacion c
+JOIN CONCORDIA.pasaje p ON c.pasa_id = p.pasa_id
+JOIN CONCORDIA.viaje V ON P.viaj_id = V.viaj_id
+
+DELETE FROM CONCORDIA.crucero_fuera_servicio WHERE cruc_id = '7'
+
+update CONCORDIA.viaje SET viaj_salida = CONVERT(DATE, '2019/09/09'), viaj_llegada = CONVERT(DATE, '2020/09/09')
+where viaj_id in (
+select p.viaj_id
+from CONCORDIA.pasaje P
+join CONCORDIA.viaje V on v.viaj_id = P.viaj_id
+group by p.viaj_id)
+
+SELECT *
+FROM CONCORDIA.fuera
+
+select *
+from CONCORDIA.cancelacion
+JOIN CONCORDIA.
+
+select *
+from CONCORDIA.crucero c
+JOIN CONCORDIA.viaje v ON V.cruc_id = C.cruc_id
+where v.cruc_id = '7'
+
+select P.pasa_id, P.viaj_id, V.cruc_id, C.canc_id
+FROM CONCORDIA.cancelacion C
+join CONCORDIA.pasaje P ON C.pasa_id = P.pasa_id
+JOIN CONCORDIA.viaje V ON P.viaj_id = V.viaj_id
+ORDER BY C.canc_id
+
+select *
+from CONCORDIA.funcionalidad
 select *
 from CONCORDIA.fabricante	
 select cruc_id, cruc_identificador, cruc_modelo, fabr_id, cruc_inhabilitado, cruc_fecha_alta from CONCORDIA.crucero where cruc_id like '%1%'
 select cruc_id, cruc_identificador, cruc_modelo, fabr_id, cruc_inhabilitado from CONCORDIA.crucero WHERE  cruc_id LIKE %1%
+*/
