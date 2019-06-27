@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -141,7 +143,26 @@ namespace FrbaCrucero.ListadoEstadistico
         //--Busco los recorridos con mas pasajes comprados
         private void buscarRecorridosConMasPasajesComprados()
         {
-            ventanaInformarExito("Buscar recorridos con mas pasajes comprados");
+            DataTable table = Database.recorridosConMasPasajesCompradosEn(anioSeleccionado, semestreSeleccionado);
+            List<KeyValuePair<int, int>> recorridos = new List<KeyValuePair<int, int>>();
+            List<string> row = new List<string>();
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows)
+                {
+                    int idRecorrido = Int32.Parse(fila[0].ToString());
+                    int cantDePasajes = Int32.Parse(fila[1].ToString());
+                    recorridos.Add(new KeyValuePair<int, int>(idRecorrido, cantDePasajes));
+                }
+
+                DGVDatos.Columns.Add("recorridoId", "Id de recorrido");
+                DGVDatos.Columns.Add("cantPasajes", "Cantidad de pasajes");
+
+                recorridos.ForEach(r =>
+                {
+                    DGVDatos.Rows.Add(r.Key, r.Value);
+                });
+            }
         }
 
         //--Busco los cruceros con mayor cantidad de dias fuera de servicio

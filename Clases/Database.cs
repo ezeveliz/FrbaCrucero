@@ -552,6 +552,31 @@ namespace FrbaCrucero.Clases
             return tempDate.Year;
         }
 
+        //--Obtengo los recorridos con mas pasajes vendidos en el año seleccionado y en el trimestre seleccionado
+        public static DataTable recorridosConMasPasajesCompradosEn(int anioSeleccionado, int semestreSeleccionado)
+        {
+            string queryString = "SELECT TOP 5 R.reco_id AS CodigoDeRecorrido, COUNT(*) AS CantDeViajes " +
+                    "FROM  GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, GD1C2019.CONCORDIA.pasaje AS P " +
+                    "WHERE R.reco_id = V.reco_id AND V.viaj_id = P.pasa_id AND " + 
+                    "DATEPART(YEAR, P.pasa_fecha_compra) = @year AND " + 
+                    "(DATEPART(QUARTER, P.pasa_fecha_compra) = @inicio OR DATEPART(QUARTER, P.pasa_fecha_compra) = @fin) " +
+                    "GROUP BY R.reco_id " +
+                    "ORDER BY COUNT(*) DESC";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@year", anioSeleccionado);
+            if (semestreSeleccionado == 1)
+            {
+                query.Parameters.AddWithValue("@inicio", 1);
+                query.Parameters.AddWithValue("@fin", 2);
+            }
+            else
+            {
+                query.Parameters.AddWithValue("@inicio", 3);
+                query.Parameters.AddWithValue("@fin", 4);
+            }
+            return Database.getQueryTable(query);
+        }
+
         #endregion
     }
 }
