@@ -577,6 +577,69 @@ namespace FrbaCrucero.Clases
             return Database.getQueryTable(query);
         }
 
+        public static DataTable crucerosConMasDiasDeBajaEn(int anioSeleccionado, int semestreSeleccionado)
+        {
+            string queryString = "SELECT TOP 5 C.cruc_id AS idCrucero, SUM(DATEDIFF(DAY, CFV.cfs_fecha_baja, CFV.cfs_fecha_alta)) AS diasDeBaja " +
+                            "FROM GD1C2019.CONCORDIA.crucero AS C, GD1C2019.CONCORDIA.crucero_fuera_servicio AS CFV " +
+                            "WHERE C.cruc_id = CFV.cruc_id AND " +
+                            "DATEPART(YEAR, CFV.cfs_fecha_baja) = @year AND " + 
+                            "(DATEPART(QUARTER, CFV.cfs_fecha_baja) = @inicio OR DATEPART(QUARTER, CFV.cfs_fecha_baja) = @fin) " +
+                            "GROUP BY C.cruc_id " +
+                            "ORDER BY diasDeBaja DESC";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@year", anioSeleccionado);
+            if (semestreSeleccionado == 1)
+            {
+                query.Parameters.AddWithValue("@inicio", 1);
+                query.Parameters.AddWithValue("@fin", 2);
+            }
+            else
+            {
+                query.Parameters.AddWithValue("@inicio", 3);
+                query.Parameters.AddWithValue("@fin", 4);
+            }
+            return Database.getQueryTable(query);
+        }
+
+        public static DataTable recorridosConMasCabinasLibresEnCadaViaje(int anioSeleccionado, int semestreSeleccionado)
+        {
+            string queryString = "SELECT TOP 5 R.reco_id AS CodigoDeRecorrido, " +
+						                                    "(SELECT COUNT(*) AS cantDeCabinas " +
+						                                    "FROM GD1C2019.CONCORDIA.recorrido AS R2, GD1C2019.CONCORDIA.viaje AS V, " +
+							                                    "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+						                                    "WHERE R2.reco_id = V.reco_id AND V.cruc_id = CR.cruc_id AND " + 
+							                                    "CR.cruc_id = CA.cruc_id AND R2.reco_id = R.reco_id AND " +
+							                                    "DATEPART(YEAR, V.viaj_salida) = @year AND " + 
+							                                    "(DATEPART(QUARTER, V.viaj_salida) = @inicio OR DATEPART(QUARTER, V.viaj_salida) = @fin) " +
+						                                    "GROUP BY R2.reco_id) - " +
+						                                    "(SELECT COUNT(*) AS cantDeCabinasLibres " +
+						                                    "FROM GD1C2019.CONCORDIA.recorrido AS R2, GD1C2019.CONCORDIA.viaje AS V, " +
+							                                    "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+						                                    "WHERE R2.reco_id = R.reco_id AND R2.reco_id = V.reco_id AND " +
+							                                    "CR.cruc_id = V.cruc_id AND CA.cruc_id = CR.cruc_id AND " +
+							                                    "DATEPART(YEAR, V.viaj_salida) = @year AND " + 
+							                                    "(DATEPART(QUARTER, V.viaj_salida) = @inicio OR DATEPART(QUARTER, V.viaj_salida) = @fin) AND " +
+							                                    "CA.cabi_id NOT IN (SELECT CP.cabina_id " +
+												                                    "FROM GD1C2019.CONCORDIA.cabina_pasaje AS CP, GD1C2019.CONCORDIA.pasaje AS P " +
+												                                    "WHERE P.pasa_id = CP.pasaje_id AND P.viaj_id = V.viaj_id) " +
+						                                    "GROUP BY R2.reco_id) AS cantDeCabinasLibres " +
+                                    "FROM GD1C2019.CONCORDIA.recorrido AS R " +
+                                    "GROUP BY R.reco_id";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@year", anioSeleccionado);
+            if (semestreSeleccionado == 1)
+            {
+                query.Parameters.AddWithValue("@inicio", 1);
+                query.Parameters.AddWithValue("@fin", 2);
+            }
+            else
+            {
+                query.Parameters.AddWithValue("@inicio", 3);
+                query.Parameters.AddWithValue("@fin", 4);
+            }
+            return Database.getQueryTable(query);
+        }
+
         #endregion
     }
 }

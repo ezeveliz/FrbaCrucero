@@ -149,7 +149,7 @@ namespace FrbaCrucero.ListadoEstadistico
         //--Busco los recorridos con mas pasajes comprados
         private void buscarRecorridosConMasPasajesComprados()
         {
-            DataTable table = Database.recorridosConMasPasajesCompradosEn(anioSeleccionado, semestreSeleccionado);
+            DataTable table = Database.recorridosConMasPasajesCompradosEn(this.anioSeleccionado, this.semestreSeleccionado);
             List<KeyValuePair<int, int>> recorridos = new List<KeyValuePair<int, int>>();
             List<string> row = new List<string>();
             if (table.Rows.Count > 0)
@@ -183,7 +183,31 @@ namespace FrbaCrucero.ListadoEstadistico
         //--Busco los cruceros con mayor cantidad de dias fuera de servicio
         private void buscarCrucerosConMayorCantDeDiasFueraDeServicio()
         {
-            ventanaInformarExito("Buscar cruceros con mayor cant de dias fuera de servicio");
+            DataTable table = Database.crucerosConMasDiasDeBajaEn(this.anioSeleccionado, this.semestreSeleccionado);
+            List<KeyValuePair<int, int>> cruceros = new List<KeyValuePair<int, int>>();
+            List<string> row = new List<string>();
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows)
+                {
+                    int idCrucero = Int32.Parse(fila[0].ToString());
+                    int cantDeDias = Int32.Parse(fila[1].ToString());
+                    cruceros.Add(new KeyValuePair<int, int>(idCrucero, cantDeDias));
+                }
+
+                DGVDatos.Columns.Add("cruceroId", "Id de crucero");
+                DGVDatos.Columns.Add("cantDias", "Cantidad de dias");
+                DataGridViewButtonColumn boton = new DataGridViewButtonColumn();
+                boton.Name = "Accion";
+                boton.HeaderText = "Accion";
+                boton.Text = "Ver detalle";
+                DGVDatos.Columns.Add(boton);
+
+                cruceros.ForEach(c =>
+                {
+                    DGVDatos.Rows.Add(c.Key, c.Value, "Ver detalle");
+                });
+            }
         }
 
         //--Busco los recorridos con mas cabinas libres en sus viajes 
@@ -208,7 +232,9 @@ namespace FrbaCrucero.ListadoEstadistico
                     recorrido.getAll();
                     new DetalleDeRecorrido(this, recorrido).ShowDialog();
                 }
-
+                else if(radioSeleccionado == "dias")
+                {
+                }
             }
         }
 
