@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using FrbaCrucero.Clases;
 using FrbaCrucero;
+using System.Globalization;
 
 namespace FrbaCrucero.Clases
 {
@@ -437,6 +438,7 @@ namespace FrbaCrucero.Clases
 
         #endregion
 
+        //--NO EJECUTAR HASTA QUE ESTE TODO LISTO!!!!!
         //--Este metodo da de baja las reservas de mas de 3 dias de antiguedad
         public static void verificarReservas()
         {
@@ -535,6 +537,21 @@ namespace FrbaCrucero.Clases
             query.Parameters.AddWithValue("@idReserva", reserva.Id);
             Database.executeCUDQuery(query);
         }
+        #endregion
+
+        #region ListadoEstadistico
+
+        //--Obtengo el primer año en el que se empezaron a vender pasajes
+        public static int getMinorYear()
+        {
+            string queryString = "SELECT MIN(pasa_fecha_compra) FROM GD1C2019.CONCORDIA.pasaje";
+            SqlCommand query = Database.createQuery(queryString);
+            string date = Database.consultaObtenerValor(query);
+            CultureInfo culture = new CultureInfo("es-AR");
+            DateTime tempDate = Convert.ToDateTime(date, culture);
+            return tempDate.Year;
+        }
+
         #endregion
     }
 }
