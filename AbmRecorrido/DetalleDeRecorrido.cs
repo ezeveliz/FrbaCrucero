@@ -8,18 +8,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Clases;
+using FrbaCrucero.ListadoEstadistico;
 
 namespace FrbaCrucero.AbmRecorrido
 {
     public partial class DetalleDeRecorrido : Frame
     {
-        private BajaRecorrido padre;
+        private BajaRecorrido padreBR;
+        private ListadoEstadistico.ListadoEstadistico padreLE;
         private Recorrido recorrido;
 
         public DetalleDeRecorrido(BajaRecorrido _padre, Recorrido _recorrido)
         {
             InitializeComponent();
-            padre = _padre;
+            padreBR = _padre;
+            recorrido = _recorrido;
+            completarVista();
+        }
+
+        public DetalleDeRecorrido(ListadoEstadistico.ListadoEstadistico _padre, Recorrido _recorrido)
+        {
+            InitializeComponent();
+            padreLE = _padre;
             recorrido = _recorrido;
             completarVista();
         }
@@ -28,11 +38,11 @@ namespace FrbaCrucero.AbmRecorrido
         {
             Titulo.Text = "Detalle de Recorrido:\n " + recorrido.Id;
             int precio = 0;
-            foreach (Tramo tramo in recorrido.Tramos)
+            this.recorrido.Tramos.ForEach(tramo => 
             {
                 DGVTramos.Rows.Add(tramo.Id, tramo.PuertoInicio.Nombre, tramo.PuertoDestino.Nombre, tramo.Precio);
                 precio += tramo.Precio;
-            }
+            });
             lblPrecioTotal.Text = "Precio total: " + precio;
         }
 
@@ -45,7 +55,14 @@ namespace FrbaCrucero.AbmRecorrido
         {
             this.Hide();
             this.Dispose();
-            padre.Show();
+            if (this.padreLE == null)
+            {
+                this.padreBR.Show();
+            }
+            else
+            {
+                this.padreLE.Show();
+            }
         }
     }
 }

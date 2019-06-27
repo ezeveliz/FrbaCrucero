@@ -36,13 +36,14 @@ namespace FrbaCrucero.ListadoEstadistico
             this.rbDias = new System.Windows.Forms.RadioButton();
             this.rbCabinas = new System.Windows.Forms.RadioButton();
             this.rbPasajes = new System.Windows.Forms.RadioButton();
-            this.lblError = new System.Windows.Forms.Label();
+            this.lblErrorBusqueda = new System.Windows.Forms.Label();
             this.lblSemestre = new System.Windows.Forms.Label();
             this.CBSemestre = new System.Windows.Forms.ComboBox();
             this.DGVDatos = new System.Windows.Forms.DataGridView();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnVolver = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
+            this.lblErrorResultados = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorController)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDatos)).BeginInit();
@@ -66,7 +67,7 @@ namespace FrbaCrucero.ListadoEstadistico
             this.groupBox1.Controls.Add(this.rbDias);
             this.groupBox1.Controls.Add(this.rbCabinas);
             this.groupBox1.Controls.Add(this.rbPasajes);
-            this.groupBox1.Controls.Add(this.lblError);
+            this.groupBox1.Controls.Add(this.lblErrorBusqueda);
             this.groupBox1.Controls.Add(this.lblSemestre);
             this.groupBox1.Controls.Add(this.CBSemestre);
             this.groupBox1.Location = new System.Drawing.Point(13, 51);
@@ -128,17 +129,17 @@ namespace FrbaCrucero.ListadoEstadistico
             this.rbPasajes.Text = "Recorridos con mas pasajes comprados ";
             this.rbPasajes.UseVisualStyleBackColor = true;
             // 
-            // lblError
+            // lblErrorBusqueda
             // 
-            this.lblError.AutoSize = true;
-            this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(6, 139);
-            this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(42, 16);
-            this.lblError.TabIndex = 2;
-            this.lblError.Text = "Error";
-            this.lblError.Visible = false;
+            this.lblErrorBusqueda.AutoSize = true;
+            this.lblErrorBusqueda.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorBusqueda.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorBusqueda.Location = new System.Drawing.Point(6, 139);
+            this.lblErrorBusqueda.Name = "lblErrorBusqueda";
+            this.lblErrorBusqueda.Size = new System.Drawing.Size(42, 16);
+            this.lblErrorBusqueda.TabIndex = 2;
+            this.lblErrorBusqueda.Text = "Error";
+            this.lblErrorBusqueda.Visible = false;
             // 
             // lblSemestre
             // 
@@ -167,11 +168,12 @@ namespace FrbaCrucero.ListadoEstadistico
             this.DGVDatos.ReadOnly = true;
             this.DGVDatos.Size = new System.Drawing.Size(496, 224);
             this.DGVDatos.TabIndex = 16;
+            this.DGVDatos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVDatos_CellContentClick);
             // 
             // btnLimpiar
             // 
             this.btnLimpiar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.btnLimpiar.Location = new System.Drawing.Point(395, 506);
+            this.btnLimpiar.Location = new System.Drawing.Point(397, 522);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(114, 43);
             this.btnLimpiar.TabIndex = 22;
@@ -182,7 +184,7 @@ namespace FrbaCrucero.ListadoEstadistico
             // btnVolver
             // 
             this.btnVolver.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.btnVolver.Location = new System.Drawing.Point(13, 506);
+            this.btnVolver.Location = new System.Drawing.Point(15, 522);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(114, 43);
             this.btnVolver.TabIndex = 21;
@@ -201,11 +203,24 @@ namespace FrbaCrucero.ListadoEstadistico
             this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
+            // lblErrorResultados
+            // 
+            this.lblErrorResultados.AutoSize = true;
+            this.lblErrorResultados.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorResultados.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorResultados.Location = new System.Drawing.Point(19, 503);
+            this.lblErrorResultados.Name = "lblErrorResultados";
+            this.lblErrorResultados.Size = new System.Drawing.Size(42, 16);
+            this.lblErrorResultados.TabIndex = 8;
+            this.lblErrorResultados.Text = "Error";
+            this.lblErrorResultados.Visible = false;
+            // 
             // ListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(521, 558);
+            this.ClientSize = new System.Drawing.Size(521, 574);
+            this.Controls.Add(this.lblErrorResultados);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnVolver);
@@ -231,7 +246,7 @@ namespace FrbaCrucero.ListadoEstadistico
         private System.Windows.Forms.Label lblSemestre;
         private System.Windows.Forms.ComboBox CBSemestre;
         private System.Windows.Forms.DataGridView DGVDatos;
-        private System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Label lblErrorBusqueda;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Button btnBuscar;
@@ -240,5 +255,6 @@ namespace FrbaCrucero.ListadoEstadistico
         private System.Windows.Forms.RadioButton rbDias;
         private System.Windows.Forms.RadioButton rbCabinas;
         private System.Windows.Forms.RadioButton rbPasajes;
+        private Label lblErrorResultados;
     }
 }

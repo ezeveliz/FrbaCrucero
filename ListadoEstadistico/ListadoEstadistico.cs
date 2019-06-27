@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Clases;
 using FrbaCrucero.Inicio;
+using FrbaCrucero.AbmRecorrido;
 
 namespace FrbaCrucero.ListadoEstadistico
 {
@@ -19,6 +20,7 @@ namespace FrbaCrucero.ListadoEstadistico
         private MenuPrincipal padre;
         private int anioSeleccionado;
         private int semestreSeleccionado;
+        private string radioSeleccionado;
 
         public ListadoEstadistico(MenuPrincipal _padre)
         {
@@ -115,14 +117,17 @@ namespace FrbaCrucero.ListadoEstadistico
 
                 if (buscarCabinas)
                 {
+                    this.radioSeleccionado = "cabinas";
                     this.buscarRecorridosConMasCabinasLibres();
                 }
                 else if (buscarDias)
                 {
+                    this.radioSeleccionado = "dias";
                     this.buscarCrucerosConMayorCantDeDiasFueraDeServicio();
                 }
                 else
                 {
+                    this.radioSeleccionado = "pasajes";
                     this.buscarRecorridosConMasPasajesComprados();
                 }
             }
@@ -137,7 +142,8 @@ namespace FrbaCrucero.ListadoEstadistico
         //--Escondo la etiqueta de error
         private void limpiarErrores()
         {
-            this.lblError.Hide();
+            this.lblErrorBusqueda.Hide();
+            this.lblErrorResultados.Hide();
         }
 
         //--Busco los recorridos con mas pasajes comprados
@@ -157,11 +163,20 @@ namespace FrbaCrucero.ListadoEstadistico
 
                 DGVDatos.Columns.Add("recorridoId", "Id de recorrido");
                 DGVDatos.Columns.Add("cantPasajes", "Cantidad de pasajes");
+                DataGridViewButtonColumn boton = new DataGridViewButtonColumn();
+                boton.Name = "Accion";
+                boton.HeaderText = "Accion";
+                boton.Text = "Ver detalle";
+                DGVDatos.Columns.Add(boton);
 
                 recorridos.ForEach(r =>
                 {
-                    DGVDatos.Rows.Add(r.Key, r.Value);
+                    DGVDatos.Rows.Add(r.Key, r.Value, "Ver detalle");
                 });
+            }
+            else
+            {
+                this.mostrarError(lblErrorResultados, "No hay ningun resultado para mostrar en esta fecha.");
             }
         }
 
@@ -175,6 +190,26 @@ namespace FrbaCrucero.ListadoEstadistico
         private void buscarRecorridosConMasCabinasLibres()
         {
             ventanaInformarExito("Buscar recorridos con mas cabinas libres");
+        }
+
+        //--Muestro el detalle del crucero/recorrido seleccionado
+        private void DGVDatos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+                e.RowIndex >= 0)
+            {
+                int id = Int32.Parse(this.DGVDatos[0, e.RowIndex].Value.ToString());
+                if (radioSeleccionado == "pasajes")
+                {
+                    int idRecorrido = id;
+                    Recorrido recorrido = new Recorrido(idRecorrido, 0);
+                    recorrido.getAll();
+                    new DetalleDeRecorrido(this, recorrido).ShowDialog();
+                }
+
+            }
         }
 
         //--Verifico que esten todos los campos seleccionados
@@ -194,7 +229,7 @@ namespace FrbaCrucero.ListadoEstadistico
             }
             else
             {
-                this.mostrarError("Debe seleccionar tanto un semestre como un año.");
+                this.mostrarError(lblErrorBusqueda, "Debe seleccionar tanto un semestre como un año.");
                 return false;
             }
         }
@@ -208,16 +243,16 @@ namespace FrbaCrucero.ListadoEstadistico
             }
             else
             {
-                this.mostrarError("Debe seleccionar alguno de los 3 radios.");
+                this.mostrarError(lblErrorBusqueda, "Debe seleccionar alguno de los 3 radios.");
                 return false;
             }
         }
 
         //--Muestro el error generado
-        private void mostrarError(string error)
+        private void mostrarError(Label label, string error)
         {
-            this.lblError.Text = error;
-            this.lblError.Show();
+            label.Text = error;
+            label.Show();
         }
     }
 }
