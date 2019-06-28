@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Inicio;
+using FrbaCrucero.AbmCrucero;
+using FrbaCrucero.CompraReservaPasaje;
+using FrbaCrucero.GeneracionViaje;
 
 namespace FrbaCrucero
 {
@@ -16,7 +20,7 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Bienvenida());
         }
     }
 }
