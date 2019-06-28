@@ -14,10 +14,12 @@ namespace FrbaCrucero.Clases
         private List<Tramo> tramos;
         private int id;
         private int inhabilitado;
+        private List<KeyValuePair<string, int>> pasajesEnIntervalo;
 
         public List<Tramo> Tramos { get { return tramos; } set { tramos = value; } }
         public int Id { get { return id; } set { id = value; } }
         public int Inhabilitado { get { return inhabilitado; } set { inhabilitado = value; } }
+        public List<KeyValuePair<string, int>> PasajesEnIntervalo { get { return pasajesEnIntervalo; } }
 
         public Recorrido(int _id, int _inhabilitado)
         {
@@ -59,6 +61,20 @@ namespace FrbaCrucero.Clases
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@recoId", id);
             return query;
+        }
+
+        //--Obtengo los pasajes vendidos del recorrido en un año y semestre dados
+        public void getPasajesEn(int anioSeleccionado, int semestreSeleccionado)
+        {
+            DataTable table = Database.detalleDeRecorridosConMasPasajesCompradosEn(anioSeleccionado, semestreSeleccionado, this.id);
+            List<KeyValuePair<string, int>> detalles = new List<KeyValuePair<string, int>>();
+            foreach (DataRow fila in table.Rows)
+            {
+                string mes = fila[0].ToString();
+                int cantDePasajes = Int32.Parse(fila[1].ToString());
+                detalles.Add(new KeyValuePair<string, int>(mes, cantDePasajes));
+            }
+            this.pasajesEnIntervalo = detalles;
         }
 
     }

@@ -556,12 +556,12 @@ namespace FrbaCrucero.Clases
         public static DataTable recorridosConMasPasajesCompradosEn(int anioSeleccionado, int semestreSeleccionado)
         {
             string queryString = "SELECT TOP 5 R.reco_id AS CodigoDeRecorrido, COUNT(*) AS CantDeViajes " +
-                    "FROM  GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, GD1C2019.CONCORDIA.pasaje AS P " +
-                    "WHERE R.reco_id = V.reco_id AND V.viaj_id = P.pasa_id AND " + 
-                    "DATEPART(YEAR, P.pasa_fecha_compra) = @year AND " + 
-                    "(DATEPART(QUARTER, P.pasa_fecha_compra) = @inicio OR DATEPART(QUARTER, P.pasa_fecha_compra) = @fin) " +
-                    "GROUP BY R.reco_id " +
-                    "ORDER BY COUNT(*) DESC";
+                                "FROM  GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, GD1C2019.CONCORDIA.pasaje AS P " +
+                                "WHERE R.reco_id = V.reco_id AND V.viaj_id = P.pasa_id AND " + 
+                                    "DATEPART(YEAR, P.pasa_fecha_compra) = @year AND " + 
+                                    "(DATEPART(QUARTER, P.pasa_fecha_compra) = @inicio OR DATEPART(QUARTER, P.pasa_fecha_compra) = @fin) " +
+                                "GROUP BY R.reco_id " +
+                                "ORDER BY CantDeViajes DESC";
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@year", anioSeleccionado);
             if (semestreSeleccionado == 1)
@@ -574,18 +574,62 @@ namespace FrbaCrucero.Clases
                 query.Parameters.AddWithValue("@inicio", 3);
                 query.Parameters.AddWithValue("@fin", 4);
             }
+            return Database.getQueryTable(query);
+        }
+
+        public static DataTable detalleDeRecorridosConMasPasajesCompradosEn(int anioSeleccionado, int semestreSeleccionado, int idRecorrido)
+        {
+            string caseWhen = "SELECT CASE ";
+            if (semestreSeleccionado == 1)
+            {
+                caseWhen += "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 1 THEN 'Enero' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 2 THEN 'Febrero' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 3 THEN 'Marzo' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 4 THEN 'Abril' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 5 THEN 'Mayo' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 6 THEN 'Junio' ";
+            }
+            else
+            {
+                caseWhen += "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 7 THEN 'Julio' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 8 THEN 'Agosto' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 9 THEN 'Septiembre' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 10 THEN 'Octubre' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 11 THEN 'Noviembre' " +
+                            "WHEN DATEPART(MONTH, P.pasa_fecha_compra) = 12 THEN 'Diciembre' ";
+            }
+            caseWhen += "END AS Mes, COUNT(*) AS CantidadVendida ";
+
+            string queryString = caseWhen + "FROM  GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, GD1C2019.CONCORDIA.pasaje AS P " +
+                                            "WHERE R.reco_id = V.reco_id AND V.viaj_id = P.pasa_id AND R.reco_id = @idRecorrido AND " +
+	                                            "DATEPART(YEAR, P.pasa_fecha_compra) = @year AND " +
+	                                            "(DATEPART(QUARTER, P.pasa_fecha_compra) = @inicio OR DATEPART(QUARTER, P.pasa_fecha_compra) = @fin) " +
+                                            "GROUP BY DATEPART(MONTH, P.pasa_fecha_compra)";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@year", anioSeleccionado);
+            if (semestreSeleccionado == 1)
+            {
+                query.Parameters.AddWithValue("@inicio", 1);
+                query.Parameters.AddWithValue("@fin", 2);
+            }
+            else
+            {
+                query.Parameters.AddWithValue("@inicio", 3);
+                query.Parameters.AddWithValue("@fin", 4);
+            }
+            query.Parameters.AddWithValue("@idRecorrido", idRecorrido);
             return Database.getQueryTable(query);
         }
 
         public static DataTable crucerosConMasDiasDeBajaEn(int anioSeleccionado, int semestreSeleccionado)
         {
             string queryString = "SELECT TOP 5 C.cruc_id AS idCrucero, SUM(DATEDIFF(DAY, CFV.cfs_fecha_baja, CFV.cfs_fecha_alta)) AS diasDeBaja " +
-                            "FROM GD1C2019.CONCORDIA.crucero AS C, GD1C2019.CONCORDIA.crucero_fuera_servicio AS CFV " +
-                            "WHERE C.cruc_id = CFV.cruc_id AND " +
-                            "DATEPART(YEAR, CFV.cfs_fecha_baja) = @year AND " + 
-                            "(DATEPART(QUARTER, CFV.cfs_fecha_baja) = @inicio OR DATEPART(QUARTER, CFV.cfs_fecha_baja) = @fin) " +
-                            "GROUP BY C.cruc_id " +
-                            "ORDER BY diasDeBaja DESC";
+                                "FROM GD1C2019.CONCORDIA.crucero AS C, GD1C2019.CONCORDIA.crucero_fuera_servicio AS CFV " +
+                                "WHERE C.cruc_id = CFV.cruc_id AND " +
+                                    "DATEPART(YEAR, CFV.cfs_fecha_baja) = @year AND " + 
+                                    "(DATEPART(QUARTER, CFV.cfs_fecha_baja) = @inicio OR DATEPART(QUARTER, CFV.cfs_fecha_baja) = @fin) " +
+                                "GROUP BY C.cruc_id " +
+                                "ORDER BY diasDeBaja DESC";
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@year", anioSeleccionado);
             if (semestreSeleccionado == 1)
@@ -601,30 +645,76 @@ namespace FrbaCrucero.Clases
             return Database.getQueryTable(query);
         }
 
-        public static DataTable recorridosConMasCabinasLibresEnCadaViaje(int anioSeleccionado, int semestreSeleccionado)
+        public static DataTable detalleDeCruceroConMasDiasDeBajaEn(int anioSeleccionado, int semestreSeleccionado, int idCrucero)
+        {
+            string caseWhen = "SELECT CASE ";
+            if (semestreSeleccionado == 1)
+            {
+                caseWhen += "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 1 THEN 'Enero' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 2 THEN 'Febrero' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 3 THEN 'Marzo' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 4 THEN 'Abril' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 5 THEN 'Mayo' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 6 THEN 'Junio' ";
+            }
+            else
+            {
+                caseWhen += "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 7 THEN 'Julio' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 8 THEN 'Agosto' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 9 THEN 'Septiembre' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 10 THEN 'Octubre' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 11 THEN 'Noviembre' " +
+                            "WHEN DATEPART(MONTH, CFV.cfs_fecha_baja) = 12 THEN 'Diciembre' ";
+            }
+            caseWhen += "END AS Mes, SUM(DATEDIFF(DAY, CFV.cfs_fecha_baja, CFV.cfs_fecha_alta)) AS diasDeBaja ";
+
+            string queryString = caseWhen + "FROM GD1C2019.CONCORDIA.crucero AS C, GD1C2019.CONCORDIA.crucero_fuera_servicio AS CFV " +
+                                            "WHERE C.cruc_id = CFV.cruc_id AND " +
+                                                "DATEPART(YEAR, CFV.cfs_fecha_baja) = 2019 AND " +
+                                                "(DATEPART(QUARTER, CFV.cfs_fecha_baja) = @inicio OR DATEPART(QUARTER, CFV.cfs_fecha_baja) = @fin) AND " +
+                                                "C.cruc_id = @idCrucero " +
+                                            "GROUP BY DATEPART(MONTH, CFV.cfs_fecha_baja)";
+            SqlCommand query = Database.createQuery(queryString);
+            query.Parameters.AddWithValue("@year", anioSeleccionado);
+            if (semestreSeleccionado == 1)
+            {
+                query.Parameters.AddWithValue("@inicio", 1);
+                query.Parameters.AddWithValue("@fin", 2);
+            }
+            else
+            {
+                query.Parameters.AddWithValue("@inicio", 3);
+                query.Parameters.AddWithValue("@fin", 4);
+            }
+            query.Parameters.AddWithValue("@idCrucero", idCrucero);
+            return Database.getQueryTable(query);
+        }
+
+        public static DataTable recorridosConMasCabinasLibresEn(int anioSeleccionado, int semestreSeleccionado)
         {
             string queryString = "SELECT TOP 5 R.reco_id AS CodigoDeRecorrido, " +
-						                                    "(SELECT COUNT(*) AS cantDeCabinas " +
-						                                    "FROM GD1C2019.CONCORDIA.recorrido AS R2, GD1C2019.CONCORDIA.viaje AS V, " +
-							                                    "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
-						                                    "WHERE R2.reco_id = V.reco_id AND V.cruc_id = CR.cruc_id AND " + 
-							                                    "CR.cruc_id = CA.cruc_id AND R2.reco_id = R.reco_id AND " +
-							                                    "DATEPART(YEAR, V.viaj_salida) = @year AND " + 
-							                                    "(DATEPART(QUARTER, V.viaj_salida) = @inicio OR DATEPART(QUARTER, V.viaj_salida) = @fin) " +
-						                                    "GROUP BY R2.reco_id) - " +
-						                                    "(SELECT COUNT(*) AS cantDeCabinasLibres " +
-						                                    "FROM GD1C2019.CONCORDIA.recorrido AS R2, GD1C2019.CONCORDIA.viaje AS V, " +
-							                                    "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
-						                                    "WHERE R2.reco_id = R.reco_id AND R2.reco_id = V.reco_id AND " +
-							                                    "CR.cruc_id = V.cruc_id AND CA.cruc_id = CR.cruc_id AND " +
-							                                    "DATEPART(YEAR, V.viaj_salida) = @year AND " + 
-							                                    "(DATEPART(QUARTER, V.viaj_salida) = @inicio OR DATEPART(QUARTER, V.viaj_salida) = @fin) AND " +
-							                                    "CA.cabi_id NOT IN (SELECT CP.cabina_id " +
-												                                    "FROM GD1C2019.CONCORDIA.cabina_pasaje AS CP, GD1C2019.CONCORDIA.pasaje AS P " +
-												                                    "WHERE P.pasa_id = CP.pasaje_id AND P.viaj_id = V.viaj_id) " +
-						                                    "GROUP BY R2.reco_id) AS cantDeCabinasLibres " +
+						                "(SELECT COUNT(*) AS cantDeCabinas " +
+						                "FROM GD1C2019.CONCORDIA.recorrido AS R2, GD1C2019.CONCORDIA.viaje AS V, " +
+							                "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+						                "WHERE R2.reco_id = V.reco_id AND V.cruc_id = CR.cruc_id AND " + 
+							                "CR.cruc_id = CA.cruc_id AND R2.reco_id = R.reco_id AND " +
+							                "DATEPART(YEAR, V.viaj_salida) = @year AND " + 
+							                "(DATEPART(QUARTER, V.viaj_salida) = @inicio OR DATEPART(QUARTER, V.viaj_salida) = @fin) " +
+						                "GROUP BY R2.reco_id) - " +
+						                "(SELECT COUNT(*) AS cantDeCabinasLibres " +
+						                "FROM GD1C2019.CONCORDIA.recorrido AS R2, GD1C2019.CONCORDIA.viaje AS V, " +
+							                "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+						                "WHERE R2.reco_id = R.reco_id AND R2.reco_id = V.reco_id AND " +
+							                "CR.cruc_id = V.cruc_id AND CA.cruc_id = CR.cruc_id AND " +
+							                "DATEPART(YEAR, V.viaj_salida) = @year AND " + 
+							                "(DATEPART(QUARTER, V.viaj_salida) = @inicio OR DATEPART(QUARTER, V.viaj_salida) = @fin) AND " +
+							                "CA.cabi_id NOT IN (SELECT CP.cabina_id " +
+												                "FROM GD1C2019.CONCORDIA.cabina_pasaje AS CP, GD1C2019.CONCORDIA.pasaje AS P " +
+												                "WHERE P.pasa_id = CP.pasaje_id AND P.viaj_id = V.viaj_id) " +
+						                "GROUP BY R2.reco_id) AS cantDeCabinasLibres " +
                                     "FROM GD1C2019.CONCORDIA.recorrido AS R " +
-                                    "GROUP BY R.reco_id";
+                                    "GROUP BY R.reco_id " +
+                                    "ORDER BY cantDeCabinasLibres DESC";
             SqlCommand query = Database.createQuery(queryString);
             query.Parameters.AddWithValue("@year", anioSeleccionado);
             if (semestreSeleccionado == 1)

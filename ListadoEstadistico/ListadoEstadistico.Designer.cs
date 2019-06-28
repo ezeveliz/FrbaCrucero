@@ -162,6 +162,8 @@ namespace FrbaCrucero.ListadoEstadistico
             // 
             // DGVDatos
             // 
+            this.DGVDatos.AllowUserToAddRows = false;
+            this.DGVDatos.AllowUserToDeleteRows = false;
             this.DGVDatos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVDatos.Location = new System.Drawing.Point(13, 276);
             this.DGVDatos.Name = "DGVDatos";

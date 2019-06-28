@@ -14,22 +14,13 @@ namespace FrbaCrucero.AbmRecorrido
 {
     public partial class DetalleDeRecorrido : Frame
     {
-        private BajaRecorrido padreBR;
-        private ListadoEstadistico.ListadoEstadistico padreLE;
+        private BajaRecorrido padre;
         private Recorrido recorrido;
 
         public DetalleDeRecorrido(BajaRecorrido _padre, Recorrido _recorrido)
         {
             InitializeComponent();
-            padreBR = _padre;
-            recorrido = _recorrido;
-            completarVista();
-        }
-
-        public DetalleDeRecorrido(ListadoEstadistico.ListadoEstadistico _padre, Recorrido _recorrido)
-        {
-            InitializeComponent();
-            padreLE = _padre;
+            padre = _padre;
             recorrido = _recorrido;
             completarVista();
         }
@@ -55,14 +46,7 @@ namespace FrbaCrucero.AbmRecorrido
         {
             this.Hide();
             this.Dispose();
-            if (this.padreLE == null)
-            {
-                this.padreBR.Show();
-            }
-            else
-            {
-                this.padreLE.Show();
-            }
+            this.padre.Show();
         }
     }
 }

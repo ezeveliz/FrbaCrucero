@@ -173,6 +173,7 @@
     </Compile>
     <Compile Include="Clases\Cabina.cs" />
     <Compile Include="Clases\Crucero.cs" />
+    <Compile Include="Clases\Fabricante.cs" />
     <Compile Include="Clases\Logger.cs" />
     <Compile Include="Clases\Puerto.cs" />
     <Compile Include="Clases\Recorrido.cs" />
@@ -206,6 +207,24 @@
     </Compile>
     <Compile Include="Inicio\MenuPrincipal.Designer.cs">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\DetalleCruceroFueraServicio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\DetalleCruceroFueraServicio.Designer.cs">
+      <DependentUpon>DetalleCruceroFueraServicio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\DetalleRecorridoCabinasLibres.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\DetalleRecorridoCabinasLibres.Designer.cs">
+      <DependentUpon>DetalleRecorridoCabinasLibres.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\DetalleRecorridoPasajes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\DetalleRecorridoPasajes.Designer.cs">
+      <DependentUpon>DetalleRecorridoPasajes.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\ListadoEstadistico.cs">
       <SubType>Form</SubType>
@@ -301,6 +320,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Inicio\MenuPrincipal.resx">
       <DependentUpon>MenuPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\DetalleCruceroFueraServicio.resx">
+      <DependentUpon>DetalleCruceroFueraServicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\DetalleRecorridoPasajes.resx">
+      <DependentUpon>DetalleRecorridoPasajes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\ListadoEstadistico.resx">
       <DependentUpon>ListadoEstadistico.cs</DependentUpon>

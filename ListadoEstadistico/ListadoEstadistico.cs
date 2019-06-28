@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Clases;
 using FrbaCrucero.Inicio;
-using FrbaCrucero.AbmRecorrido;
 
 namespace FrbaCrucero.ListadoEstadistico
 {
@@ -21,6 +20,9 @@ namespace FrbaCrucero.ListadoEstadistico
         private int anioSeleccionado;
         private int semestreSeleccionado;
         private string radioSeleccionado;
+
+        public int AnioSeleccionado { get { return anioSeleccionado; } }
+        public int SemestreSeleccionado { get { return semestreSeleccionado; } }
 
         public ListadoEstadistico(MenuPrincipal _padre)
         {
@@ -151,7 +153,6 @@ namespace FrbaCrucero.ListadoEstadistico
         {
             DataTable table = Database.recorridosConMasPasajesCompradosEn(this.anioSeleccionado, this.semestreSeleccionado);
             List<KeyValuePair<int, int>> recorridos = new List<KeyValuePair<int, int>>();
-            List<string> row = new List<string>();
             if (table.Rows.Count > 0)
             {
                 foreach (DataRow fila in table.Rows)
@@ -162,7 +163,7 @@ namespace FrbaCrucero.ListadoEstadistico
                 }
 
                 DGVDatos.Columns.Add("recorridoId", "Id de recorrido");
-                DGVDatos.Columns.Add("cantPasajes", "Cantidad de pasajes");
+                DGVDatos.Columns.Add("cantPasajes", "Cantidad de pasajes comprados");
                 DataGridViewButtonColumn boton = new DataGridViewButtonColumn();
                 boton.Name = "Accion";
                 boton.HeaderText = "Accion";
@@ -185,7 +186,6 @@ namespace FrbaCrucero.ListadoEstadistico
         {
             DataTable table = Database.crucerosConMasDiasDeBajaEn(this.anioSeleccionado, this.semestreSeleccionado);
             List<KeyValuePair<int, int>> cruceros = new List<KeyValuePair<int, int>>();
-            List<string> row = new List<string>();
             if (table.Rows.Count > 0)
             {
                 foreach (DataRow fila in table.Rows)
@@ -196,7 +196,7 @@ namespace FrbaCrucero.ListadoEstadistico
                 }
 
                 DGVDatos.Columns.Add("cruceroId", "Id de crucero");
-                DGVDatos.Columns.Add("cantDias", "Cantidad de dias");
+                DGVDatos.Columns.Add("cantDias", "Cantidad de dias fuera de uso");
                 DataGridViewButtonColumn boton = new DataGridViewButtonColumn();
                 boton.Name = "Accion";
                 boton.HeaderText = "Accion";
@@ -208,12 +208,43 @@ namespace FrbaCrucero.ListadoEstadistico
                     DGVDatos.Rows.Add(c.Key, c.Value, "Ver detalle");
                 });
             }
+            else
+            {
+                this.mostrarError(lblErrorResultados, "No hay ningun resultado para mostrar en esta fecha.");
+            }
         }
 
         //--Busco los recorridos con mas cabinas libres en sus viajes 
         private void buscarRecorridosConMasCabinasLibres()
         {
-            ventanaInformarExito("Buscar recorridos con mas cabinas libres");
+            DataTable table = Database.recorridosConMasCabinasLibresEn(this.anioSeleccionado, this.semestreSeleccionado);
+            List<KeyValuePair<int, int>> recorridos = new List<KeyValuePair<int, int>>();
+            if (table.Rows.Count > 0)
+            {
+                foreach (DataRow fila in table.Rows)
+                {
+                    int idRecorrido = Int32.Parse(fila[0].ToString());
+                    int cantDeCabinas = Int32.Parse(fila[1].ToString());
+                    recorridos.Add(new KeyValuePair<int, int>(idRecorrido, cantDeCabinas));
+                }
+
+                DGVDatos.Columns.Add("cruceroId", "Id de recorrido");
+                DGVDatos.Columns.Add("cantDias", "Cantidad de cabinas libres");
+                DataGridViewButtonColumn boton = new DataGridViewButtonColumn();
+                boton.Name = "Accion";
+                boton.HeaderText = "Accion";
+                boton.Text = "Ver detalle";
+                DGVDatos.Columns.Add(boton);
+
+                recorridos.ForEach(c =>
+                {
+                    DGVDatos.Rows.Add(c.Key, c.Value, "Ver detalle");
+                });
+            }
+            else
+            {
+                this.mostrarError(lblErrorResultados, "No hay ningun resultado para mostrar en esta fecha.");
+            }
         }
 
         //--Muestro el detalle del crucero/recorrido seleccionado
@@ -225,15 +256,28 @@ namespace FrbaCrucero.ListadoEstadistico
                 e.RowIndex >= 0)
             {
                 int id = Int32.Parse(this.DGVDatos[0, e.RowIndex].Value.ToString());
+                //--Recorrido con sus pasajes comprados
                 if (radioSeleccionado == "pasajes")
                 {
                     int idRecorrido = id;
                     Recorrido recorrido = new Recorrido(idRecorrido, 0);
                     recorrido.getAll();
-                    new DetalleDeRecorrido(this, recorrido).ShowDialog();
+                    recorrido.getPasajesEn(this.anioSeleccionado, this.semestreSeleccionado);
+                    new DetalleRecorridoPasajes(this, recorrido).ShowDialog();
                 }
-                else if(radioSeleccionado == "dias")
+                //--Crucero con sus dias fuera de servicio
+                else if (radioSeleccionado == "dias")
                 {
+                    int idCrucero = id;
+                    Crucero crucero = new Crucero(idCrucero);
+                    crucero.getData();
+                    crucero.getDiasFueraDeServicioEn(this.anioSeleccionado, this.semestreSeleccionado);
+                    new DetalleCruceroFueraServicio(this, crucero).ShowDialog();
+                }
+                //--Recorrido con las cabinas libres en los viajes
+                else
+                {
+                    int idRecorrido = id;
                 }
             }
         }
