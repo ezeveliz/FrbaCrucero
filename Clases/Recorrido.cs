@@ -15,11 +15,13 @@ namespace FrbaCrucero.Clases
         private int id;
         private int inhabilitado;
         private List<KeyValuePair<string, int>> pasajesEnIntervalo;
+        private List<KeyValuePair<string, int>> cabinasLibresEnIntervalo;
 
         public List<Tramo> Tramos { get { return tramos; } set { tramos = value; } }
         public int Id { get { return id; } set { id = value; } }
         public int Inhabilitado { get { return inhabilitado; } set { inhabilitado = value; } }
         public List<KeyValuePair<string, int>> PasajesEnIntervalo { get { return pasajesEnIntervalo; } }
+        public List<KeyValuePair<string, int>> CabinasLibresEnIntervalo { get { return cabinasLibresEnIntervalo; } }
 
         public Recorrido(int _id, int _inhabilitado)
         {
@@ -77,5 +79,20 @@ namespace FrbaCrucero.Clases
             this.pasajesEnIntervalo = detalles;
         }
 
+        //--Obtengo las cabinas libres del recorrido en un año y semestre dado
+        public void getCabinasLibresEn(int anioSeleccionado, int semestreSeleccionado)
+        {
+            DataTable table = Database.detalleDeRecorridoConMasCabinasLibres(anioSeleccionado, semestreSeleccionado, this.id);
+            List<KeyValuePair<string, int>> detalles = new List<KeyValuePair<string, int>>();
+            foreach (DataRow fila in table.Rows)
+            {
+                string mes = fila[0].ToString();
+                
+                int cantDeCabinas = (!fila.IsNull(1) ? Int32.Parse(fila[1].ToString()) : 0 );
+                //int cantDeCabinas = ()Int32.Parse(fila[1].ToString());
+                detalles.Add(new KeyValuePair<string, int>(mes, cantDeCabinas));
+            }
+            this.cabinasLibresEnIntervalo = detalles;
+        }
     }
 }

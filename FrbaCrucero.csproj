@@ -324,6 +324,9 @@
     <EmbeddedResource Include="ListadoEstadistico\DetalleCruceroFueraServicio.resx">
       <DependentUpon>DetalleCruceroFueraServicio.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\DetalleRecorridoCabinasLibres.resx">
+      <DependentUpon>DetalleRecorridoCabinasLibres.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\DetalleRecorridoPasajes.resx">
       <DependentUpon>DetalleRecorridoPasajes.cs</DependentUpon>
     </EmbeddedResource>

@@ -730,6 +730,65 @@ namespace FrbaCrucero.Clases
             return Database.getQueryTable(query);
         }
 
+        public static DataTable detalleDeRecorridoConMasCabinasLibres(int anioSeleccionado, int semestreSeleccionado, int idRecorrido)
+        {
+            string queryString = "";
+            if (semestreSeleccionado == 1)
+            {
+                for (int i = 0; i <= 5; i++)
+                {
+                    string mes = "\'" + new DateTime(2019, i + 1, 1).ToString("MMMM", CultureInfo.CreateSpecificCulture("es")) + "\'";
+                    queryString += " SELECT " + mes + " AS Mes, (SELECT COUNT(*) AS cantDeCabinas " +
+		            "FROM GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, " +
+			            "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+		            "WHERE R.reco_id = V.reco_id AND V.cruc_id = CR.cruc_id AND " +
+			            "CR.cruc_id = CA.cruc_id AND R.reco_id = " + idRecorrido + " AND " +
+			            "DATEPART(YEAR, V.viaj_salida) = " + anioSeleccionado + " AND " +
+			            "DATEPART(MONTH, V.viaj_salida) = " + (i + 1) + " " +
+		            "GROUP BY R.reco_id) - (SELECT COUNT(*) AS cantDeCabinasLibres " +
+					            "FROM GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, " +
+						            "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+                                "WHERE R.reco_id = " + idRecorrido + " AND R.reco_id = V.reco_id AND " +
+						            "CR.cruc_id = V.cruc_id AND CA.cruc_id = CR.cruc_id AND " +
+                                    "DATEPART(YEAR, V.viaj_salida) = " + anioSeleccionado + " AND " +
+                                    "DATEPART(MONTH, V.viaj_salida) = " + (i + 1) + " AND " +
+						            "CA.cabi_id NOT IN (SELECT CP.cabina_id " +
+												            "FROM GD1C2019.CONCORDIA.cabina_pasaje AS CP, GD1C2019.CONCORDIA.pasaje AS P " +
+												            "WHERE P.pasa_id = CP.pasaje_id AND P.viaj_id = V.viaj_id) " +
+												            "GROUP BY R.reco_id) AS cantLibres";
+                    queryString += (i + 1 != 6 ? " UNION " : "");
+                }
+            }
+            else
+            {
+                for (int i = 6; i <= 11; i++)
+                {
+                    string mes = "\'" + new DateTime(2019, i + 1, 1).ToString("MMMM", CultureInfo.CreateSpecificCulture("es")) + "\'";
+                    queryString += " SELECT " + mes + " AS Mes, (SELECT COUNT(*) AS cantDeCabinas " +
+                    "FROM GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, " +
+                        "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+                    "WHERE R.reco_id = V.reco_id AND V.cruc_id = CR.cruc_id AND " +
+                        "CR.cruc_id = CA.cruc_id AND R.reco_id = " + idRecorrido + " AND " +
+                        "DATEPART(YEAR, V.viaj_salida) = " + anioSeleccionado + " AND " +
+                        "DATEPART(MONTH, V.viaj_salida) = " + (i + 1) + " " +
+                    "GROUP BY R.reco_id) - (SELECT COUNT(*) AS cantDeCabinasLibres " +
+                                "FROM GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, " +
+                                    "GD1C2019.CONCORDIA.crucero AS CR, GD1C2019.CONCORDIA.cabina AS CA " +
+                                "WHERE R.reco_id = " + idRecorrido + " AND R.reco_id = V.reco_id AND " +
+                                    "CR.cruc_id = V.cruc_id AND CA.cruc_id = CR.cruc_id AND " +
+                                    "DATEPART(YEAR, V.viaj_salida) = " + anioSeleccionado + " AND " +
+                                    "DATEPART(MONTH, V.viaj_salida) = " + (i + 1) + " AND " +
+                                    "CA.cabi_id NOT IN (SELECT CP.cabina_id " +
+                                                            "FROM GD1C2019.CONCORDIA.cabina_pasaje AS CP, GD1C2019.CONCORDIA.pasaje AS P " +
+                                                            "WHERE P.pasa_id = CP.pasaje_id AND P.viaj_id = V.viaj_id) " +
+                                                            "GROUP BY R.reco_id) AS cantLibres";
+                    queryString += (i + 1 != 12 ? " UNION " : "");
+                }
+            }
+            SqlCommand query = Database.createQuery(queryString);
+            return Database.getQueryTable(query); 
+        }
+
         #endregion
     }
 }

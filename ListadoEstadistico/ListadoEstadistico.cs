@@ -278,6 +278,10 @@ namespace FrbaCrucero.ListadoEstadistico
                 else
                 {
                     int idRecorrido = id;
+                    Recorrido recorrido = new Recorrido(idRecorrido, 0);
+                    recorrido.getAll();
+                    recorrido.getCabinasLibresEn(this.anioSeleccionado, this.semestreSeleccionado);
+                    new DetalleRecorridoCabinasLibres(this, recorrido).ShowDialog();
                 }
             }
         }
