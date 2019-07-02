@@ -557,7 +557,7 @@ namespace FrbaCrucero.Clases
         {
             string queryString = "SELECT TOP 5 R.reco_id AS CodigoDeRecorrido, COUNT(*) AS CantDeViajes " +
                                 "FROM  GD1C2019.CONCORDIA.recorrido AS R, GD1C2019.CONCORDIA.viaje AS V, GD1C2019.CONCORDIA.pasaje AS P " +
-                                "WHERE R.reco_id = V.reco_id AND V.viaj_id = P.pasa_id AND " + 
+                                "WHERE R.reco_id = V.reco_id AND V.viaj_id = P.viaj_id AND " + 
                                     "DATEPART(YEAR, P.pasa_fecha_compra) = @year AND " + 
                                     "(DATEPART(QUARTER, P.pasa_fecha_compra) = @inicio OR DATEPART(QUARTER, P.pasa_fecha_compra) = @fin) " +
                                 "GROUP BY R.reco_id " +

@@ -224,7 +224,7 @@ namespace FrbaCrucero.ListadoEstadistico
                 foreach (DataRow fila in table.Rows)
                 {
                     int idRecorrido = Int32.Parse(fila[0].ToString());
-                    int cantDeCabinas = Int32.Parse(fila[1].ToString());
+                    int cantDeCabinas = (!fila.IsNull(1) ? Int32.Parse(fila[1].ToString()) : 0);
                     recorridos.Add(new KeyValuePair<int, int>(idRecorrido, cantDeCabinas));
                 }
 

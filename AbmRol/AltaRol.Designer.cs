@@ -108,6 +108,7 @@
             // 
             // DGVFuncionalidad
             // 
+            this.DGVFuncionalidad.AllowUserToAddRows = false;
             this.DGVFuncionalidad.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVFuncionalidad.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.idFuncionalidad,

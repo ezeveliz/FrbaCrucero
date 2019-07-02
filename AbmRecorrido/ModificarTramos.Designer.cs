@@ -136,6 +136,7 @@
             // 
             // DGVTramos
             // 
+            this.DGVTramos.AllowUserToAddRows = false;
             this.DGVTramos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVTramos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Inicio,

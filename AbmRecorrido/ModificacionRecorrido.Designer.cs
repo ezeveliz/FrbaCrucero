@@ -84,6 +84,7 @@
             // 
             // DGVRecorridos
             // 
+            this.DGVRecorridos.AllowUserToAddRows = false;
             this.DGVRecorridos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVRecorridos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.idRecorrido,
